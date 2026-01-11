@@ -50,7 +50,9 @@ public class AppDbContext : IdentityDbContext<
         builder.Entity<ApplicationUser>(b =>
         {
             b.ToTable("users");
-            b.Property(u => u.CreatedAt).IsRequired();
+            b.Property(u => u.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
             b.Property(u => u.Email).IsRequired();
             b.HasIndex(u => u.Email).IsUnique();
             b.HasIndex(u => u.NormalizedEmail).IsUnique();
@@ -73,7 +75,9 @@ public class AppDbContext : IdentityDbContext<
             b.HasKey(d => d.Id);
             b.Property(d => d.DeviceKey).IsRequired();
             b.Property(d => d.Platform).IsRequired();
-            b.Property(d => d.CreatedAt).IsRequired();
+            b.Property(d => d.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
 
             b.HasIndex(d => d.DeviceKey).IsUnique();
         });
@@ -83,7 +87,9 @@ public class AppDbContext : IdentityDbContext<
             b.ToTable("users_devices");
             b.HasKey(ud => new { ud.UserId, ud.DeviceId });
 
-            b.Property(ud => ud.LinkedAt).IsRequired();
+            b.Property(ud => ud.LinkedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
 
             b.HasOne(ud => ud.User)
                 .WithMany(u => u.UserDevices)
@@ -123,6 +129,8 @@ public class AppDbContext : IdentityDbContext<
                 .WithMany(m => m.Products)
                 .HasForeignKey(p => p.ModuleId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasIndex(p => p.ModuleId);
         });
     }
 
@@ -149,9 +157,12 @@ public class AppDbContext : IdentityDbContext<
                 .HasConversion(GetPaymentStatusConverter())
                 .IsRequired();
             b.Property(p => p.Days).IsRequired();
-            b.Property(p => p.CreatedAt).IsRequired();
+            b.Property(p => p.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
 
             b.HasIndex(p => new { p.Provider, p.ProviderPaymentId }).IsUnique();
+            b.HasIndex(p => p.UserId);
 
             b.HasOne(p => p.User)
                 .WithMany(u => u.Purchases)
@@ -175,7 +186,9 @@ public class AppDbContext : IdentityDbContext<
             });
             b.HasKey(a => a.Id);
             b.Property(a => a.Days).IsRequired();
-            b.Property(a => a.CreatedAt).IsRequired();
+            b.Property(a => a.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
 
             b.HasOne(a => a.Admin)
                 .WithMany(u => u.AdminAccessEntries)
@@ -222,9 +235,12 @@ public class AppDbContext : IdentityDbContext<
         builder.Entity<PromocodeUsage>(b =>
         {
             b.ToTable("promocode_usages");
-            b.Property(pu => pu.UsedAt).IsRequired();
+            b.Property(pu => pu.UsedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
 
             b.HasKey(pu => new { pu.UserId, pu.PromocodeId });
+            b.HasIndex(pu => pu.UserId);
 
             b.HasOne(pu => pu.User)
                 .WithMany(u => u.PromocodeUsages)
@@ -246,6 +262,8 @@ public class AppDbContext : IdentityDbContext<
             b.Property(uma => uma.EndsAt).IsRequired();
 
             b.HasKey(uma => new { uma.UserId, uma.ModuleId });
+            b.HasIndex(uma => uma.UserId);
+            b.HasIndex(uma => uma.ModuleId);
 
             b.HasOne(uma => uma.User)
                 .WithMany(u => u.ModuleAccesses)

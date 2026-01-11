@@ -29,7 +29,7 @@
 | lockout_end | timestamptz | yes | |
 | lockout_enabled | boolean | no | |
 | access_failed_count | integer | no | |
-| created_at | timestamptz | no | |
+| created_at | timestamptz | no | DEFAULT now() |
 | last_seen | timestamptz | yes | |
 
 ---
@@ -105,7 +105,7 @@
 | id | bigint | no | PK |
 | device_key | text | no | UNIQUE |
 | platform | text | no | |
-| created_at | timestamptz | no | |
+| created_at | timestamptz | no | DEFAULT now() |
 
 ---
 
@@ -115,7 +115,7 @@
 |-----|-----|----------|------------|
 | user_id | bigint | no | PK, FK → users.id |
 | device_id | bigint | no | PK, FK → devices.id |
-| linked_at | timestamptz | no | |
+| linked_at | timestamptz | no | DEFAULT now() |
 | revoked_at | timestamptz | yes | |
 
 ---
@@ -136,7 +136,7 @@
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
 | id | bigint | no | PK |
-| module_id | bigint | no | FK → modules.id |
+| module_id | bigint | no | FK → modules.id, INDEX |
 | name | text | no | |
 
 ---
@@ -146,7 +146,7 @@
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
 | id | bigint | no | PK |
-| user_id | bigint | no | FK → users.id |
+| user_id | bigint | no | FK → users.id, INDEX |
 | product_id | bigint | no | FK → products.id |
 | amount_cents | integer | no | CHECK (amount_cents >= 0) |
 | currency | char(3) | no | |
@@ -155,7 +155,7 @@
 | receipt | text | yes | |
 | status | text | no | CHECK (status IN ('pending','paid','failed','refunded')) |
 | days | integer | no | CHECK (days > 0) |
-| created_at | timestamptz | no | |
+| created_at | timestamptz | no | DEFAULT now() |
 | purchased_at | timestamptz | yes | |
 
 ---
@@ -169,7 +169,7 @@
 | target_user_id | bigint | no | FK → users.id |
 | product_id | bigint | no | FK → products.id |
 | days | integer | no | CHECK (days > 0) |
-| created_at | timestamptz | no | |
+| created_at | timestamptz | no | DEFAULT now() |
 
 ---
 
@@ -189,9 +189,9 @@
 
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
-| user_id | bigint | no | PK, FK → users.id |
+| user_id | bigint | no | PK, FK → users.id, INDEX |
 | promocode_id | bigint | no | PK, FK → promocodes.id |
-| used_at | timestamptz | no | |
+| used_at | timestamptz | no | DEFAULT now() |
 
 ---
 
@@ -199,8 +199,8 @@
 
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
-| user_id | bigint | no | PK, FK → users.id |
-| module_id | bigint | no | PK, FK → modules.id |
+| user_id | bigint | no | PK, FK → users.id, INDEX |
+| module_id | bigint | no | PK, FK → modules.id, INDEX |
 | ends_at | timestamptz | no | |
 
 ---
