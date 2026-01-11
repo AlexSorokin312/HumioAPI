@@ -222,10 +222,9 @@ public class AppDbContext : IdentityDbContext<
         builder.Entity<PromocodeUsage>(b =>
         {
             b.ToTable("promocode_usages");
-            b.HasKey(pu => pu.Id);
             b.Property(pu => pu.UsedAt).IsRequired();
 
-            b.HasIndex(pu => new { pu.UserId, pu.PromocodeId }).IsUnique();
+            b.HasKey(pu => new { pu.UserId, pu.PromocodeId });
 
             b.HasOne(pu => pu.User)
                 .WithMany(u => u.PromocodeUsages)
@@ -244,10 +243,9 @@ public class AppDbContext : IdentityDbContext<
         builder.Entity<UserModuleAccess>(b =>
         {
             b.ToTable("user_module_access");
-            b.HasKey(uma => uma.Id);
             b.Property(uma => uma.EndsAt).IsRequired();
 
-            b.HasIndex(uma => new { uma.UserId, uma.ModuleId }).IsUnique();
+            b.HasKey(uma => new { uma.UserId, uma.ModuleId });
 
             b.HasOne(uma => uma.User)
                 .WithMany(u => u.ModuleAccesses)

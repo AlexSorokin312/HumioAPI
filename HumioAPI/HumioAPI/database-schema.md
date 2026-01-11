@@ -1,4 +1,4 @@
-# Database Schema
+﻿# Database Schema
 
 **Database:** PostgreSQL  
 **Application:** ASP.NET Core (EF Core + ASP.NET Core Identity)  
@@ -189,9 +189,8 @@
 
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
-| id | bigint | no | PK |
-| user_id | bigint | no | FK → users.id, UNIQUE (user_id, promocode_id) |
-| promocode_id | bigint | no | FK → promocodes.id, UNIQUE (user_id, promocode_id) |
+| user_id | bigint | no | PK, FK → users.id |
+| promocode_id | bigint | no | PK, FK → promocodes.id |
 | used_at | timestamptz | no | |
 
 ---
@@ -200,9 +199,8 @@
 
 | Name | Type | Nullable | Constraints |
 |-----|-----|----------|------------|
-| id | bigint | no | PK |
-| user_id | bigint | no | FK → users.id, UNIQUE (user_id, module_id) |
-| module_id | bigint | no | FK → modules.id, UNIQUE (user_id, module_id) |
+| user_id | bigint | no | PK, FK → users.id |
+| module_id | bigint | no | PK, FK → modules.id |
 | ends_at | timestamptz | no | |
 
 ---
