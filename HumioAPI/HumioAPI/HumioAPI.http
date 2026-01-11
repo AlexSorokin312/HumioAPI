@@ -1,6 +1,0 @@
-@HumioAPI_HostAddress = http://localhost:5258
-
-GET {{HumioAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

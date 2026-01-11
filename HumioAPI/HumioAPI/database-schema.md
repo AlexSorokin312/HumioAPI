@@ -207,12 +207,3 @@
 
 ---
 
-## Table: progress
-
-| Name | Type | Nullable | Constraints |
-|-----|-----|----------|------------|
-| id | bigint | no | PK |
-| user_id | bigint | no | FK → users.id, UNIQUE (user_id, lesson_id) |
-| lesson_id | bigint | no | UNIQUE (user_id, lesson_id) |
-| result | text | no | |
-| updated_at | timestamptz | no | |
