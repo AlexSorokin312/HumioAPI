@@ -6,7 +6,7 @@
 **Naming:** snake_case
 
 Подключение к бд: psql -h 185.28.84.191 -p 5432 -U postgres -d Humio
-Пароль: _qNJk1kt47KmcpqG_1QZk-OOitYIzJ
+Пароль: <SECRET>
 ---
 
 ## Table: users (AspNetUsers)
@@ -31,6 +31,20 @@
 | access_failed_count | integer | no | |
 | created_at | timestamptz | no | DEFAULT now() |
 | last_seen | timestamptz | yes | |
+
+---
+
+## Table: user_profiles
+
+| Name | Type | Nullable | Constraints |
+|-----|-----|----------|------------|
+| user_id | bigint | no | PK, FK → users.id |
+| first_name | text | yes | |
+| last_name | text | yes | |
+| middle_name | text | yes | |
+| birth_date | date | yes | |
+| city | text | yes | |
+| gender | text | yes | |
 
 ---
 
@@ -149,14 +163,14 @@
 | user_id | bigint | no | FK → users.id, INDEX |
 | product_id | bigint | no | FK → products.id |
 | amount_cents | integer | no | CHECK (amount_cents >= 0) |
-| currency | char(3) | no | |
+| currency | char(3) | no | CHECK (currency ~ '^[A-Z]{3}$') |
 | provider | text | no | |
 | provider_payment_id | text | no | UNIQUE (provider, provider_payment_id) |
 | receipt | text | yes | |
 | status | text | no | CHECK (status IN ('pending','paid','failed','refunded')) |
 | days | integer | no | CHECK (days > 0) |
 | created_at | timestamptz | no | DEFAULT now() |
-| purchased_at | timestamptz | yes | |
+| purchased_at | timestamptz | yes | SET BY TRIGGER WHEN status = 'paid' |
 
 ---
 

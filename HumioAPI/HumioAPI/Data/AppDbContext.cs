@@ -29,6 +29,7 @@ public class AppDbContext : IdentityDbContext<
     public DbSet<Promocode> Promocodes => Set<Promocode>();
     public DbSet<PromocodeUsage> PromocodeUsages => Set<PromocodeUsage>();
     public DbSet<UserModuleAccess> UserModuleAccess => Set<UserModuleAccess>();
+    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -43,6 +44,7 @@ public class AppDbContext : IdentityDbContext<
         ConfigurePromocodes(builder);
         ConfigurePromocodeUsages(builder);
         ConfigureUserModuleAccess(builder);
+        ConfigureUserProfiles(builder);
     }
 
     private static void ConfigureIdentity(ModelBuilder builder)
@@ -143,6 +145,7 @@ public class AppDbContext : IdentityDbContext<
                 table.HasCheckConstraint("ck_purchases_amount_cents_non_negative", "amount_cents >= 0");
                 table.HasCheckConstraint("ck_purchases_days_positive", "days > 0");
                 table.HasCheckConstraint("ck_purchases_status", "status IN ('pending','paid','failed','refunded')");
+                table.HasCheckConstraint("ck_purchases_currency_iso", "currency ~ '^[A-Z]{3}$'");
             });
             b.HasKey(p => p.Id);
 
@@ -273,6 +276,27 @@ public class AppDbContext : IdentityDbContext<
             b.HasOne(uma => uma.Module)
                 .WithMany(m => m.UserModuleAccesses)
                 .HasForeignKey(uma => uma.ModuleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureUserProfiles(ModelBuilder builder)
+    {
+        builder.Entity<UserProfile>(b =>
+        {
+            b.ToTable("user_profiles");
+            b.HasKey(up => up.UserId);
+            b.Property(up => up.FirstName);
+            b.Property(up => up.LastName);
+            b.Property(up => up.MiddleName);
+            b.Property(up => up.BirthDate)
+                .HasColumnType("date");
+            b.Property(up => up.City);
+            b.Property(up => up.Gender);
+
+            b.HasOne(up => up.User)
+                .WithOne(u => u.Profile)
+                .HasForeignKey<UserProfile>(up => up.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }

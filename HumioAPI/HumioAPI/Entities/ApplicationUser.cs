@@ -8,6 +8,8 @@ public class ApplicationUser : IdentityUser<long>
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? LastSeen { get; set; }
 
+    public UserProfile? Profile { get; set; }
+
     public ICollection<UserDevice> UserDevices { get; } = new List<UserDevice>();
     public ICollection<Purchase> Purchases { get; } = new List<Purchase>();
     public ICollection<PromocodeUsage> PromocodeUsages { get; } = new List<PromocodeUsage>();

@@ -3,6 +3,7 @@ using System;
 using HumioAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HumioAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260111075724_SetPurchasedAtOnPaid")]
+    partial class SetPurchasedAtOnPaid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -513,42 +516,6 @@ namespace HumioAPI.Migrations
                     b.ToTable("user_module_access", (string)null);
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.UserProfile", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.Property<DateOnly?>("BirthDate")
-                        .HasColumnType("date")
-                        .HasColumnName("birth_date");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text")
-                        .HasColumnName("city");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("text")
-                        .HasColumnName("gender");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("text")
-                        .HasColumnName("middle_name");
-
-                    b.HasKey("UserId")
-                        .HasName("pk_user_profiles");
-
-                    b.ToTable("user_profiles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.Property<int>("Id")
@@ -817,18 +784,6 @@ namespace HumioAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.UserProfile", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.ApplicationUser", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("HumioAPI.Entities.UserProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_profiles_users_user_id");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("HumioAPI.Entities.ApplicationRole", null)
@@ -891,8 +846,6 @@ namespace HumioAPI.Migrations
                     b.Navigation("AdminAccessEntries");
 
                     b.Navigation("ModuleAccesses");
-
-                    b.Navigation("Profile");
 
                     b.Navigation("PromocodeUsages");
 
