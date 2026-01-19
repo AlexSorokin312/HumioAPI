@@ -1,8 +1,8 @@
 using HumioAPI.Data;
 using HumioAPI.Entities;
+using HumioAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +14,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString);
     options.UseSnakeCaseNamingConvention();
 });
+
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IPromocodesService, PromocodesService>();
+builder.Services.Configure<GoogleAuthOptions>(builder.Configuration.GetSection("Authentication:Google"));
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+builder.Services.AddHttpClient();
 
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>(options =>
