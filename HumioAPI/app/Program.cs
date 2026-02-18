@@ -81,9 +81,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/", () => Results.Redirect("/register.html"));
 app.MapControllers();
 
 app.Run();
