@@ -1,0 +1,72 @@
+services:
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: humio-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Authentication__Jwt__Issuer: ${JWT_ISSUER}
+      Authentication__Jwt__Audience: ${JWT_AUDIENCE}
+      Authentication__Jwt__Key: ${JWT_KEY}
+      Authentication__Jwt__AccessTokenMinutes: ${JWT_ACCESS_TOKEN_MINUTES}
+      Authentication__Jwt__RefreshTokenDays: ${JWT_REFRESH_TOKEN_DAYS}
+      Authentication__Google__ClientId: ${GOOGLE_CLIENT_ID}
+      Authentication__Google__ClientSecret: ${GOOGLE_CLIENT_SECRET}
+      Authentication__Google__RedirectUri: ${GOOGLE_REDIRECT_URI}
+      Authentication__Google__TokenUri: ${GOOGLE_TOKEN_URI}
+      Email__Host: ${EMAIL_HOST}
+      Email__Port: ${EMAIL_PORT}
+      Email__EnableSsl: ${EMAIL_ENABLE_SSL}
+      Email__UserName: ${EMAIL_USERNAME}
+      Email__Password: ${EMAIL_PASSWORD}
+      Email__FromEmail: ${EMAIL_FROM_EMAIL}
+      Email__FromName: ${EMAIL_FROM_NAME}
+    ports:
+      - "${API_PORT}:8080"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: humio-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: humio-pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "${PGADMIN_PORT}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+

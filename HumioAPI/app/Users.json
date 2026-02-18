@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Сорокин Алексей",
+    "email": "leha.soroki96@mail.ru",
+    "devices": [
+      {
+        "deviceId": "dev_001",
+        "os": "Windows"
+      },
+      {
+        "deviceId": "dev_002",
+        "os": "Android"
+      }
+    ]
+  },
+  {
+    "name": "Максим Суриков",
+    "email": "anna.smirnova@example.com",
+    "devices": [
+      {
+        "deviceId": "dev_010",
+        "os": "iOS"
+      },
+      {
+        "deviceId": "dev_011",
+        "os": "Android"
+      }
+    ]
+  }
+]
