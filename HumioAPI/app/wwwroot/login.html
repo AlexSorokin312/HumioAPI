@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Регистрация</title>
+  <title>Авторизация</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -15,7 +15,6 @@
       --text: #102136;
       --muted: #4d647f;
       --accent: #0f766e;
-      --accent-hover: #0b5f59;
       --danger: #9f1d1d;
       --ok: #166534;
       --border: rgba(16, 33, 54, 0.12);
@@ -227,37 +226,34 @@
 <body>
   <main class="card">
     <div class="brand-mark"><span class="brand-dot"></span>Аккаунт Humio</div>
-    <h1>Регистрация</h1>
-    <p>Создайте нового пользователя.</p>
-    <form id="register-form">
+    <h1>Авторизация</h1>
+    <p>Войдите в существующий аккаунт.</p>
+    <form id="login-form">
       <label for="email">Email</label>
       <input id="email" name="email" type="email" autocomplete="email" required />
 
-      <label for="name">Имя</label>
-      <input id="name" name="name" type="text" autocomplete="name" required />
-
       <label for="password">Пароль</label>
-      <input id="password" name="password" type="password" minlength="6" autocomplete="new-password" required />
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
 
-      <button id="submit-button" type="submit">Зарегистрироваться</button>
+      <button id="submit-button" type="submit">Войти</button>
       <button id="google-auth-button" type="button" class="google-button">
         <img src="/icons/google_icon.svg" alt="Google" class="google-icon" />
         Продолжить с Google
       </button>
       <div id="message" class="message"></div>
-      <p class="switch-link">Уже есть аккаунт? <a href="/login.html">Войти</a></p>
+      <p class="switch-link">Нет аккаунта? <a href="/register.html">Зарегистрироваться</a></p>
     </form>
   </main>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
-    const form = document.getElementById("register-form");
+    const form = document.getElementById("login-form");
     const message = document.getElementById("message");
     const submitButton = document.getElementById("submit-button");
     const googleButton = document.getElementById("google-auth-button");
 
     let googleCodeClient = null;
-    let googleRedirectUri = window.location.origin + "/register.html";
+    let googleRedirectUri = window.location.origin + "/login.html";
     googleButton.disabled = true;
 
     function setButtonsDisabled(disabled) {
@@ -319,7 +315,7 @@
 
         saveTokens(data?.tokens);
         saveCurrentUser(data?.user);
-        setMessage("ok", "Вход через Google выполнен успешно.");
+        setMessage("ok", "Вход выполнен успешно.");
         window.history.replaceState({}, document.title, window.location.pathname);
         window.location.href = "/home.html";
       } catch {
@@ -361,7 +357,7 @@
           scope: "openid email profile",
           ux_mode: "redirect",
           redirect_uri: googleRedirectUri,
-          state: "register"
+          state: "login"
         });
 
         googleButton.disabled = false;
@@ -383,12 +379,11 @@
 
       const payload = {
         email: document.getElementById("email").value.trim(),
-        name: document.getElementById("name").value.trim(),
         password: document.getElementById("password").value
       };
 
       try {
-        const response = await fetch("/api/auth/register", {
+        const response = await fetch("/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -402,14 +397,15 @@
           if (data && Array.isArray(data.errors) && data.errors.length > 0) {
             setMessage("error", data.errors.join("\n"));
           } else {
-            setMessage("error", "Регистрация не удалась. Проверьте данные и попробуйте снова.");
+            setMessage("error", "Не удалось выполнить вход.");
           }
           return;
         }
 
-        setMessage("ok", "Пользователь успешно зарегистрирован.");
-        form.reset();
-      } catch (error) {
+        saveTokens(data?.tokens);
+        saveCurrentUser(data?.user);
+        window.location.href = "/home.html";
+      } catch {
         setMessage("error", "Сервер недоступен. Убедитесь, что API запущено.");
       } finally {
         setButtonsDisabled(false);
@@ -435,7 +431,7 @@
 
       await initGoogleAuth();
 
-      if (code && (state === "register" || state === "login")) {
+      if (code && (state === "login" || state === "register")) {
         window.history.replaceState({}, document.title, window.location.pathname);
         await completeGoogleAuth(code);
       }

@@ -44,10 +44,14 @@ public sealed class GoogleAuthService : IGoogleAuthService
             return (false, new[] { "Redirect URI is required." }, null, false);
         }
 
-        var idToken = await ExchangeCodeForIdTokenAsync(code, resolvedRedirectUri, cancellationToken);
+        var (idToken, exchangeError) = await ExchangeCodeForIdTokenAsync(code, resolvedRedirectUri, cancellationToken);
         if (string.IsNullOrWhiteSpace(idToken))
         {
-            return (false, new[] { "Failed to exchange authorization code." }, null, false);
+            var message = string.IsNullOrWhiteSpace(exchangeError)
+                ? "Failed to exchange authorization code."
+                : $"Failed to exchange authorization code. {exchangeError}";
+
+            return (false, new[] { message }, null, false);
         }
 
         GoogleJsonWebSignature.Payload payload;
@@ -114,7 +118,7 @@ public sealed class GoogleAuthService : IGoogleAuthService
         return (true, Array.Empty<string>(), user, isNewUser);
     }
 
-    private async Task<string?> ExchangeCodeForIdTokenAsync(
+    private async Task<(string? IdToken, string? Error)> ExchangeCodeForIdTokenAsync(
         string code,
         string redirectUri,
         CancellationToken cancellationToken)
@@ -134,7 +138,7 @@ public sealed class GoogleAuthService : IGoogleAuthService
 
         if (!response.IsSuccessStatusCode)
         {
-            return null;
+            return (null, $"Google token endpoint returned {(int)response.StatusCode}: {payload}");
         }
 
         try
@@ -142,14 +146,14 @@ public sealed class GoogleAuthService : IGoogleAuthService
             using var json = JsonDocument.Parse(payload);
             if (json.RootElement.TryGetProperty("id_token", out var idTokenElement))
             {
-                return idTokenElement.GetString();
+                return (idTokenElement.GetString(), null);
             }
         }
         catch (JsonException)
         {
-            return null;
+            return (null, "Google token endpoint returned invalid JSON.");
         }
 
-        return null;
+        return (null, "Google token endpoint response does not contain id_token.");
     }
 }

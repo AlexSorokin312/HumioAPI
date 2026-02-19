@@ -87,7 +87,14 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => Results.Redirect("/register.html"));
+app.MapGet("/", (HttpContext context) =>
+{
+    var query = context.Request.QueryString.HasValue
+        ? context.Request.QueryString.Value
+        : string.Empty;
+
+    return Results.Redirect($"/register.html{query}");
+});
 app.MapControllers();
 
 app.Run();

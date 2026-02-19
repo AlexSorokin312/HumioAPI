@@ -5,6 +5,7 @@ using HumioAPI.Entities;
 using HumioAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace HumioAPI.Controllers;
 
@@ -15,15 +16,29 @@ public class AuthController : ControllerBase
     private readonly IGoogleAuthService _googleAuthService;
     private readonly IAuthService _authService;
     private readonly IUsersService _usersService;
+    private readonly GoogleAuthOptions _googleOptions;
 
     public AuthController(
         IGoogleAuthService googleAuthService,
         IAuthService authService,
-        IUsersService usersService)
+        IUsersService usersService,
+        IOptions<GoogleAuthOptions> googleOptions)
     {
         _googleAuthService = googleAuthService;
         _authService = authService;
         _usersService = usersService;
+        _googleOptions = googleOptions.Value;
+    }
+
+    [AllowAnonymous]
+    [HttpGet("google/config")]
+    public IActionResult GoogleConfig()
+    {
+        return Ok(new
+        {
+            clientId = _googleOptions.ClientId,
+            redirectUri = _googleOptions.RedirectUri
+        });
     }
 
     [HttpPost("register")]
