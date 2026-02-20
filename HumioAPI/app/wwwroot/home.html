@@ -287,6 +287,7 @@
       font-size: 12px;
       border: 1px solid var(--border);
       background: #f8fafc;
+      position: relative;
     }
 
     .user-module-item.active {
@@ -301,6 +302,16 @@
       background: #f1f5f9;
       border-color: #cbd5e1;
       font-weight: 500;
+    }
+
+    .promo-sup {
+      color: #15803d;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      position: absolute;
+      top: -6px;
+      right: 2px;
     }
 
     .icon-btn {
@@ -1040,12 +1051,19 @@
       );
 
       const modules = [...moduleItems].sort((left, right) => Number(left.id || 0) - Number(right.id || 0));
+      const hasActiveModules = activeModuleIds.size > 0;
+      const purchasesCount = Number(item?.purchasesCount || 0);
+      const isPromoAccess = hasActiveModules && purchasesCount === 0;
+
       const badges = modules.map((module) => {
         const moduleId = Number(module.id || 0);
         const isActive = activeModuleIds.has(moduleId);
         const name = module.name || `#${moduleId}`;
         const className = isActive ? "active" : "inactive";
-        return `<span class="user-module-item ${className}">${name}</span>`;
+        const promoSup = isPromoAccess && isActive
+          ? `<span class="promo-sup" title="промокод">p</span>`
+          : "";
+        return `<span class="user-module-item ${className}">${name}${promoSup}</span>`;
       }).join("");
 
       return `<div class="user-modules-list">${badges}</div>`;
