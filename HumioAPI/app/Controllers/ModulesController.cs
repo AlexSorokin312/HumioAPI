@@ -105,6 +105,96 @@ public class ModulesController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{id:long}/localizations")]
+    public async Task<IActionResult> GetLocalization(
+        long id,
+        [FromQuery] string languageCode)
+    {
+        var normalizedLanguageCode = languageCode.Trim().ToLowerInvariant();
+        if (normalizedLanguageCode.Length == 0)
+        {
+            return BadRequest(new { errors = new[] { "languageCode is required." } });
+        }
+
+        var moduleExists = await _dbContext.Modules.AnyAsync(m => m.Id == id);
+        if (!moduleExists)
+        {
+            return NotFound();
+        }
+
+        var localization = await _dbContext.ModuleLocalizations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                l => l.ModuleId == id && l.LanguageCode.ToLower() == normalizedLanguageCode);
+
+        if (localization is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new ModuleLocalizationResponse(
+            localization.Id,
+            localization.ModuleId,
+            localization.LanguageCode,
+            localization.Name,
+            localization.Description));
+    }
+
+    [HttpPut("{id:long}/localizations")]
+    public async Task<IActionResult> UpsertLocalization(
+        long id,
+        [FromBody] UpsertModuleLocalizationRequest request)
+    {
+        var moduleExists = await _dbContext.Modules.AnyAsync(m => m.Id == id);
+        if (!moduleExists)
+        {
+            return NotFound(new { errors = new[] { "Module not found." } });
+        }
+
+        var normalizedLanguageCode = request.LanguageCode.Trim().ToLowerInvariant();
+        if (normalizedLanguageCode.Length == 0)
+        {
+            return BadRequest(new { errors = new[] { "LanguageCode is required." } });
+        }
+
+        var name = request.Name.Trim();
+        if (name.Length == 0)
+        {
+            return BadRequest(new { errors = new[] { "Name is required." } });
+        }
+
+        var localization = await _dbContext.ModuleLocalizations
+            .FirstOrDefaultAsync(
+                l => l.ModuleId == id && l.LanguageCode.ToLower() == normalizedLanguageCode);
+
+        if (localization is null)
+        {
+            localization = new ModuleLocalization
+            {
+                ModuleId = id,
+                LanguageCode = normalizedLanguageCode,
+                Name = name,
+                Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim()
+            };
+
+            _dbContext.ModuleLocalizations.Add(localization);
+        }
+        else
+        {
+            localization.Name = name;
+            localization.Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim();
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(new ModuleLocalizationResponse(
+            localization.Id,
+            localization.ModuleId,
+            localization.LanguageCode,
+            localization.Name,
+            localization.Description));
+    }
+
     [HttpPost("products")]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
     {

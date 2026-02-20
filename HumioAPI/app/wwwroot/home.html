@@ -492,6 +492,17 @@
                 <label for="module-description">Описание</label>
                 <input id="module-description" type="text" placeholder="Краткое описание" />
               </div>
+              <div id="module-locale-box" class="field" hidden>
+                <label for="module-locale-code">Локализация</label>
+                <div class="buttons" style="margin-top:0;">
+                  <select id="module-locale-code" style="padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px;">
+                    <option value="en">EN</option>
+                  </select>
+                </div>
+                <input id="module-locale-name" type="text" placeholder="Название на выбранном языке" />
+                <input id="module-locale-description" type="text" placeholder="Описание на выбранном языке" />
+                <div id="module-locale-status" class="status"></div>
+              </div>
               <div class="buttons">
                 <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
                 <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
@@ -556,6 +567,11 @@
     const moduleEditId = document.getElementById("module-edit-id");
     const moduleNameInput = document.getElementById("module-name");
     const moduleDescriptionInput = document.getElementById("module-description");
+    const moduleLocaleBox = document.getElementById("module-locale-box");
+    const moduleLocaleCode = document.getElementById("module-locale-code");
+    const moduleLocaleName = document.getElementById("module-locale-name");
+    const moduleLocaleDescription = document.getElementById("module-locale-description");
+    const moduleLocaleStatus = document.getElementById("module-locale-status");
     const moduleSubmitBtn = document.getElementById("module-submit-btn");
     const moduleCancelBtn = document.getElementById("module-cancel-btn");
     const moduleFormStatus = document.getElementById("module-form-status");
@@ -580,6 +596,11 @@
       moduleEditId.value = "";
       moduleNameInput.value = "";
       moduleDescriptionInput.value = "";
+      moduleLocaleBox.hidden = true;
+      moduleLocaleCode.value = "en";
+      moduleLocaleName.value = "";
+      moduleLocaleDescription.value = "";
+      setStatus(moduleLocaleStatus, "", null);
       moduleFormTitle.textContent = "Создать модуль";
       moduleSubmitBtn.textContent = "Создать модуль";
       moduleCancelBtn.hidden = true;
@@ -590,11 +611,47 @@
       moduleEditId.value = String(item.id);
       moduleNameInput.value = item.name;
       moduleDescriptionInput.value = item.description || "";
+      moduleLocaleBox.hidden = false;
       moduleFormTitle.textContent = `Редактировать модуль #${item.id}`;
       moduleSubmitBtn.textContent = "Сохранить";
       moduleCancelBtn.hidden = false;
       setStatus(moduleFormStatus, "", null);
       moduleNameInput.focus();
+      loadModuleLocalization();
+    }
+
+    async function loadModuleLocalization() {
+      const moduleId = Number(moduleEditId.value);
+      const languageCode = moduleLocaleCode.value;
+      if (!moduleId || !languageCode) {
+        return;
+      }
+
+      setStatus(moduleLocaleStatus, "Загрузка локализации...", null);
+      moduleLocaleName.value = "";
+      moduleLocaleDescription.value = "";
+
+      try {
+        const { res, data } = await requestJson(`/api/modules/${moduleId}/localizations?languageCode=${encodeURIComponent(languageCode)}`, {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (res.status === 404) {
+          setStatus(moduleLocaleStatus, "Для выбранного языка локализация не заполнена.", null);
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось загрузить локализацию."));
+        }
+
+        moduleLocaleName.value = data?.name || "";
+        moduleLocaleDescription.value = data?.description || "";
+        setStatus(moduleLocaleStatus, "Локализация загружена.", "ok");
+      } catch (error) {
+        setStatus(moduleLocaleStatus, error.message || "Ошибка загрузки локализации.", "error");
+      }
     }
 
     function renderSelectedProductModules() {
@@ -967,6 +1024,27 @@
           throw new Error(getErrorText(data, "Не удалось создать модуль."));
         }
 
+        if (isEdit && moduleLocaleBox.hidden === false) {
+          const localeName = moduleLocaleName.value.trim();
+          if (localeName.length > 0) {
+            const localizationPayload = {
+              languageCode: moduleLocaleCode.value,
+              name: localeName,
+              description: moduleLocaleDescription.value.trim() || null
+            };
+
+            const { res: localeRes, data: localeData } = await requestJson(`/api/modules/${editId}/localizations`, {
+              method: "PUT",
+              headers: getAuthHeaders(),
+              body: JSON.stringify(localizationPayload)
+            });
+
+            if (!localeRes.ok) {
+              throw new Error(getErrorText(localeData, "Модуль сохранен, но локализация не сохранилась."));
+            }
+          }
+        }
+
         resetModuleForm();
         setStatus(moduleFormStatus, isEdit ? "Модуль обновлен." : "Модуль создан.", "ok");
         await loadModules();
@@ -1096,6 +1174,7 @@
     moduleForm.addEventListener("submit", submitModuleForm);
     productForm.addEventListener("submit", submitProductForm);
     moduleCancelBtn.addEventListener("click", resetModuleForm);
+    moduleLocaleCode.addEventListener("change", loadModuleLocalization);
 
     promoCancelBtn.addEventListener("click", () => {
       resetPromoForm();
