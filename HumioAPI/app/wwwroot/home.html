@@ -273,6 +273,36 @@
       flex-wrap: wrap;
     }
 
+    .user-modules-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .user-module-item {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .user-module-item.active {
+      color: #14532d;
+      background: #dcfce7;
+      border-color: #86efac;
+      font-weight: 700;
+    }
+
+    .user-module-item.inactive {
+      color: #64748b;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      font-weight: 500;
+    }
+
     .icon-btn {
       width: 30px;
       height: 30px;
@@ -994,15 +1024,58 @@
           <td>${item.country || "—"}</td>
           <td>${formatDateTime(item.createdAt)}</td>
           <td>${formatDateTime(item.lastSeen)}</td>
-          <td>${Array.isArray(item.modules) && item.modules.length > 0 ? item.modules.map((m) => m.name || `#${m.id}`).join(", ") : "—"}</td>
+          <td>${renderUserModulesCell(item)}</td>
           <td>${Number(item.purchasesCount || 0)}</td>
           <td>${formatMoneyFromCents(item.totalPurchasedAmountCents || 0)}</td>
         </tr>`).join("");
     }
 
+    function renderUserModulesCell(item) {
+      if (!Array.isArray(moduleItems) || moduleItems.length === 0) {
+        return "—";
+      }
+
+      const activeModuleIds = new Set(
+        Array.isArray(item?.modules) ? item.modules.map((module) => Number(module.id)).filter((id) => Number.isFinite(id)) : []
+      );
+
+      const modules = [...moduleItems].sort((left, right) => Number(left.id || 0) - Number(right.id || 0));
+      const badges = modules.map((module) => {
+        const moduleId = Number(module.id || 0);
+        const isActive = activeModuleIds.has(moduleId);
+        const name = module.name || `#${moduleId}`;
+        const className = isActive ? "active" : "inactive";
+        return `<span class="user-module-item ${className}">${name}</span>`;
+      }).join("");
+
+      return `<div class="user-modules-list">${badges}</div>`;
+    }
+
+    async function ensureModulesCatalogLoaded() {
+      if (Array.isArray(moduleItems) && moduleItems.length > 0) {
+        return;
+      }
+
+      try {
+        const { res, data } = await requestJson("/api/modules", {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok) {
+          return;
+        }
+
+        moduleItems = Array.isArray(data) ? data : [];
+      } catch {
+      }
+    }
+
     async function loadUsers() {
       setStatus(usersListStatus, "Загрузка пользователей...", null);
       try {
+        await ensureModulesCatalogLoaded();
+
         const email = usersSearchEmail.value.trim();
         const query = new URLSearchParams({
           skip: "0",
