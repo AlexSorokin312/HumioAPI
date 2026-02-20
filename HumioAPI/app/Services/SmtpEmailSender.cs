@@ -1,19 +1,27 @@
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace HumioAPI.Services;
 
 public sealed class SmtpEmailSender : IEmailSender
 {
     private readonly EmailOptions _options;
+    private readonly ILogger<SmtpEmailSender> _logger;
 
-    public SmtpEmailSender(IOptions<EmailOptions> options)
+    public SmtpEmailSender(IOptions<EmailOptions> options, ILogger<SmtpEmailSender> logger)
     {
         _options = options.Value;
+        _logger = logger;
     }
 
-    public async Task SendAsync(string toEmail, string subject, string body, CancellationToken cancellationToken = default)
+    public async Task SendAsync(
+        string toEmail,
+        string subject,
+        string body,
+        bool isBodyHtml = false,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(_options.Host) ||
             string.IsNullOrWhiteSpace(_options.FromEmail))
@@ -26,13 +34,14 @@ public sealed class SmtpEmailSender : IEmailSender
             From = new MailAddress(_options.FromEmail, _options.FromName),
             Subject = subject,
             Body = body,
-            IsBodyHtml = false
+            IsBodyHtml = isBodyHtml
         };
         message.To.Add(toEmail);
 
         using var client = new SmtpClient(_options.Host, _options.Port)
         {
-            EnableSsl = _options.EnableSsl
+            EnableSsl = _options.EnableSsl,
+            Timeout = 15000
         };
 
         if (!string.IsNullOrWhiteSpace(_options.UserName))
@@ -40,6 +49,25 @@ public sealed class SmtpEmailSender : IEmailSender
             client.Credentials = new NetworkCredential(_options.UserName, _options.Password);
         }
 
-        await client.SendMailAsync(message, cancellationToken);
+        try
+        {
+            _logger.LogInformation(
+                "Sending email via SMTP host={Host} port={Port} ssl={EnableSsl} to={ToEmail}",
+                _options.Host,
+                _options.Port,
+                _options.EnableSsl,
+                toEmail);
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            cts.CancelAfter(TimeSpan.FromSeconds(20));
+            await client.SendMailAsync(message, cts.Token);
+
+            _logger.LogInformation("Email sent successfully to={ToEmail}", toEmail);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "SMTP send failed for to={ToEmail}", toEmail);
+            throw;
+        }
     }
 }

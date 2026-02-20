@@ -1,8 +1,10 @@
 using System.Text.Json;
+using System.Collections.Concurrent;
 using HumioAPI.Data;
 using HumioAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HumioAPI.Services;
 
@@ -11,25 +13,30 @@ public sealed class UsersService : IUsersService
     private const long LegacyPurchasedProductId = 1;
     private const string LegacyImportProvider = "legacy-export";
     private const string LegacyExportBaseUrl = "https://humio.space/api/UserData/export";
+    private static readonly TimeSpan ResetCodeLifetime = TimeSpan.FromMinutes(15);
+    private static readonly ConcurrentDictionary<string, ResetCodeEntry> ResetCodes = new();
 
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IEmailSender _emailSender;
     private readonly AppDbContext _dbContext;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<UsersService> _logger;
 
     public UsersService(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         IEmailSender emailSender,
         AppDbContext dbContext,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        ILogger<UsersService> logger)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _dbContext = dbContext;
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     public async Task<(bool Success, string[] Errors, ApplicationUser? User)> RegisterAsync(
@@ -142,19 +149,26 @@ public sealed class UsersService : IUsersService
         var user = await _userManager.FindByEmailAsync(email);
         if (user is null)
         {
+            _logger.LogInformation("Forgot-password requested for non-existing email={Email}", email);
             return (true, Array.Empty<string>());
         }
 
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var subject = "Password reset code";
-        var body = $"Your reset code: {token}";
+        var code = GenerateResetCode();
+        var normalizedEmail = _userManager.NormalizeEmail(email) ?? email.Trim().ToUpperInvariant();
+        var expiresAt = DateTimeOffset.UtcNow.Add(ResetCodeLifetime);
+        ResetCodes[normalizedEmail] = new ResetCodeEntry(code, expiresAt);
+
+        var subject = "Код восстановления пароля Humio";
+        var logoDataUri = TryReadLogoDataUri();
+        var body = BuildResetCodeEmailHtml(code, expiresAt, logoDataUri);
 
         try
         {
-            await _emailSender.SendAsync(email, subject, body, cancellationToken);
+            await _emailSender.SendAsync(email, subject, body, isBodyHtml: true, cancellationToken);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Failed to send reset token email to={Email}", email);
             return (false, new[] { ex.Message });
         }
 
@@ -173,13 +187,23 @@ public sealed class UsersService : IUsersService
             return (false, Array.Empty<string>(), true);
         }
 
-        var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+        var normalizedEmail = _userManager.NormalizeEmail(email) ?? email.Trim().ToUpperInvariant();
+        if (!ResetCodes.TryGetValue(normalizedEmail, out var entry) ||
+            entry.ExpiresAt <= DateTimeOffset.UtcNow ||
+            !string.Equals(entry.Code, token, StringComparison.Ordinal))
+        {
+            return (false, new[] { "Неверный или просроченный код восстановления." }, false);
+        }
+
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(error => error.Description).ToArray();
             return (false, errors, false);
         }
 
+        ResetCodes.TryRemove(normalizedEmail, out _);
         return (true, Array.Empty<string>(), false);
     }
 
@@ -854,6 +878,97 @@ public sealed class UsersService : IUsersService
         return firstModuleId;
     }
 
+    private static string GenerateResetCode()
+    {
+        return Random.Shared.Next(0, 10000).ToString("D4");
+    }
+
+    private static string BuildResetCodeEmailHtml(string code, DateTimeOffset expiresAt, string? logoDataUri)
+    {
+        var expiresLocal = expiresAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm");
+        var logoHtml = string.IsNullOrWhiteSpace(logoDataUri)
+            ? string.Empty
+            : $"""
+               <tr>
+                 <td style="padding:24px 24px 0;">
+                   <img src="{logoDataUri}" alt="Humio" style="height:44px;display:block;" />
+                 </td>
+               </tr>
+               """;
+        return $"""
+                <!doctype html>
+                <html lang="ru">
+                <head>
+                  <meta charset="utf-8" />
+                  <meta name="viewport" content="width=device-width, initial-scale=1" />
+                  <title>Восстановление пароля Humio</title>
+                </head>
+                <body style="margin:0;padding:0;background:#f3f6fb;font-family:Segoe UI,Tahoma,Arial,sans-serif;color:#102136;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:28px 12px;">
+                    <tr>
+                      <td align="center">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #dbe5f2;border-radius:16px;overflow:hidden;">
+                          {logoHtml}
+                          <tr>
+                            <td style="padding:24px 24px 8px;">
+                              <h1 style="margin:0;font-size:24px;line-height:1.2;color:#102136;">Восстановление пароля</h1>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:8px 24px 0;font-size:15px;line-height:1.5;color:#42566f;">
+                              Вы запросили код для восстановления пароля в Humio.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:18px 24px 0;">
+                              <div style="display:inline-block;padding:12px 18px;border-radius:10px;background:#eef6ff;border:1px solid #c8ddff;font-size:30px;letter-spacing:8px;font-weight:700;color:#0c2a4f;">
+                                {code}
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:16px 24px 0;font-size:14px;line-height:1.5;color:#42566f;">
+                              Код действует до <strong>{expiresLocal}</strong>.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding:16px 24px 24px;font-size:13px;line-height:1.5;color:#6b7f99;">
+                              Если вы не запрашивали восстановление, просто проигнорируйте это письмо.
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </body>
+                </html>
+                """;
+    }
+
+    private static string? TryReadLogoDataUri()
+    {
+        try
+        {
+            var logoPath = Path.Combine(AppContext.BaseDirectory, "wwwroot", "assets", "images", "logo", "logo.png");
+            if (!File.Exists(logoPath))
+            {
+                return null;
+            }
+
+            var bytes = File.ReadAllBytes(logoPath);
+            if (bytes.Length == 0)
+            {
+                return null;
+            }
+
+            return $"data:image/png;base64,{Convert.ToBase64String(bytes)}";
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     private static string[] NormalizeImportRoles(JsonElement? rolesElement)
     {
         if (!rolesElement.HasValue)
@@ -930,4 +1045,8 @@ public sealed class UsersService : IUsersService
         public DateTimeOffset? PurchaseDate { get; init; }
         public DateTimeOffset? SubscriptionEndDate { get; init; }
     }
+
+    private sealed record ResetCodeEntry(
+        string Code,
+        DateTimeOffset ExpiresAt);
 }

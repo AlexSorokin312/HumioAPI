@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -138,11 +138,26 @@
       font-size: 14px;
     }
 
-    .google-button:hover {
-      background: #f9fafb;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
-      filter: none;
+        .text-button {
+      margin-top: 10px;
+      width: auto;
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      box-shadow: none;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
     }
+
+    .text-button:hover {
+      transform: none;
+      box-shadow: none;
+      filter: none;
+      text-decoration: underline;
+    }
+
 
     .google-icon {
       width: 16px;
@@ -244,6 +259,7 @@
         <img src="/icons/google_icon.svg" alt="Google" class="google-icon" />
         Продолжить с Google
       </button>
+      <button id="go-recovery-button" type="button" class="text-button">Восстановить пароль</button>
       <div id="message" class="message"></div>
       <p class="switch-link">Уже есть аккаунт? <a href="/login.html">Войти</a></p>
     </form>
@@ -255,6 +271,7 @@
     const message = document.getElementById("message");
     const submitButton = document.getElementById("submit-button");
     const googleButton = document.getElementById("google-auth-button");
+    const goRecoveryButton = document.getElementById("go-recovery-button");
 
     let googleCodeClient = null;
     let googleRedirectUri = window.location.origin + "/register.html";
@@ -428,6 +445,10 @@
       googleCodeClient.requestCode();
     });
 
+    goRecoveryButton.addEventListener("click", () => {
+      window.location.href = "/login.html?recover=1";
+    });
+
     (async () => {
       const query = new URLSearchParams(window.location.search);
       const code = query.get("code");
@@ -443,3 +464,8 @@
   </script>
 </body>
 </html>
+
+
+
+
+

@@ -143,6 +143,47 @@
       filter: none;
     }
 
+    .text-button {
+      margin-top: 10px;
+      width: auto;
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      box-shadow: none;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .text-button:hover {
+      transform: none;
+      box-shadow: none;
+      filter: none;
+      text-decoration: underline;
+    }
+
+    .recovery-panel {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.75);
+      display: none;
+    }
+
+    .recovery-panel.active {
+      display: block;
+    }
+
+    .secondary-button {
+      margin-top: 10px;
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
     .google-icon {
       width: 16px;
       height: 16px;
@@ -240,6 +281,21 @@
         <img src="/icons/google_icon.svg" alt="Google" class="google-icon" />
         Продолжить с Google
       </button>
+      <button id="toggle-recovery-button" type="button" class="text-button">Восстановить пароль</button>
+      <div id="recovery-panel" class="recovery-panel">
+        <label for="recovery-email">Email</label>
+        <input id="recovery-email" type="email" autocomplete="email" />
+
+        <button id="send-reset-code-button" type="button" class="secondary-button">Отправить код</button>
+
+        <label for="recovery-token">Код из письма</label>
+        <input id="recovery-token" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="1234" autocomplete="one-time-code" />
+
+        <label for="recovery-new-password">Новый пароль</label>
+        <input id="recovery-new-password" type="password" autocomplete="new-password" />
+
+        <button id="reset-password-button" type="button" class="secondary-button">Сменить пароль</button>
+      </div>
       <div id="message" class="message"></div>
       <p class="switch-link">Нет аккаунта? <a href="/register.html">Зарегистрироваться</a></p>
     </form>
@@ -251,6 +307,14 @@
     const message = document.getElementById("message");
     const submitButton = document.getElementById("submit-button");
     const googleButton = document.getElementById("google-auth-button");
+    const toggleRecoveryButton = document.getElementById("toggle-recovery-button");
+    const recoveryPanel = document.getElementById("recovery-panel");
+    const recoveryEmailInput = document.getElementById("recovery-email");
+    const recoveryTokenInput = document.getElementById("recovery-token");
+    const recoveryNewPasswordInput = document.getElementById("recovery-new-password");
+    const sendResetCodeButton = document.getElementById("send-reset-code-button");
+    const resetPasswordButton = document.getElementById("reset-password-button");
+    const emailInput = document.getElementById("email");
 
     let googleCodeClient = null;
     let googleRedirectUri = window.location.origin + "/login.html";
@@ -259,6 +323,9 @@
     function setButtonsDisabled(disabled) {
       submitButton.disabled = disabled;
       googleButton.disabled = disabled;
+      toggleRecoveryButton.disabled = disabled;
+      sendResetCodeButton.disabled = disabled;
+      resetPasswordButton.disabled = disabled;
     }
 
     function saveTokens(tokens) {
@@ -371,6 +438,92 @@
       message.textContent = text;
     }
 
+    function getErrorText(data, fallback) {
+      if (data && Array.isArray(data.errors) && data.errors.length > 0) {
+        return data.errors.join("\n");
+      }
+
+      return fallback;
+    }
+
+    async function sendResetCode() {
+      const email = recoveryEmailInput.value.trim();
+      if (!email) {
+        setMessage("error", "Укажите email для восстановления пароля.");
+        return;
+      }
+
+      setButtonsDisabled(true);
+      setMessage("ok", "Отправка кода...");
+      try {
+        const response = await fetch("/api/users/forgot-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await tryReadJson(response);
+        if (!response.ok) {
+          setMessage("error", getErrorText(data, "Не удалось отправить код."));
+          return;
+        }
+
+        setMessage("ok", "Код отправлен на почту.");
+      } catch {
+        setMessage("error", "Сервер недоступен. Убедитесь, что API запущено.");
+      } finally {
+        setButtonsDisabled(false);
+      }
+    }
+
+    async function resetPasswordByToken() {
+      const email = recoveryEmailInput.value.trim();
+      const token = recoveryTokenInput.value.trim();
+      const newPassword = recoveryNewPasswordInput.value;
+
+      if (!email || !token || !newPassword) {
+        setMessage("error", "Заполните email, код из письма и новый пароль.");
+        return;
+      }
+
+      if (!/^\d{4}$/.test(token)) {
+        setMessage("error", "Код должен состоять из 4 цифр.");
+        return;
+      }
+
+      setButtonsDisabled(true);
+      setMessage("ok", "Смена пароля...");
+      try {
+        const response = await fetch("/api/users/reset-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            token,
+            newPassword
+          })
+        });
+
+        const data = await tryReadJson(response);
+        if (!response.ok) {
+          setMessage("error", getErrorText(data, "Не удалось сменить пароль."));
+          return;
+        }
+
+        setMessage("ok", "Пароль изменен. Теперь можно войти.");
+        recoveryTokenInput.value = "";
+        recoveryNewPasswordInput.value = "";
+      } catch {
+        setMessage("error", "Сервер недоступен. Убедитесь, что API запущено.");
+      } finally {
+        setButtonsDisabled(false);
+      }
+    }
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       message.className = "message";
@@ -424,12 +577,31 @@
       googleCodeClient.requestCode();
     });
 
+    toggleRecoveryButton.addEventListener("click", () => {
+      const isVisible = recoveryPanel.classList.toggle("active");
+      toggleRecoveryButton.textContent = isVisible ? "Скрыть восстановление" : "Восстановить пароль";
+      recoveryEmailInput.value = emailInput.value.trim();
+      if (isVisible) {
+        recoveryEmailInput.focus();
+      }
+    });
+
+    sendResetCodeButton.addEventListener("click", sendResetCode);
+    resetPasswordButton.addEventListener("click", resetPasswordByToken);
+
     (async () => {
       const query = new URLSearchParams(window.location.search);
       const code = query.get("code");
       const state = query.get("state");
+      const openRecovery = query.get("recover");
 
       await initGoogleAuth();
+
+      if (openRecovery === "1" && !recoveryPanel.classList.contains("active")) {
+        recoveryPanel.classList.add("active");
+        toggleRecoveryButton.textContent = "Скрыть восстановление";
+        recoveryEmailInput.value = emailInput.value.trim();
+      }
 
       if (code && (state === "login" || state === "register")) {
         window.history.replaceState({}, document.title, window.location.pathname);
