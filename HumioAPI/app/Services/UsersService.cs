@@ -120,6 +120,48 @@ public sealed class UsersService : IUsersService
         return (true, Array.Empty<string>(), user, false);
     }
 
+    public async Task<(bool Success, string[] Errors, string? Country, bool NotFound)> UpdateUserCountryAsync(
+        long id,
+        string? country,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user is null)
+        {
+            return (false, Array.Empty<string>(), null, true);
+        }
+
+        var normalizedCountry = country?.Trim();
+        if (string.IsNullOrWhiteSpace(normalizedCountry))
+        {
+            normalizedCountry = null;
+        }
+
+        var profile = await _dbContext.UserProfiles
+            .FirstOrDefaultAsync(item => item.UserId == id, cancellationToken);
+
+        if (profile is null)
+        {
+            if (normalizedCountry is null)
+            {
+                return (true, Array.Empty<string>(), null, false);
+            }
+
+            _dbContext.UserProfiles.Add(new UserProfile
+            {
+                UserId = id,
+                Country = normalizedCountry
+            });
+        }
+        else
+        {
+            profile.Country = normalizedCountry;
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return (true, Array.Empty<string>(), normalizedCountry, false);
+    }
+
     public async Task<(bool Success, string[] Errors, bool NotFound)> ResetPasswordAdminAsync(
         long id,
         string newPassword,

@@ -17,6 +17,11 @@ public interface IUsersService
         string? phoneNumber,
         CancellationToken cancellationToken = default);
 
+    Task<(bool Success, string[] Errors, string? Country, bool NotFound)> UpdateUserCountryAsync(
+        long id,
+        string? country,
+        CancellationToken cancellationToken = default);
+
     Task<(bool Success, string[] Errors, bool NotFound)> ResetPasswordAdminAsync(
         long id,
         string newPassword,

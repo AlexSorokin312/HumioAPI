@@ -270,6 +270,38 @@ public class UsersController : ControllerBase
         return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
+    [HttpPatch("{id:long}/country")]
+    public async Task<IActionResult> PatchCountry(long id, [FromBody] PatchUserCountryRequest request)
+    {
+        if (request is null)
+        {
+            return BadRequest(new { errors = new[] { "Request body is required." } });
+        }
+
+        var (success, errors, _, notFound) = await _usersService.UpdateUserCountryAsync(id, request.Country);
+        if (notFound)
+        {
+            return NotFound();
+        }
+
+        if (!success)
+        {
+            return BadRequest(new { errors });
+        }
+
+        var user = await _usersService.GetByIdAsync(id);
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
+    }
+
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetMe()

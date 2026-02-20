@@ -255,6 +255,19 @@
       vertical-align: top;
     }
 
+    .country-cell-editable {
+      cursor: text;
+    }
+
+    .country-cell-edit-input {
+      width: 64px;
+      max-width: 64px;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
     .promo-table th {
       font-size: 12px;
       text-transform: uppercase;
@@ -1031,6 +1044,7 @@
     let moduleCardCollapsed = false;
     let modulesLookupUser = null;
     let pendingModuleAccessModuleId = null;
+    let editingCountryUserId = null;
 
     function toDateTimeLocalValue(date) {
       const local = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
@@ -1320,7 +1334,7 @@
           <td>${item.id}</td>
           <td>${item.email || "—"}</td>
           <td>${item.name || "—"}</td>
-          <td>${item.country || "—"}</td>
+          <td class="country-cell-editable" data-country-cell="1" data-user-id="${item.id}" data-country="${(item.country || "").replace(/"/g, "&quot;")}" title="Двойной клик для редактирования">${item.country || "—"}</td>
           <td>${formatDateTime(item.createdAt)}</td>
           <td>${formatDateTime(item.lastSeen)}</td>
           <td>${renderUserModulesCell(item)}</td>
@@ -1372,6 +1386,98 @@
       }).join("");
 
       return `<div class="user-modules-list">${badges}</div>`;
+    }
+
+    async function saveUserCountry(userId, country) {
+      const payload = {
+        country: country && country.trim() ? country.trim() : null
+      };
+
+      const { res, data } = await requestJson(`/api/users/${userId}/country`, {
+        method: "PATCH",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(getErrorText(data, "Не удалось обновить страну."));
+      }
+
+      const updatedCountry = (data?.country || "").trim();
+      const index = usersItems.findIndex((item) => Number(item.id) === Number(userId));
+      if (index >= 0) {
+        usersItems[index].country = updatedCountry || null;
+      }
+    }
+
+    function openCountryCellEditor(cell, userId) {
+      if (!(cell instanceof HTMLTableCellElement) || !userId) {
+        return;
+      }
+
+      if (editingCountryUserId !== null && editingCountryUserId !== userId) {
+        return;
+      }
+
+      editingCountryUserId = userId;
+      const currentCountry = (cell.dataset.country || "").trim();
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "country-cell-edit-input";
+      input.value = currentCountry;
+      input.placeholder = "Например: RU";
+
+      cell.innerHTML = "";
+      cell.appendChild(input);
+      input.focus();
+      input.select();
+
+      let finished = false;
+      const resetEditingState = () => {
+        editingCountryUserId = null;
+      };
+
+      const cancelEdit = () => {
+        if (finished) {
+          return;
+        }
+
+        finished = true;
+        resetEditingState();
+        renderUsers(usersItems);
+      };
+
+      const submitEdit = async () => {
+        if (finished) {
+          return;
+        }
+
+        finished = true;
+        input.disabled = true;
+        try {
+          await saveUserCountry(userId, input.value);
+          setStatus(usersListStatus, "Страна пользователя обновлена.", "ok");
+        } catch (error) {
+          setStatus(usersListStatus, error.message || "Ошибка обновления страны.", "error");
+        } finally {
+          resetEditingState();
+          renderUsers(usersItems);
+        }
+      };
+
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          submitEdit();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          cancelEdit();
+        }
+      });
+
+      input.addEventListener("blur", () => {
+        submitEdit();
+      });
     }
 
     function prepareCanvas(canvas) {
@@ -2625,6 +2731,25 @@
       } else if (action === "delete") {
         deleteModule(id);
       }
+    });
+
+    usersTableBody.addEventListener("dblclick", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const countryCell = target.closest("td[data-country-cell='1']");
+      if (!(countryCell instanceof HTMLTableCellElement)) {
+        return;
+      }
+
+      const userId = Number(countryCell.dataset.userId || 0);
+      if (!userId) {
+        return;
+      }
+
+      openCountryCellEditor(countryCell, userId);
     });
 
     usersTableBody.addEventListener("click", async (event) => {
