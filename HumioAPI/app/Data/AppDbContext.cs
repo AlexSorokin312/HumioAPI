@@ -129,13 +129,9 @@ public class AppDbContext : IdentityDbContext<
     {
         builder.Entity<Module>(b =>
         {
-            b.ToTable("modules", table =>
-            {
-                table.HasCheckConstraint("ck_modules_interval_count_positive", "interval_count > 0");
-            });
+            b.ToTable("modules");
             b.HasKey(m => m.Id);
             b.Property(m => m.Name).IsRequired();
-            b.Property(m => m.IntervalCount).IsRequired();
         });
     }
 
@@ -314,12 +310,30 @@ public class AppDbContext : IdentityDbContext<
             b.HasKey(p => p.Id);
             b.Property(p => p.Name).IsRequired();
 
-            b.HasOne(p => p.Module)
+            b.HasMany(p => p.Modules)
                 .WithMany(m => m.Products)
-                .HasForeignKey(p => p.ModuleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            b.HasIndex(p => p.ModuleId);
+                .UsingEntity<Dictionary<string, object>>(
+                    "ProductSetModule",
+                    right => right
+                        .HasOne<Module>()
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .HasConstraintName("fk_product_set_modules_modules_module_id")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    left => left
+                        .HasOne<Product>()
+                        .WithMany()
+                        .HasForeignKey("ProductSetId")
+                        .HasConstraintName("fk_product_set_modules_product_set_product_set_id")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    join =>
+                    {
+                        join.ToTable("product_set_modules");
+                        join.HasKey("ProductSetId", "ModuleId");
+                        join.Property<long>("ProductSetId").HasColumnName("product_set_id");
+                        join.Property<long>("ModuleId").HasColumnName("module_id");
+                        join.HasIndex("ModuleId").HasDatabaseName("ix_product_set_modules_module_id");
+                    });
         });
     }
 

@@ -211,6 +211,16 @@
       min-width: 840px;
     }
 
+    .modules-table {
+      min-width: 620px;
+    }
+
+    .modules-table th:first-child,
+    .modules-table td:first-child {
+      width: 84px;
+      white-space: nowrap;
+    }
+
     .promo-table th,
     .promo-table td {
       padding: 10px;
@@ -348,7 +358,62 @@
     </section>
 
     <section id="tab-modules" class="tab-panel">
-      <h2>Модули</h2>
+      <div class="promo-layout">
+        <div class="promo-card">
+          <h3 id="module-form-title">Создать модуль</h3>
+          <form id="module-form">
+            <input id="module-edit-id" type="hidden" />
+            <div class="field">
+              <label for="module-name">Название модуля</label>
+              <input id="module-name" type="text" required placeholder="Базовый курс" />
+            </div>
+            <div class="buttons">
+              <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
+              <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
+            </div>
+          </form>
+          <div id="module-form-status" class="status"></div>
+        </div>
+
+        <div class="promo-card">
+          <h3>Создать продукт</h3>
+          <form id="product-form">
+            <div class="field">
+              <label for="product-name">Название продукта</label>
+              <input id="product-name" type="text" required placeholder="Премиум доступ" />
+            </div>
+            <div class="field">
+              <label for="product-module-ids">ID модулей (через запятую)</label>
+              <input id="product-module-ids" type="text" required placeholder="1,2,3" />
+            </div>
+            <div class="buttons">
+              <button class="btn primary" type="submit">Создать продукт</button>
+            </div>
+          </form>
+          <div id="product-form-status" class="status"></div>
+        </div>
+      </div>
+
+      <div class="promo-card" style="margin-top:16px;">
+        <div class="promo-header">
+          <h3>Модули и продукты</h3>
+          <button class="btn" id="modules-reload-btn" type="button">Обновить</button>
+        </div>
+        <div class="promo-table-wrap">
+          <table class="promo-table modules-table">
+            <thead>
+              <tr>
+                <th>Module ID</th>
+                <th>Название</th>
+                <th>Продукты</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="modules-table-body"></tbody>
+          </table>
+        </div>
+        <div id="modules-list-status" class="status"></div>
+      </div>
     </section>
   </main>
 
@@ -375,7 +440,44 @@
     const promoSearchBtn = document.getElementById("promo-search-btn");
     const promoResetBtn = document.getElementById("promo-reset-btn");
 
+    const moduleForm = document.getElementById("module-form");
+    const moduleFormTitle = document.getElementById("module-form-title");
+    const moduleEditId = document.getElementById("module-edit-id");
+    const moduleNameInput = document.getElementById("module-name");
+    const moduleSubmitBtn = document.getElementById("module-submit-btn");
+    const moduleCancelBtn = document.getElementById("module-cancel-btn");
+    const moduleFormStatus = document.getElementById("module-form-status");
+
+    const productForm = document.getElementById("product-form");
+    const productNameInput = document.getElementById("product-name");
+    const productModuleIdsInput = document.getElementById("product-module-ids");
+    const productFormStatus = document.getElementById("product-form-status");
+
+    const modulesTableBody = document.getElementById("modules-table-body");
+    const modulesListStatus = document.getElementById("modules-list-status");
+    const modulesReloadBtn = document.getElementById("modules-reload-btn");
+
     let promoItems = [];
+    let moduleItems = [];
+
+    function resetModuleForm() {
+      moduleEditId.value = "";
+      moduleNameInput.value = "";
+      moduleFormTitle.textContent = "Создать модуль";
+      moduleSubmitBtn.textContent = "Создать модуль";
+      moduleCancelBtn.hidden = true;
+      setStatus(moduleFormStatus, "", null);
+    }
+
+    function fillModuleForm(item) {
+      moduleEditId.value = String(item.id);
+      moduleNameInput.value = item.name;
+      moduleFormTitle.textContent = `Редактировать модуль #${item.id}`;
+      moduleSubmitBtn.textContent = "Сохранить";
+      moduleCancelBtn.hidden = false;
+      setStatus(moduleFormStatus, "", null);
+      moduleNameInput.focus();
+    }
 
     function getCurrentUser() {
       const raw = localStorage.getItem("currentUser");
@@ -604,6 +706,154 @@
       }
     }
 
+    function renderModules(items) {
+      if (!items || items.length === 0) {
+        modulesTableBody.innerHTML = `<tr><td colspan="4">Модулей пока нет.</td></tr>`;
+        return;
+      }
+
+      modulesTableBody.innerHTML = items.map((item) => {
+        const products = Array.isArray(item.products) && item.products.length > 0
+          ? item.products.map((product) => `#${product.id} ${product.name}`).join("<br>")
+          : "—";
+
+        return `
+          <tr>
+            <td>${item.id}</td>
+            <td><strong>${item.name}</strong></td>
+            <td>${products}</td>
+            <td>
+              <div class="row-actions">
+                <button class="btn" type="button" data-module-action="edit" data-id="${item.id}">Редактировать</button>
+                <button class="btn danger" type="button" data-module-action="delete" data-id="${item.id}">Удалить</button>
+              </div>
+            </td>
+          </tr>`;
+      }).join("");
+    }
+
+    async function loadModules() {
+      setStatus(modulesListStatus, "Загрузка модулей...", null);
+      try {
+        const { res, data } = await requestJson("/api/modules", {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось загрузить модули."));
+        }
+
+        moduleItems = Array.isArray(data) ? data : [];
+        renderModules(moduleItems);
+        setStatus(modulesListStatus, `Всего модулей: ${moduleItems.length}`, "ok");
+      } catch (error) {
+        renderModules([]);
+        setStatus(modulesListStatus, error.message || "Ошибка загрузки модулей.", "error");
+      }
+    }
+
+    async function submitModuleForm(event) {
+      event.preventDefault();
+      setStatus(moduleFormStatus, "", null);
+      const editId = moduleEditId.value.trim();
+      const isEdit = editId.length > 0;
+
+      const payload = {
+        name: moduleNameInput.value.trim()
+      };
+
+      if (!payload.name) {
+        setStatus(moduleFormStatus, "Проверьте введенные значения.", "error");
+        return;
+      }
+
+      try {
+        setStatus(moduleFormStatus, isEdit ? "Сохранение..." : "Создание модуля...", null);
+        const { res, data } = await requestJson(isEdit ? `/api/modules/${editId}` : "/api/modules", {
+          method: isEdit ? "PATCH" : "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось создать модуль."));
+        }
+
+        resetModuleForm();
+        setStatus(moduleFormStatus, isEdit ? "Модуль обновлен." : "Модуль создан.", "ok");
+        await loadModules();
+      } catch (error) {
+        setStatus(moduleFormStatus, error.message || "Ошибка сохранения модуля.", "error");
+      }
+    }
+
+    async function deleteModule(id) {
+      if (!confirm(`Удалить модуль #${id}?`)) {
+        return;
+      }
+
+      setStatus(modulesListStatus, "Удаление модуля...", null);
+      try {
+        const { res, data } = await requestJson(`/api/modules/${id}`, {
+          method: "DELETE",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok && res.status !== 204) {
+          throw new Error(getErrorText(data, "Не удалось удалить модуль."));
+        }
+
+        if (moduleEditId.value === String(id)) {
+          resetModuleForm();
+        }
+
+        setStatus(modulesListStatus, `Модуль #${id} удален.`, "ok");
+        await loadModules();
+      } catch (error) {
+        setStatus(modulesListStatus, error.message || "Ошибка удаления модуля.", "error");
+      }
+    }
+
+    async function submitProductForm(event) {
+      event.preventDefault();
+      setStatus(productFormStatus, "", null);
+
+      const moduleIds = productModuleIdsInput.value
+        .split(",")
+        .map((value) => Number(value.trim()))
+        .filter((value) => Number.isInteger(value) && value > 0);
+
+      const payload = {
+        name: productNameInput.value.trim(),
+        moduleIds
+      };
+
+      if (!payload.name || payload.moduleIds.length === 0) {
+        setStatus(productFormStatus, "Проверьте введенные значения.", "error");
+        return;
+      }
+
+      try {
+        setStatus(productFormStatus, "Создание продукта...", null);
+        const { res, data } = await requestJson("/api/modules/products", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось создать продукт."));
+        }
+
+        productForm.reset();
+        setStatus(productFormStatus, "Продукт создан.", "ok");
+        await loadModules();
+      } catch (error) {
+        setStatus(productFormStatus, error.message || "Ошибка создания продукта.", "error");
+      }
+    }
+
     async function logout() {
       const refreshToken = localStorage.getItem("refreshToken");
 
@@ -651,10 +901,17 @@
         if (tab === "promocodes" && promoItems.length === 0) {
           loadPromocodes();
         }
+
+        if (tab === "modules" && moduleItems.length === 0) {
+          loadModules();
+        }
       });
     });
 
     promoForm.addEventListener("submit", submitPromoForm);
+    moduleForm.addEventListener("submit", submitModuleForm);
+    productForm.addEventListener("submit", submitProductForm);
+    moduleCancelBtn.addEventListener("click", resetModuleForm);
 
     promoCancelBtn.addEventListener("click", () => {
       resetPromoForm();
@@ -665,6 +922,8 @@
       promoSearchCode.value = "";
       loadPromocodes();
     });
+
+    modulesReloadBtn.addEventListener("click", loadModules);
 
     promoSearchCode.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
@@ -694,6 +953,30 @@
         fillPromoForm(item);
       } else if (action === "delete") {
         deletePromocode(id);
+      }
+    });
+
+    modulesTableBody.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const action = target.dataset.moduleAction;
+      const id = Number(target.dataset.id);
+      if (!action || !id) {
+        return;
+      }
+
+      const item = moduleItems.find((x) => x.id === id);
+      if (!item) {
+        return;
+      }
+
+      if (action === "edit") {
+        fillModuleForm(item);
+      } else if (action === "delete") {
+        deleteModule(id);
       }
     });
 

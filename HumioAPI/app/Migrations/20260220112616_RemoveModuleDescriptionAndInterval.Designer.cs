@@ -3,6 +3,7 @@ using System;
 using HumioAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HumioAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260220112616_RemoveModuleDescriptionAndInterval")]
+    partial class RemoveModuleDescriptionAndInterval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -517,6 +520,10 @@ namespace HumioAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("ModuleId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("module_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
@@ -524,6 +531,9 @@ namespace HumioAPI.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_product_set");
+
+                    b.HasIndex("ModuleId")
+                        .HasDatabaseName("ix_product_set_module_id");
 
                     b.ToTable("product_set", (string)null);
                 });
@@ -1071,25 +1081,6 @@ namespace HumioAPI.Migrations
                     b.ToTable("user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProductSetModule", b =>
-                {
-                    b.Property<long>("ProductSetId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("product_set_id");
-
-                    b.Property<long>("ModuleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("module_id");
-
-                    b.HasKey("ProductSetId", "ModuleId")
-                        .HasName("pk_product_set_modules");
-
-                    b.HasIndex("ModuleId")
-                        .HasDatabaseName("ix_product_set_modules_module_id");
-
-                    b.ToTable("product_set_modules", (string)null);
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.AdminAccessHistory", b =>
                 {
                     b.HasOne("HumioAPI.Entities.ApplicationUser", "Admin")
@@ -1188,6 +1179,18 @@ namespace HumioAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_module_localizations_modules_module_id");
+
+                    b.Navigation("Module");
+                });
+
+            modelBuilder.Entity("HumioAPI.Entities.Product", b =>
+                {
+                    b.HasOne("HumioAPI.Entities.Module", "Module")
+                        .WithMany("Products")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_set_modules_module_id");
 
                     b.Navigation("Module");
                 });
@@ -1421,23 +1424,6 @@ namespace HumioAPI.Migrations
                         .HasConstraintName("fk_user_tokens_users_user_id");
                 });
 
-            modelBuilder.Entity("ProductSetModule", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Module", null)
-                        .WithMany()
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_product_set_modules_modules_module_id");
-
-                    b.HasOne("HumioAPI.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductSetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_product_set_modules_product_set_product_set_id");
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.Answer", b =>
                 {
                     b.Navigation("Localizations");
@@ -1486,6 +1472,8 @@ namespace HumioAPI.Migrations
                     b.Navigation("Lessons");
 
                     b.Navigation("Localizations");
+
+                    b.Navigation("Products");
 
                     b.Navigation("UserModuleAccesses");
                 });
