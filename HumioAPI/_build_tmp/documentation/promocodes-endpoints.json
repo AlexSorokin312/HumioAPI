@@ -1,0 +1,86 @@
+{
+  "title": "Promocodes API",
+  "basePath": "/api/promocodes",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/",
+      "summary": "Create promocode",
+      "body": [
+        { "name": "code", "type": "string", "required": true },
+        { "name": "maxUsageCount", "type": "int", "required": true, "min": 1 },
+        { "name": "days", "type": "int", "required": true, "min": 1 },
+        { "name": "productId", "type": "long", "required": true, "min": 1 }
+      ],
+      "responses": [
+        { "status": 201, "body": { "id": "long", "code": "string", "maxUsageCount": "int", "days": "int", "productId": "long" } },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/{id}",
+      "summary": "Update promocode",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "body": [
+        { "name": "code", "type": "string", "required": false },
+        { "name": "maxUsageCount", "type": "int", "required": false, "min": 1 },
+        { "name": "days", "type": "int", "required": false, "min": 1 },
+        { "name": "productId", "type": "long", "required": false, "min": 1 }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "code": "string", "maxUsageCount": "int", "days": "int", "productId": "long" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/{id}",
+      "summary": "Delete promocode",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/by-code",
+      "summary": "Get promocode by code",
+      "query": [
+        { "name": "code", "type": "string", "required": true }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "code": "string", "maxUsageCount": "int", "days": "int", "productId": "long" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "summary": "List promocodes",
+      "query": [
+        { "name": "skip", "type": "int", "required": false, "default": 0 },
+        { "name": "take", "type": "int", "required": false, "default": 50, "max": 100 }
+      ],
+      "responses": [
+        { "status": 200, "body": { "total": "int", "items": "PromocodeResponse[]" } },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    }
+  ],
+  "definitions": {
+    "PromocodeResponse": {
+      "id": "long",
+      "code": "string",
+      "maxUsageCount": "int",
+      "days": "int",
+      "productId": "long"
+    }
+  }
+}

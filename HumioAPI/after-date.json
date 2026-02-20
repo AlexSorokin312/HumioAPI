@@ -1,0 +1,3191 @@
+{
+  "generatedAtUtc": "2026-02-20T08:41:47.0232151Z",
+  "filter": {
+    "mode": "after-date",
+    "createdAfterDate": "2026-02-01"
+  },
+  "exportedCount": 123,
+  "users": [
+    {
+      "aspNetUser": {
+        "id": "01485c1e-f87d-4ff1-8976-0e861ad9eec7",
+        "name": "Алена",
+        "userName": "kraalena@yandex.ru",
+        "email": "kraalena@yandex.ru",
+        "registrationDateUtc": "2026-02-05T07:37:48Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEEPbqjp1eIwTtWd2GHXrzLuQ461ovDFHOBYbgnSzzGO60cllwi5uCo3yfnaCGBJvKQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "01485c1e-f87d-4ff1-8976-0e861ad9eec7",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-08T07:35:18.014868Z",
+        "subscriptionEndDate": "2026-03-07T07:39:18.974982Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-05T07:39:18.975095Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "04d77e07-7b80-4e92-9cfc-601f96586f53",
+        "name": "Ирина",
+        "userName": "iviri@mail.ru",
+        "email": "iviri@mail.ru",
+        "registrationDateUtc": "2026-02-14T05:16:41Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIQuSrlkTyfx+mnEBdWYOhFPX7IrnFmRuYpzKn8tnZ2kX/iScFGKH2ZJrguoGf5d4g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "04d77e07-7b80-4e92-9cfc-601f96586f53",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-15T05:07:08.27589Z",
+        "subscriptionEndDate": "2026-03-14T05:45:26.208935Z"
+      },
+      "purchases": [
+        {
+          "id": 1122,
+          "price": 290.0,
+          "purchaseDate": "2026-02-14T05:45:26.209443Z",
+          "subscriptionEndDate": "2026-03-14T05:45:26.208935Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "07f4f0f3-5a8e-43e8-99dc-a64c8503c7c0",
+        "name": "Светлана",
+        "userName": "krasnovasvetlana2007@gmail.com",
+        "email": "krasnovasvetlana2007@gmail.com",
+        "registrationDateUtc": "2026-02-02T17:14:35Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEN6LK7x1tYXyzlRtikMr1mFW/vhiF4oETJ94RYrZ9aKVa0NUfGGLp67BEudYScWGJA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "07f4f0f3-5a8e-43e8-99dc-a64c8503c7c0",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-03T10:45:13.622779Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "0a155866-5a39-45d0-9566-59754ef2bd73",
+        "name": "Malika",
+        "userName": "Armina23@bk.ru",
+        "email": "Armina23@bk.ru",
+        "registrationDateUtc": "2026-02-17T07:39:07Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEEQ43MZA+TPY26zVu5HLwzFahWWNMi8arDQ3dr01ajrCl0lxWHpadn6T2pG4eCxKfQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "0a155866-5a39-45d0-9566-59754ef2bd73",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-20T07:32:40.068947Z",
+        "subscriptionEndDate": "2026-03-19T07:45:24.285574Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T07:45:24.285605Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "0e3ce613-187e-4971-8e74-b912e64d5e5b",
+        "name": "Антон",
+        "userName": "digital2029@gmail.com",
+        "email": "digital2029@gmail.com",
+        "registrationDateUtc": "2026-02-06T17:44:21Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDMUD2VQwysmlYA1dvyW7lBz7qsftaQs6xzHWWM+KgiUmuQgm/GTfBRgkjDS1qbrgg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "0e3ce613-187e-4971-8e74-b912e64d5e5b",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-09T17:39:08.166685Z",
+        "subscriptionEndDate": "2026-03-09T00:20:45.283739Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-07T00:20:45.28382Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "0f0f07e3-5bfa-45e5-8e3b-a9461aa384bf",
+        "name": "крутышка",
+        "userName": "kosaigora@gmail.com",
+        "email": "kosaigora@gmail.com",
+        "registrationDateUtc": "2026-02-06T18:34:16Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEI1jNOUm4KWNaJ+FNJy05Rab3CFMRoQtyQF0yyDIjrBaUUGFeFdjhclCqh5SKE8Pqg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "0f0f07e3-5bfa-45e5-8e3b-a9461aa384bf",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-07T18:18:18.171536Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "171add46-2b4f-4f45-8b9a-57b2be807328",
+        "name": "Bublik",
+        "userName": "Alxposh@gmail.com",
+        "email": "Alxposh@gmail.com",
+        "registrationDateUtc": "2026-02-11T17:55:14Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDUlwfy5xSHFYrR8AnVHmLBLoqfT2rNqF+uY5aRVwCqaZDzz6CXgl9y3TBuXxt+3Nw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "171add46-2b4f-4f45-8b9a-57b2be807328",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-12T17:51:18.698132Z",
+        "subscriptionEndDate": "2026-03-11T17:58:46.764008Z"
+      },
+      "purchases": [
+        {
+          "id": 1111,
+          "price": 290.0,
+          "purchaseDate": "2026-02-11T17:58:46.76401Z",
+          "subscriptionEndDate": "2026-03-11T17:58:46.764008Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "19a2eb79-e75a-472a-adb4-e309e640b59e",
+        "name": "Илья",
+        "userName": "iliarodionchik24@gmail.com",
+        "email": "iliarodionchik24@gmail.com",
+        "registrationDateUtc": "2026-02-15T14:22:29Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEISQZ9Mahy0HXA5m3SvdgN2TJUNJ58f/DkyqwIeIGiKtBF1boBlUOLMin0+CyFwDaA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "19a2eb79-e75a-472a-adb4-e309e640b59e",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-02T14:20:41.915267Z",
+        "subscriptionEndDate": "2026-03-01T14:22:53.442637Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 4,
+          "promoCode": "ANATOMY",
+          "extensionDays": 14,
+          "usedOn": "2026-02-15T14:22:53.442664Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "1be2a05a-8010-47c7-9df1-91b1cb17cb3b",
+        "name": "мария",
+        "userName": "Marivrns082@gmail.com",
+        "email": "Marivrns082@gmail.com",
+        "registrationDateUtc": "2026-02-16T22:12:57Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEP94Fy+vfkjMK0rw8/KRs2bKA06SW61QokNF7lYd/k/+4oFkFwPDgvrSXGpNIvBm7w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "1be2a05a-8010-47c7-9df1-91b1cb17cb3b",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-01-23T12:21:31.905202Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "1ed56f07-b60f-4802-99e7-110ee2d8fa66",
+        "name": "Ренат",
+        "userName": "islamnnov@gmail.com",
+        "email": "islamnnov@gmail.com",
+        "registrationDateUtc": "2026-02-13T21:05:39Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGuA/z4cGUpnm0T0NAenctZMMg4Nf6rbHie96FGJ4ErtBpxJKjoH/qw37cujG8JQvQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "1ed56f07-b60f-4802-99e7-110ee2d8fa66",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2027-02-13T13:29:32.326339Z",
+        "subscriptionEndDate": "2027-02-13T21:06:41.967321Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "1f01342b-ec4e-4703-9fc8-b7661f838b01",
+        "name": "Elena",
+        "userName": "e.belova80@bk.ru",
+        "email": "e.belova80@bk.ru",
+        "registrationDateUtc": "2026-02-13T07:28:36Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPLrG/JOe3AjQIL9Lr7RCTG4S/0D/A369FOlMHk3gKxzUMGlbOWT+t9TTRlkw+1vew=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "1f01342b-ec4e-4703-9fc8-b7661f838b01",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-14T07:15:34.535831Z",
+        "subscriptionEndDate": "2027-02-13T07:36:04.678694Z"
+      },
+      "purchases": [
+        {
+          "id": 1120,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-13T07:36:04.678709Z",
+          "subscriptionEndDate": "2027-02-13T07:36:04.678694Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "20de46c6-985a-41aa-b30d-e2defb0874cb",
+        "name": "Кирилл",
+        "userName": "p.k.kipo@bk.ru",
+        "email": "p.k.kipo@bk.ru",
+        "registrationDateUtc": "2026-02-16T14:00:27Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPjpodFYvAkk27lBONdshPIbZErXAX+AHLs1zyA/QvnxtB1z3oeRZdWHq/FUKLhy+g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "20de46c6-985a-41aa-b30d-e2defb0874cb",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-19T12:44:14.280262Z",
+        "subscriptionEndDate": "2026-03-19T14:09:35.419438Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T14:09:35.419468Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "235dec82-6885-4b49-8911-c3ace0405226",
+        "name": "Вера",
+        "userName": "frau.ilena@ya.ru",
+        "email": "frau.ilena@ya.ru",
+        "registrationDateUtc": "2026-02-09T05:50:41Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPMnDeCTNYyPm8WT0uDOLZso96CzSpQrhXZeZXN2QG6NG6pVOB1V6fBIjBvIyxLvsA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "235dec82-6885-4b49-8911-c3ace0405226",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-10T05:32:45.719105Z",
+        "subscriptionEndDate": "2027-02-09T05:52:11.672806Z"
+      },
+      "purchases": [
+        {
+          "id": 1098,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-09T05:52:11.673071Z",
+          "subscriptionEndDate": "2027-02-09T05:52:11.672806Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "2547acdf-385b-4d3e-b55c-cbe0ca24e09d",
+        "name": "Виктор ",
+        "userName": "678501@mail.ru",
+        "email": "678501@mail.ru",
+        "registrationDateUtc": "2026-02-07T08:27:05Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEKG5tx5lxvcXXfZdYG6HJzhu+etehuYCkPFoi+fp+ceGazVmYPJzSCxzgdTow7x2iQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "2547acdf-385b-4d3e-b55c-cbe0ca24e09d",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-05T23:59:20.600294Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "27fd68c0-7e62-426b-8b98-8b03f2cd2a89",
+        "name": "Малика",
+        "userName": "sharipmalika@mail.ru",
+        "email": "sharipmalika@mail.ru",
+        "registrationDateUtc": "2026-02-16T17:02:52Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEL5yrR7LDrrt4c/INRTPVnYd8z/Ll6SIE6jRxNEll/6aOSYW3MRcfohh50KeddLA7w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "27fd68c0-7e62-426b-8b98-8b03f2cd2a89",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-10T19:44:16.455543Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "2b66a2fc-6f77-401c-af49-a724ba54a78d",
+        "name": "Олег",
+        "userName": "leshiy_777@bk.ru",
+        "email": "leshiy_777@bk.ru",
+        "registrationDateUtc": "2026-02-04T17:06:52Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEO+Xpo1lNWDYfhP59X0e8//9XeJmygzE8KIYGT4f+Tt+vtJrHSRLuTffXR8vXveM0g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "2b66a2fc-6f77-401c-af49-a724ba54a78d",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-05T15:04:40.524557Z",
+        "subscriptionEndDate": "3026-02-04T17:11:12.142632Z"
+      },
+      "purchases": [
+        {
+          "id": 1081,
+          "price": 5890.0,
+          "purchaseDate": "2026-02-04T17:11:12.143623Z",
+          "subscriptionEndDate": "3026-02-04T17:11:12.142632Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "2d35ad6c-90d9-4370-a889-a438f3b3f87f",
+        "name": "Дарья ",
+        "userName": "brehova.darya@gmail.com",
+        "email": "brehova.darya@gmail.com",
+        "registrationDateUtc": "2026-02-17T09:50:22Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELjHqLvta0lRH5271qI7lkwA4eWmHx4NqHcJ7C/A8WwUvivOfJg3t1ZWfs5YVs0H5w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "2d35ad6c-90d9-4370-a889-a438f3b3f87f",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-10T18:30:42.07347Z",
+        "subscriptionEndDate": "2026-03-17T09:51:07.559746Z"
+      },
+      "purchases": [
+        {
+          "id": 1134,
+          "price": 390.0,
+          "purchaseDate": "2026-02-17T09:51:07.559938Z",
+          "subscriptionEndDate": "2026-03-17T09:51:07.559746Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "2f961b90-f3b8-4e38-a9c0-6c6474608f59",
+        "name": "Александр ",
+        "userName": "Aha.lukov@gmail.com",
+        "email": "Aha.lukov@gmail.com",
+        "registrationDateUtc": "2026-02-12T21:04:13Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEI1nDyCf87JKUTFJ9Nda7Otg6OuI4FZoEIp3a5m2lJlLLtJjJItA8X9R2HR5rVJYog=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "2f961b90-f3b8-4e38-a9c0-6c6474608f59",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-13T21:02:32.152058Z",
+        "subscriptionEndDate": "2027-02-12T21:08:54.814566Z"
+      },
+      "purchases": [
+        {
+          "id": 1117,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-12T21:08:54.814571Z",
+          "subscriptionEndDate": "2027-02-12T21:08:54.814566Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "313a496e-0408-45b2-b8d1-5e238f4c21b9",
+        "name": "юлай",
+        "userName": "kharrasov.yulai.82@mail.ru",
+        "email": "kharrasov.yulai.82@mail.ru",
+        "registrationDateUtc": "2026-02-06T10:06:07Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEEl6sh79/aC1sMmioMKuSRMzrSMPaDQuSJd4Ij+LWYg25WgIg4jRfCLBzVLPQPfOAg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "313a496e-0408-45b2-b8d1-5e238f4c21b9",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-06T05:01:58.621048Z",
+        "subscriptionEndDate": "2026-03-06T10:27:13.206463Z"
+      },
+      "purchases": [
+        {
+          "id": 1087,
+          "price": 390.0,
+          "purchaseDate": "2026-02-06T10:27:13.206478Z",
+          "subscriptionEndDate": "2026-03-06T10:27:13.206463Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "349ae562-8405-40fa-8498-94fe634f85c1",
+        "name": "Иннокентий ",
+        "userName": "kogorodnikov@mail.ru",
+        "email": "kogorodnikov@mail.ru",
+        "registrationDateUtc": "2026-02-16T17:53:18Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFHUOkVg1Yx2C7LyC/f2Nyps8lQCFmPVeHw7FHJ2sMCtU1HUGB6m8c8ujYhrzS42gQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "349ae562-8405-40fa-8498-94fe634f85c1",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-03-19T17:47:18.298454Z",
+        "subscriptionEndDate": "2026-03-18T17:56:17.087999Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-16T17:56:17.088026Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "35d36b97-5d97-42a5-9032-fb797a1b5bc1",
+        "name": "Анастасия",
+        "userName": "Anvl.97-a@yandex.ru",
+        "email": "Anvl.97-a@yandex.ru",
+        "registrationDateUtc": "2026-02-13T19:23:47Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGxOXzG1y8rZiD0ircGX8CAsuqs43jtB4w49AiPw/CBw7ZtYym2rPwaNK0fd7jLkdw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "35d36b97-5d97-42a5-9032-fb797a1b5bc1",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T19:22:07.830478Z",
+        "subscriptionEndDate": "2026-04-15T19:25:01.297229Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 9,
+          "promoCode": "TAUB16",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T19:25:01.297259Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "36ee2dbf-0a09-496b-bfbf-8cdc2f2ed657",
+        "name": "IRINA M .",
+        "userName": "irinamanich82@gmail.com",
+        "email": "irinamanich82@gmail.com",
+        "registrationDateUtc": "2026-02-12T19:42:30Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFaPisd48o+9LTFmhIlgJ2qjn2x1xp/PC/rp5o38HJFziOGx/b1SaWf5P1MIo9AwtA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "36ee2dbf-0a09-496b-bfbf-8cdc2f2ed657",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-13T19:33:43.700685Z",
+        "subscriptionEndDate": "2027-02-12T19:49:33.922867Z"
+      },
+      "purchases": [
+        {
+          "id": 1116,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-12T19:49:33.922883Z",
+          "subscriptionEndDate": "2027-02-12T19:49:33.922867Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "39e6844a-d93c-4cd4-a7c0-24642e351d87",
+        "name": "Евгения",
+        "userName": "ilyina13@mail.ru",
+        "email": "ilyina13@mail.ru",
+        "registrationDateUtc": "2026-02-20T07:46:28Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENXmjRYMB+/ib94pptsSeHbse++RZmfXZs//M+XbkZsMwkm/CDhbo0VQssb519L8Yg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "39e6844a-d93c-4cd4-a7c0-24642e351d87",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-16T07:38:17.734176Z",
+        "subscriptionEndDate": "2026-03-20T07:49:03.24366Z"
+      },
+      "purchases": [
+        {
+          "id": 1146,
+          "price": 390.0,
+          "purchaseDate": "2026-02-20T07:49:03.24366Z",
+          "subscriptionEndDate": "2026-03-20T07:49:03.24366Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "3f61fef4-8174-4e15-a216-c4ba7f004e01",
+        "name": "Мария ",
+        "userName": "Pavlukova92@yandex.ru",
+        "email": "Pavlukova92@yandex.ru",
+        "registrationDateUtc": "2026-02-14T15:09:13Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJvBvNZIxfDC6v+BFW44gyqTxqvxt0Twx1BtMC2byG6xMPSK1DGGvOPhx5xntGTwlA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "3f61fef4-8174-4e15-a216-c4ba7f004e01",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-15T15:07:26.614644Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "3ff86db4-c017-4134-8a9f-6ec2886e4f86",
+        "name": "Екатерина ",
+        "userName": "e.k.v.1991@mail.ru",
+        "email": "e.k.v.1991@mail.ru",
+        "registrationDateUtc": "2026-02-10T09:43:26Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEH+TD4qAn23PGG2GE4G0nkq8DPNxdjA7nYgkKstW1soah0ObZzF/U4+e4k+BpwRWZQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "3ff86db4-c017-4134-8a9f-6ec2886e4f86",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-13T09:41:03.208071Z",
+        "subscriptionEndDate": "2026-03-12T09:44:10.537485Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-10T09:44:10.537512Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "45397d5e-9750-42a7-a7db-f517aa275e0d",
+        "name": "Хадижа",
+        "userName": "pirmagomedovahadidza255@gmail.com",
+        "email": "pirmagomedovahadidza255@gmail.com",
+        "registrationDateUtc": "2026-02-08T13:37:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPuDFLisfymbUnFtC3jrr7QZ56Y+LiHtfJCk6FTnzC6ognwWrLpAO9JeXL4h3rgcmQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "45397d5e-9750-42a7-a7db-f517aa275e0d",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-01-01T14:31:44.417979Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "469facc7-6cd7-4a32-833a-d707da87f314",
+        "name": "Ангелина",
+        "userName": "linalinakun@gmail.com",
+        "email": "linalinakun@gmail.com",
+        "registrationDateUtc": "2026-02-17T11:27:50Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEE9FIf4g99vHrlu/EgbLTc7eNseXEIqEFVTrtPFZpPCVwLWPmhlxOe2tf7C80nZQYg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "469facc7-6cd7-4a32-833a-d707da87f314",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T21:55:58.198316Z",
+        "subscriptionEndDate": "2026-03-19T11:28:14.505267Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T11:28:14.505293Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "46d8d79a-95d5-4ad4-99fc-127e60278396",
+        "name": "Надежда",
+        "userName": "nstatsenko1987@mail.ru",
+        "email": "nstatsenko1987@mail.ru",
+        "registrationDateUtc": "2026-02-18T03:00:07Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIK7q8XNFhPF6U+1vGndL0I0kHcp6bKlJIAIkt2k4NWqREk0OleKGxspyQ2mZxqXfQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "46d8d79a-95d5-4ad4-99fc-127e60278396",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-09-13T11:12:28.729093Z",
+        "subscriptionEndDate": "2027-02-19T03:14:28.698761Z"
+      },
+      "purchases": [
+        {
+          "id": 1142,
+          "price": 2990.0,
+          "purchaseDate": "2026-02-19T03:14:28.698764Z",
+          "subscriptionEndDate": "2027-02-19T03:14:28.698761Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "4b32e5d3-3c66-4dc5-b5f1-aab9111b66fe",
+        "name": "Даша",
+        "userName": "tarasenkod728@gmail.com",
+        "email": "tarasenkod728@gmail.com",
+        "registrationDateUtc": "2026-02-15T07:39:49Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEH20Cpoq7zsFMoNNKtUkDVWxo8ENKNn96Qy0UwoYW9EKvp0cNkrkg0yrOJcKyVgEfw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "4b32e5d3-3c66-4dc5-b5f1-aab9111b66fe",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2025-05-30T13:45:35.223354Z",
+        "subscriptionEndDate": "2026-03-15T07:40:50.822624Z"
+      },
+      "purchases": [
+        {
+          "id": 1127,
+          "price": 390.0,
+          "purchaseDate": "2026-02-15T07:40:50.822624Z",
+          "subscriptionEndDate": "2026-03-15T07:40:50.822624Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "4bd2f5b2-d7bb-4521-82d4-3d22fc215141",
+        "name": "Anna Durova",
+        "userName": "vedenyeva92@gmail.com",
+        "email": "vedenyeva92@gmail.com",
+        "registrationDateUtc": "2026-02-13T03:28:11Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMgO5SZmL0R9u8//fnohNvxR6/+etk0toN/P2FcrO6fsbO3niX9kNDJ1fd6YPoqREg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "4bd2f5b2-d7bb-4521-82d4-3d22fc215141",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T03:24:38.476764Z",
+        "subscriptionEndDate": "2026-03-15T03:29:04.975122Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T03:29:04.975153Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "4c35e0bd-40a7-429d-9690-0e2ee9fff618",
+        "name": "Ника",
+        "userName": "Ver.smirnova.08@mail.ru",
+        "email": "Ver.smirnova.08@mail.ru",
+        "registrationDateUtc": "2026-02-11T22:28:20Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJysujbiDMPjYpMUokFtPoRAczg4kjuEzPBn/yf5b4Itr+6xrO1dj1cZRMYU/m078Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "4c35e0bd-40a7-429d-9690-0e2ee9fff618",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-06T21:55:42.99498Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "4d354ede-6611-4ab2-b2bf-151815f8876f",
+        "name": "Юлия",
+        "userName": "yuliya_shigorina@mail.ru",
+        "email": "yuliya_shigorina@mail.ru",
+        "registrationDateUtc": "2026-02-15T15:38:08Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHY3y3Nu66kfoJBTiCI3SlTxGI80eHad6r2zZoWDO4hEsd7WBGzNODemwry1AMR0dA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "4d354ede-6611-4ab2-b2bf-151815f8876f",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-03T14:35:18.173123Z",
+        "subscriptionEndDate": "2026-03-15T15:42:32.077796Z"
+      },
+      "purchases": [
+        {
+          "id": 1130,
+          "price": 390.0,
+          "purchaseDate": "2026-02-15T15:42:32.07788Z",
+          "subscriptionEndDate": "2026-03-15T15:42:32.077796Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "4fa4ff5d-51f9-485b-9767-631342b89455",
+        "name": "Алина",
+        "userName": "alya.valko@inbox.ru",
+        "email": "alya.valko@inbox.ru",
+        "registrationDateUtc": "2026-02-15T14:05:15Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMf7CYSsmoLlME+YiZnxG0dSkQwLqHxDfrpEKFxs0epKYsBUTN6mbaNWx/RU2Iw5eA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "4fa4ff5d-51f9-485b-9767-631342b89455",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-16T14:03:36.207256Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "51087c97-4a10-48d0-bfb6-11df909fdd41",
+        "name": "Николай",
+        "userName": "nikiforov2336@yandex.ru",
+        "email": "nikiforov2336@yandex.ru",
+        "registrationDateUtc": "2026-02-19T14:14:13Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGVTWutYnpfWHMwXRXk625i1U12foOXA/BL6ITtt+Kww3seChP8ZqCVuoK5V17TdyQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "51087c97-4a10-48d0-bfb6-11df909fdd41",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-22T14:12:11.785902Z",
+        "subscriptionEndDate": "2026-03-21T14:15:04.103392Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-19T14:15:04.103484Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "536b41db-5df0-4c09-921e-187ce73346cb",
+        "name": "Милена",
+        "userName": "mustaeva.milena7b@mail.ru",
+        "email": "mustaeva.milena7b@mail.ru",
+        "registrationDateUtc": "2026-02-15T10:26:14Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIANpplt6VkU/1gSJdWOn+jFQjMOrNqMkG7HQw45ljHilweL2fmfHhm/BPhRq7qd7A=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "536b41db-5df0-4c09-921e-187ce73346cb",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-01-20T16:09:12.196912Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "54ff5ad1-14c3-4151-9aa8-717efee5e005",
+        "name": "Кирилл",
+        "userName": "kirillergashev27121982@gmail.com",
+        "email": "kirillergashev27121982@gmail.com",
+        "registrationDateUtc": "2026-02-13T05:26:33Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEKHfmVLWQKrrI4Wt09wK/DSW4xKImmhC4JfsSJTWqUP/CkSY+x4EuMbRheJJTh21mA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "54ff5ad1-14c3-4151-9aa8-717efee5e005",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T05:17:10.569167Z",
+        "subscriptionEndDate": "2026-03-15T05:27:59.599701Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T05:27:59.599856Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "56a0f47f-ba03-45af-b879-7035c6a418fd",
+        "name": "Асия",
+        "userName": "asiya.gini96@gmail.com",
+        "email": "asiya.gini96@gmail.com",
+        "registrationDateUtc": "2026-02-16T16:10:36Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEAMtv32wl3x192yF+IgKr+RWKyOmyc7UYyPIZfUy9B40vaeq2Nkh/OYCFSbv5aS6RQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "56a0f47f-ba03-45af-b879-7035c6a418fd",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-17T16:02:22.398397Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "56d4ac75-fd3a-4fb3-b06c-6604954aa357",
+        "name": "okafor",
+        "userName": "mesofav042@gmail.com",
+        "email": "mesofav042@gmail.com",
+        "registrationDateUtc": "2026-02-02T17:21:13Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJ0Nn/4zKkvKT9jEUz9Mmxcn1ys3ZxUr2oVNg5J5T/PdvcvIM0iPxnthVKsFb/WLTQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "56d4ac75-fd3a-4fb3-b06c-6604954aa357",
+        "country": "US",
+        "platform": "Google Play",
+        "trialEndDate": "2025-12-28T05:12:41.803322Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "62759c2a-a926-43e6-923b-2f987002e914",
+        "name": "Hatice ",
+        "userName": "bernaksoy19@gmail.com",
+        "email": "bernaksoy19@gmail.com",
+        "registrationDateUtc": "2026-02-18T12:42:10Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENg5THcbYaLZNIWGcoD6gfxpChvEmkBZTkW1kYfVagAHoUigXQ0rZ9vAW6bWkpTHqw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "62759c2a-a926-43e6-923b-2f987002e914",
+        "country": "TR",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-19T12:38:09.924375Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "62c69576-6e52-4484-b546-1a6282f3e6d1",
+        "name": "Gerra",
+        "userName": "nesterovaj@mail.ru",
+        "email": "nesterovaj@mail.ru",
+        "registrationDateUtc": "2026-02-10T15:19:28Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDxj+dvPiRcFY4qf9TQkB4rj5V/VSHUpbr1mjRX1KvHuIEdER2GFgK8GypE1gu8DUw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "62c69576-6e52-4484-b546-1a6282f3e6d1",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-11T13:09:14.805803Z",
+        "subscriptionEndDate": "2027-02-10T16:03:22.958927Z"
+      },
+      "purchases": [
+        {
+          "id": 1104,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-10T16:03:22.958936Z",
+          "subscriptionEndDate": "2027-02-10T16:03:22.958927Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "68000d89-079e-428f-9296-6b2e2bd20b04",
+        "name": "Наталья ",
+        "userName": "kim_nat_73@mail.ru",
+        "email": "kim_nat_73@mail.ru",
+        "registrationDateUtc": "2026-02-10T12:11:28Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPuGz93rgioR05DcN15HkjwwPpHD2kCBQkssE40PDVGlP1p5KaQo/VDrH6o0lmnkoA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "68000d89-079e-428f-9296-6b2e2bd20b04",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-11T12:01:28.835579Z",
+        "subscriptionEndDate": "2026-03-10T12:14:30.168969Z"
+      },
+      "purchases": [
+        {
+          "id": 1103,
+          "price": 290.0,
+          "purchaseDate": "2026-02-10T12:14:30.168973Z",
+          "subscriptionEndDate": "2026-03-10T12:14:30.168969Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "6ae16837-6915-4eca-8644-8fcdbe3ac0e1",
+        "name": "Екатерина",
+        "userName": "art-folio@bk.ru",
+        "email": "art-folio@bk.ru",
+        "registrationDateUtc": "2026-02-15T19:11:17Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGBxa6xqH1xOHWdVZyXg8kKCZ2KhIuwWXaTjM5MmAQBjZGU3pm41wykQwWpJMnkg8w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "6ae16837-6915-4eca-8644-8fcdbe3ac0e1",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-06T16:17:44.573954Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "6b053e65-2117-4a0e-ac8f-31a536824ed8",
+        "name": "Юри",
+        "userName": "riana.mihoto@gmail.com",
+        "email": "riana.mihoto@gmail.com",
+        "registrationDateUtc": "2026-02-17T15:19:27Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENhLCctB0iqhkMAf5OlcNQhoq1QOyUqpwWpEaq9JuOnbaTFCsY3bOdrxC++kur3X5Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "6b053e65-2117-4a0e-ac8f-31a536824ed8",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-12-18T17:54:56.374109Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "6e895fb2-7886-48a0-9be7-4966252efe0f",
+        "name": "Владимир",
+        "userName": "Kamarz58@mail.ru",
+        "email": "Kamarz58@mail.ru",
+        "registrationDateUtc": "2026-02-14T21:43:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFHIqVnsNsZIH2qFBn4abowb+dBzJDle9TrZwrXBqL8OVnuXYcIiyE4kdvDDVGLiBQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "6e895fb2-7886-48a0-9be7-4966252efe0f",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-12-13T21:29:58.477964Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "700e205d-ea1b-44b5-bdf1-4d9fe0b83e22",
+        "name": "Евгений",
+        "userName": "trener1988@icloud.com",
+        "email": "trener1988@icloud.com",
+        "registrationDateUtc": "2026-02-16T08:29:04Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEBeCliK2KBx3uw80i5+0Vx2y7Ql9zPgVQ4dRmpNpV8V6Vbk8zmygvB8DiruH4+Rjag=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "700e205d-ea1b-44b5-bdf1-4d9fe0b83e22",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-17T08:24:31.526523Z",
+        "subscriptionEndDate": "2027-02-16T08:37:15.587473Z"
+      },
+      "purchases": [
+        {
+          "id": 1132,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-16T08:37:15.587478Z",
+          "subscriptionEndDate": "2027-02-16T08:37:15.587473Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "7055c5a6-9ed9-4a62-8de0-99eb1feb2805",
+        "name": "Анастасия Лазарева",
+        "userName": "an.alexeeva.39@gmail.com",
+        "email": "an.alexeeva.39@gmail.com",
+        "registrationDateUtc": "2026-02-17T05:33:35Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJUE5rGa5ztbzlcUF5+C3X7+ouFmfOZffKKE/U+QftGUPpM9k7H1HknKRmRhww8ilw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "7055c5a6-9ed9-4a62-8de0-99eb1feb2805",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-20T05:31:35.312569Z",
+        "subscriptionEndDate": "2026-03-19T05:34:02.931968Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T05:34:02.932002Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "71a596b6-d9f3-45b0-905a-fcfbf57b081a",
+        "name": "Krasnobaev M.D.",
+        "userName": "100rentgenkanal@gmail.com",
+        "email": "100rentgenkanal@gmail.com",
+        "registrationDateUtc": "2026-02-08T12:03:45Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHmk52leVlDHDQD+/avd2wbPrrjlZi7A91Y/y6E66gPLAbM1J1cCewn22vJEaYYJWw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "71a596b6-d9f3-45b0-905a-fcfbf57b081a",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-07T16:15:39.107324Z",
+        "subscriptionEndDate": "2026-03-08T12:04:19.90612Z"
+      },
+      "purchases": [
+        {
+          "id": 1096,
+          "price": 390.0,
+          "purchaseDate": "2026-02-08T12:04:19.90612Z",
+          "subscriptionEndDate": "2026-03-08T12:04:19.90612Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "71bba3a9-30c9-4d85-9900-12b995dc02b7",
+        "name": "Anna",
+        "userName": "ankayanenko@yandex.ru",
+        "email": "ankayanenko@yandex.ru",
+        "registrationDateUtc": "2026-02-13T03:10:29Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEH/jp7/hpTaYRHCWUb7nJXmROWjDanJOUdCpbKFQ+/qi1lMZkuvINQyvpU8Azfm7tg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "71bba3a9-30c9-4d85-9900-12b995dc02b7",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T03:08:30.676656Z",
+        "subscriptionEndDate": "2026-03-15T03:11:57.939723Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T03:11:57.939869Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "730b2519-b2d3-4fac-9807-71b5cc9da2bd",
+        "name": "Ирина",
+        "userName": "ivk04@bk.ru",
+        "email": "ivk04@bk.ru",
+        "registrationDateUtc": "2026-02-14T13:47:20Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJ/4NTEHmVHl5Tbon0MCMtnwsV8R6krboKP01vKNqoH9kndXERiaqw/ItXsN0Vhbdg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "730b2519-b2d3-4fac-9807-71b5cc9da2bd",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-01T13:46:19.678486Z",
+        "subscriptionEndDate": "2026-02-28T13:47:44.004591Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 4,
+          "promoCode": "ANATOMY",
+          "extensionDays": 14,
+          "usedOn": "2026-02-14T13:47:44.004688Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "7614014a-fa07-45bf-8e51-7caea022498d",
+        "name": "Виола",
+        "userName": "vidmedia@mail.ru",
+        "email": "vidmedia@mail.ru",
+        "registrationDateUtc": "2026-02-12T10:58:12Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIvEpDV6GEjV0ColuFATYghZuiFQxjKEI+twp599tkylh7DVJW8b45bT0I6eW0fhjg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "7614014a-fa07-45bf-8e51-7caea022498d",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-12T06:47:49.029558Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "78a92ff4-4105-4795-9bbf-49a77c931756",
+        "name": "Виктор ",
+        "userName": "sihov5396@gmail.com",
+        "email": "sihov5396@gmail.com",
+        "registrationDateUtc": "2026-02-13T20:33:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIMH8Re8MRZd4VbV5FlkksJ3uRIZ16xyHTTIe/iPb4qAivmiI+Cj/cgObA1So0cjBQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "78a92ff4-4105-4795-9bbf-49a77c931756",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-14T20:25:26.218479Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "791c73f8-a5cb-4197-9b15-101215d2f201",
+        "name": "Владимир",
+        "userName": "Sprintr00715@yandex.ru",
+        "email": "Sprintr00715@yandex.ru",
+        "registrationDateUtc": "2026-02-20T07:31:34Z",
+        "passwordHash": "AQAAAAIAAYagAAAAECOMboRUyfLNGVTvCcdbDlaDHX3NJvflyZfQ3XE1mJlgk/+r0h8Duvo13Mynkb/2AQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "791c73f8-a5cb-4197-9b15-101215d2f201",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-23T07:29:31.279706Z",
+        "subscriptionEndDate": "2026-03-22T07:32:51.896628Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-20T07:32:51.896659Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "79d09fbe-d582-4a1d-92e1-3a90ce1da085",
+        "name": "danilisium ",
+        "userName": "danilisium@mail.ru",
+        "email": "danilisium@mail.ru",
+        "registrationDateUtc": "2026-02-03T09:27:53Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEBYiLc4c/5NkE29rste29yrqt9Y5+A1n98JapawIpD8Vu4Vz5dnS/ISCVrouuTJAVQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "79d09fbe-d582-4a1d-92e1-3a90ce1da085",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-01-21T00:58:47.057421Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "7b1a3a69-7cdc-4fb2-87cf-d5be3146fa34",
+        "name": "Djeka",
+        "userName": "Djeka1510@icloud.com",
+        "email": "Djeka1510@icloud.com",
+        "registrationDateUtc": "2026-02-14T17:33:25Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEN5Wuwt/d1tzxUldSyIkHYdv2zuvLz5imtqPAqhpiMWsFLHhxSOHmCLGedLYliRUmg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "7b1a3a69-7cdc-4fb2-87cf-d5be3146fa34",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-01T17:31:36.510625Z",
+        "subscriptionEndDate": "2026-02-28T17:33:46.431085Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 4,
+          "promoCode": "ANATOMY",
+          "extensionDays": 14,
+          "usedOn": "2026-02-14T17:33:46.43111Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "81295061-2d53-446c-a8b9-adc93845ba20",
+        "name": "Polina",
+        "userName": "Lino-polina@yandex.ru",
+        "email": "Lino-polina@yandex.ru",
+        "registrationDateUtc": "2026-02-10T09:49:35Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEB/DQ6gpbmhfJenrj/N8W2+H7GZ/qwhi23kvCVQ8haIW3m8wS3js0kY11c3uXLQlag=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "81295061-2d53-446c-a8b9-adc93845ba20",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-13T09:48:10.968279Z",
+        "subscriptionEndDate": "2026-03-12T09:50:00.750876Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-10T09:50:00.750907Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "824f4f23-d94b-45ea-ad1a-863e80f9c978",
+        "name": "Николай",
+        "userName": "arenavs@yandex.ru",
+        "email": "arenavs@yandex.ru",
+        "registrationDateUtc": "2026-02-07T19:15:26Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFGzzVeeVezHH5gGL1b1Hm/K1LGFfW+sQAI1iwLI3wCx9nZ+zzhqFOXPhsQDwWmSTw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "824f4f23-d94b-45ea-ad1a-863e80f9c978",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-08T18:51:09.463644Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "844c104b-f505-4ca3-b748-dba8eac3689d",
+        "name": "Екатерина",
+        "userName": "Serova-9797@mail.ru",
+        "email": "Serova-9797@mail.ru",
+        "registrationDateUtc": "2026-02-09T06:19:33Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPVsb2VOGfaylBUoGX5QPbO3pblV4qekKrjucq+H/3tefXj7vCR5vB5Pljh/XD1VUA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "844c104b-f505-4ca3-b748-dba8eac3689d",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-10T06:17:11.949575Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "84b019be-c38d-4875-8305-e2c4bb91ae89",
+        "name": "Юлия",
+        "userName": "spolmelo@gmail.com",
+        "email": "spolmelo@gmail.com",
+        "registrationDateUtc": "2026-02-05T09:54:27Z",
+        "passwordHash": "AQAAAAIAAYagAAAAECJSolXiV3kvX2cCuydzxrUo9s4Xo73FBioVfgNySWvgEDRbZX7E2et9q3LkKtHybw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "84b019be-c38d-4875-8305-e2c4bb91ae89",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-01-31T10:20:22.36723Z",
+        "subscriptionEndDate": "2026-03-05T09:56:06.312569Z"
+      },
+      "purchases": [
+        {
+          "id": 1082,
+          "price": 390.0,
+          "purchaseDate": "2026-02-05T09:56:06.312569Z",
+          "subscriptionEndDate": "2026-03-05T09:56:06.312569Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "86424a7a-27cf-4c2c-907a-f4b8b90c7c86",
+        "name": "Marina",
+        "userName": "Tselidimarina1997@mail.ru",
+        "email": "Tselidimarina1997@mail.ru",
+        "registrationDateUtc": "2026-02-12T22:05:14Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELGMcpqdsmCc49YbxQdIQnXhpkKjuw5c5TZvuVg2Eqwhd8yc3z5GsHv1V/h+6UsvcA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "86424a7a-27cf-4c2c-907a-f4b8b90c7c86",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-13T22:03:05.814377Z",
+        "subscriptionEndDate": "2027-02-12T22:05:50.338447Z"
+      },
+      "purchases": [
+        {
+          "id": 1118,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-12T22:05:50.338468Z",
+          "subscriptionEndDate": "2027-02-12T22:05:50.338447Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "872ca3f5-f858-42fd-b9ce-2ab9c9da023a",
+        "name": "Дмитрий",
+        "userName": "pavlovdm001@gmail.com",
+        "email": "pavlovdm001@gmail.com",
+        "registrationDateUtc": "2026-02-06T17:49:38Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENdE0TMNsrDfxoYhAddgrgbFnJIRBC8s9mgZCsd7Lrz4u5bNhalg3J+sibz1tG7FOA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "872ca3f5-f858-42fd-b9ce-2ab9c9da023a",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-07T17:45:13.14398Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "8764a4e7-04e4-40df-ab2c-95fb53d1d581",
+        "name": "аят",
+        "userName": "ayatchon1313@yandex.ru",
+        "email": "ayatchon1313@yandex.ru",
+        "registrationDateUtc": "2026-02-07T08:17:02Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEOXOuP94JUlHTKsce05OTPinPhiOmTNyrP+lMUagdM5yjdeleBtYDrc47FYB3OaE6A=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "8764a4e7-04e4-40df-ab2c-95fb53d1d581",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-09-19T12:21:17.936886Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "8767dd26-9c9c-400e-9b8c-23f7b13e3315",
+        "name": "Антон",
+        "userName": "Tagforwork@mail.ru",
+        "email": "Tagforwork@mail.ru",
+        "registrationDateUtc": "2026-02-05T11:27:08Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIDhJXrHq6E5WEBaAjtZdFDfn9UaFdC05lwyiUg1ZFA4s8IlgnQL8Ch1qCuDc5Dpsg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "8767dd26-9c9c-400e-9b8c-23f7b13e3315",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-06T11:24:46.538088Z",
+        "subscriptionEndDate": "2027-02-05T11:29:06.901724Z"
+      },
+      "purchases": [
+        {
+          "id": 1083,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-05T11:29:06.901728Z",
+          "subscriptionEndDate": "2027-02-05T11:29:06.901724Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "8907b12f-75a2-4f1e-8e85-477ae78aedf9",
+        "name": "Наталья",
+        "userName": "natalyakras8@gmail.com",
+        "email": "natalyakras8@gmail.com",
+        "registrationDateUtc": "2026-02-03T19:24:12Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELmOSCVhom1EkP6NYXNYSlS3F7MQyUzrdAytdoi7g8aytqR6vtezTzQ85EYCg04MYg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "8907b12f-75a2-4f1e-8e85-477ae78aedf9",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-04T19:09:12.03799Z",
+        "subscriptionEndDate": "2026-03-03T19:27:41.3337Z"
+      },
+      "purchases": [
+        {
+          "id": 1080,
+          "price": 290.0,
+          "purchaseDate": "2026-02-03T19:27:41.333728Z",
+          "subscriptionEndDate": "2026-03-03T19:27:41.3337Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "8ba16e4a-2f11-4e83-b1b4-5eb7c3a6d927",
+        "name": "Leo",
+        "userName": "Leonid.glazov@gmail.com",
+        "email": "Leonid.glazov@gmail.com",
+        "registrationDateUtc": "2026-02-16T19:39:39Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEOPW8uMrXO1fHq9STSuFRU9Qrkj6MzT5G6MEMhywiwLVWZ6JOcMGxYTzPLI8dGeWCg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "8ba16e4a-2f11-4e83-b1b4-5eb7c3a6d927",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-17T19:28:03.950534Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "8d83e66b-9492-4605-a7c3-837cfc3ef390",
+        "name": "Виктория",
+        "userName": "kuztori0309@gmail.com",
+        "email": "kuztori0309@gmail.com",
+        "registrationDateUtc": "2026-02-17T11:45:50Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEKfoF7DbWLOGA2Q/ACcVksN9YPGTN27PqmynCgQgXVWTPcuZehtWk9DFYHPFKwaEWg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "8d83e66b-9492-4605-a7c3-837cfc3ef390",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-03-20T09:05:46.550037Z",
+        "subscriptionEndDate": "2026-03-19T11:47:29.263635Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T11:47:29.263664Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "9262ee73-f7f0-4c6b-bf70-29d9d371fd86",
+        "name": "Елена",
+        "userName": "lel06@mail.ru",
+        "email": "lel06@mail.ru",
+        "registrationDateUtc": "2026-02-16T20:42:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJzIhvMPTKHkvgWTvcoM3x1Rp0hUDC9IMpOWND+rfDQLx+eWCiMgCgT5hEqnnpil/g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "9262ee73-f7f0-4c6b-bf70-29d9d371fd86",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-17T12:46:04.658425Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "935efca8-5938-45b4-926e-86314bb8329a",
+        "name": "вадим",
+        "userName": "kvdlayk@gmail.com",
+        "email": "kvdlayk@gmail.com",
+        "registrationDateUtc": "2026-02-15T20:42:17Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPf98Y6ZXpb+S4SC3zNhJNih6oBvko/LvZdoKKlkCidoopMUC94rHf4vEPTCAffRlQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "935efca8-5938-45b4-926e-86314bb8329a",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-07T18:31:16.321933Z",
+        "subscriptionEndDate": "2026-03-16T14:22:40.005Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "958a52cf-b00e-403c-ad5a-813b1d5e4b2e",
+        "name": "Sipho Usher Manzi",
+        "userName": "isophoacademy@gmail.com",
+        "email": "isophoacademy@gmail.com",
+        "registrationDateUtc": "2026-02-11T07:02:32Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEObLFJ+G6JbL/Y7VCR5u6zLaclQnJi3FehT2g+Kp/fqWyP+yWBvgQo7QVfdBTs23Gw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "958a52cf-b00e-403c-ad5a-813b1d5e4b2e",
+        "country": "GB",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-12T06:53:48.961085Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "97580e02-10b1-4459-981b-7192cc67a017",
+        "name": "Мария ",
+        "userName": "mariya.trunilina@mail.ru",
+        "email": "mariya.trunilina@mail.ru",
+        "registrationDateUtc": "2026-02-14T06:09:34Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELTEUDJATWt1Wzatdvywf/Z8vMfEpFese1FIb1H/NA7EmzzK+JeG6718NCstDnuSGg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "97580e02-10b1-4459-981b-7192cc67a017",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-15T06:06:04.727242Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "999e259d-89de-4157-b892-cca6b1d56dbf",
+        "name": "Дарья",
+        "userName": "dpovarkova@yandex.ru",
+        "email": "dpovarkova@yandex.ru",
+        "registrationDateUtc": "2026-02-10T07:53:45Z",
+        "passwordHash": "AQAAAAIAAYagAAAAED3FZD6YqUNL3SLnJdsZT/d2rrh/VCj4Ke9WIa8zm4MZVw5cUsfRua7NZ5wfSgIf8g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "999e259d-89de-4157-b892-cca6b1d56dbf",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-12T14:54:12.060776Z",
+        "subscriptionEndDate": "2026-03-12T07:54:47.02821Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-10T07:54:47.02829Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "9ad05eeb-8550-48f6-a98c-bb4721205706",
+        "name": "Аюр",
+        "userName": "hanhatov.ayur@mail.ru",
+        "email": "hanhatov.ayur@mail.ru",
+        "registrationDateUtc": "2026-02-11T03:20:05Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFUio/scAZsHZjVWdQGCNlOoWKnQZ6b2Bqt5cUyGe/uGoenrd5Z/WWI+UUQnZUvA2Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "9ad05eeb-8550-48f6-a98c-bb4721205706",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-12T03:15:48.34501Z",
+        "subscriptionEndDate": "2027-02-11T03:21:22.197066Z"
+      },
+      "purchases": [
+        {
+          "id": 1107,
+          "price": 1890.0,
+          "purchaseDate": "2026-02-11T03:21:22.197304Z",
+          "subscriptionEndDate": "2027-02-11T03:21:22.197066Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "9ecd4745-62d8-4067-9ef1-fc000fcad5d9",
+        "name": "Vika",
+        "userName": "Vikavahnova@icloud.com",
+        "email": "Vikavahnova@icloud.com",
+        "registrationDateUtc": "2026-02-13T03:12:40Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEH7a+Mm9mKnbPmTTEqqpWFhsUtUjMfsNiosbHMTxNepPesO5bqgn25bKJwFdt5hoYQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "9ecd4745-62d8-4067-9ef1-fc000fcad5d9",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-16T02:52:22.853279Z",
+        "subscriptionEndDate": "2026-03-15T03:14:15.709197Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T03:14:15.709228Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "a043b6ec-beb3-4c36-8010-0911ce9fd3a4",
+        "name": "с",
+        "userName": "777vladivostok777@gmail.com",
+        "email": "777vladivostok777@gmail.com",
+        "registrationDateUtc": "2026-02-13T00:29:06Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENN2rksF+qf7Xio2+S+SxoRWMRblyANn0GMzqD/DYd0PygZz97ZN+beDvxF3dfEo0g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a043b6ec-beb3-4c36-8010-0911ce9fd3a4",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-12T05:26:47.762008Z",
+        "subscriptionEndDate": "2026-03-13T00:29:42.153729Z"
+      },
+      "purchases": [
+        {
+          "id": 1119,
+          "price": 390.0,
+          "purchaseDate": "2026-02-13T00:29:42.153729Z",
+          "subscriptionEndDate": "2026-03-13T00:29:42.153729Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "a0c1cf88-bd36-4da6-8f41-6ba4f7026c67",
+        "name": "Оксана",
+        "userName": "assanka94@mail.ru",
+        "email": "assanka94@mail.ru",
+        "registrationDateUtc": "2026-02-05T11:48:42Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPRHkb6vPESWYXA7hHRehXlw1fOfSEPHrdVD/aKeF7tadvRD68MrEECjD3cifYzAhQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a0c1cf88-bd36-4da6-8f41-6ba4f7026c67",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-05T09:20:56.472099Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "a468d585-d8c8-475c-9d66-9954842d0aa4",
+        "name": "Александра",
+        "userName": "sasha.sova95@yandex.ru",
+        "email": "sasha.sova95@yandex.ru",
+        "registrationDateUtc": "2026-02-12T18:41:55Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMmNImCg/cSj3cqb2PLMZkKPGxpIuYK24Bho85/kXPhoJhGL7riR8W8SgKSP68EsvQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a468d585-d8c8-475c-9d66-9954842d0aa4",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-01-10T08:51:20.358177Z",
+        "subscriptionEndDate": "2026-03-12T18:42:50.001802Z"
+      },
+      "purchases": [
+        {
+          "id": 1115,
+          "price": 390.0,
+          "purchaseDate": "2026-02-12T18:42:50.002039Z",
+          "subscriptionEndDate": "2026-03-12T18:42:50.001802Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "a570ef51-48aa-4da4-8b96-57d573670678",
+        "name": "диана",
+        "userName": "Uskovadeana@yandex.ru",
+        "email": "Uskovadeana@yandex.ru",
+        "registrationDateUtc": "2026-02-15T15:24:04Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEKSpPstV4NF5y1wcCbSlaXzGRZF/b5oJRrOLh58aHLHddXuOrhugfzDNNeG9L9JUjA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a570ef51-48aa-4da4-8b96-57d573670678",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-11-28T18:47:22.77202Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "a65b2d27-d9da-48fb-a5a6-8b1eb586485d",
+        "name": "Ляйсан ",
+        "userName": "rm1ov2fk3@mail.ru",
+        "email": "rm1ov2fk3@mail.ru",
+        "registrationDateUtc": "2026-02-20T06:42:49Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELZ9gD/ZRiPkUT7w+1L2aU9lsC7MaBI95G9QSuJENvX5tk9ZF1Ruk3a4mlUyWFGdNQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a65b2d27-d9da-48fb-a5a6-8b1eb586485d",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-03-23T06:39:38.236075Z",
+        "subscriptionEndDate": "2026-03-22T06:44:01.762236Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-20T06:44:01.762267Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "a6bb7a6b-10a0-42f2-a195-c4b47e675806",
+        "name": "агузок ",
+        "userName": "aguzok472@gmail.com",
+        "email": "aguzok472@gmail.com",
+        "registrationDateUtc": "2026-02-16T06:35:06Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFwDxTqN9higkSjNzOamkiTTdJrmeDUAPGcg9v9GI/6i5WCBSqIa9zXZKatLu2Kg+g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a6bb7a6b-10a0-42f2-a195-c4b47e675806",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-16T18:31:14.403527Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "a6fd6683-188d-4762-b1e1-55ccc66ba720",
+        "name": "Кирилл",
+        "userName": "kirillkitaev686@gmail.com",
+        "email": "kirillkitaev686@gmail.com",
+        "registrationDateUtc": "2026-02-16T19:02:36Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGURQcPIogd63om4oggg9wwPpHkwJ90sMKCzFp5WHMBwhdv0jZHUdtk85lp7N9IkUg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "a6fd6683-188d-4762-b1e1-55ccc66ba720",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-11T05:57:29.434653Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "abd0d8ad-0d83-4317-8bc6-3f22c462297c",
+        "name": "Анчутка",
+        "userName": "dosyak2@mail.ru",
+        "email": "dosyak2@mail.ru",
+        "registrationDateUtc": "2026-02-12T17:46:29Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMDW87noulmMXjwlDi6+Pjw+EdOpFWkcb963ebSkQ39BKOroKC1JBM8UPYf0Nas/oQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "abd0d8ad-0d83-4317-8bc6-3f22c462297c",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-03-15T17:43:50.624097Z",
+        "subscriptionEndDate": "2026-03-14T18:33:14.226029Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-12T18:33:14.226062Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "accf8839-f0a0-462d-9672-4d7d7eb4fae0",
+        "name": "Мария",
+        "userName": "Mawunka2007@rambler.ru",
+        "email": "Mawunka2007@rambler.ru",
+        "registrationDateUtc": "2026-02-19T08:22:58Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEE30DPdgVpbX+HiKFav3ogK4b6EfOe5Twa4po+9bXSArUY1crayPi+e3EYRhzUjMeA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "accf8839-f0a0-462d-9672-4d7d7eb4fae0",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-22T08:21:09.18673Z",
+        "subscriptionEndDate": "2026-03-21T08:23:41.572101Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-19T08:23:41.572184Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "adb4eec7-5143-42be-bfcf-09d9b5ed4ba8",
+        "name": "Юрий",
+        "userName": "yuriyzaharov48@gmail.com",
+        "email": "yuriyzaharov48@gmail.com",
+        "registrationDateUtc": "2026-02-10T17:01:22Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEN0Uw4VB3A02wPrEs5sk854VSco9xtj1PYknR5Zl27XSaljdxazFn+VmqUbex+1C/Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "adb4eec7-5143-42be-bfcf-09d9b5ed4ba8",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-01-29T13:22:28.918713Z",
+        "subscriptionEndDate": "2026-03-10T17:16:10.126778Z"
+      },
+      "purchases": [
+        {
+          "id": 1105,
+          "price": 390.0,
+          "purchaseDate": "2026-02-10T17:16:10.122602Z",
+          "subscriptionEndDate": "2026-03-10T17:16:10.122435Z"
+        },
+        {
+          "id": 1106,
+          "price": 390.0,
+          "purchaseDate": "2026-02-10T17:16:10.126782Z",
+          "subscriptionEndDate": "2026-03-10T17:16:10.126778Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "adf31179-4dd4-43da-bf84-59648795d414",
+        "name": "Кирилл",
+        "userName": "kirillmavrin39@gmail.com",
+        "email": "kirillmavrin39@gmail.com",
+        "registrationDateUtc": "2026-02-12T12:20:38Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEOEWWcAO3YGvDLiVwBJEJnXrbDSZiEma5aBpEenY2Brwh409C4oujK39pX5bDZgrUg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "adf31179-4dd4-43da-bf84-59648795d414",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-13T11:57:07.995177Z",
+        "subscriptionEndDate": "2026-03-12T12:27:21.180922Z"
+      },
+      "purchases": [
+        {
+          "id": 1113,
+          "price": 290.0,
+          "purchaseDate": "2026-02-12T12:27:21.180962Z",
+          "subscriptionEndDate": "2026-03-12T12:27:21.180922Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "af711708-fefe-4cb7-a988-bc52a2f39281",
+        "name": "Milena",
+        "userName": "milenaadashyan@gmail.com",
+        "email": "milenaadashyan@gmail.com",
+        "registrationDateUtc": "2026-02-18T11:16:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEOJz3eoey4pOJQXIpKLOTa/6AP/f5jsKTr84oRXpEhE6e/KNajiZV7q+o7x9iIvK6w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "af711708-fefe-4cb7-a988-bc52a2f39281",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-14T08:28:17.607458Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "b4457828-755c-4972-905e-42ab4ac5bc37",
+        "name": "Сергей ",
+        "userName": "k2sport1988@gmail.com",
+        "email": "k2sport1988@gmail.com",
+        "registrationDateUtc": "2026-02-15T15:43:28Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMfjyH/KJb7HXH6bHMr/3Q7K8HrWUXgwUUD2IzKZ/PNqsup96/762yWYaYaiVBBjxg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "b4457828-755c-4972-905e-42ab4ac5bc37",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-16T15:40:10.596346Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "b9cf35db-cd75-45a2-8fe1-2d5e14152037",
+        "name": "Василиса",
+        "userName": "Vaselisa.krepkova@yandex.ru",
+        "email": "Vaselisa.krepkova@yandex.ru",
+        "registrationDateUtc": "2026-02-09T19:14:24Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEC+En0NFzOiAkeVIEYQcdQLyYeWB1BMb7hnY1iI7v4AhnNiIty0eO/5BhZLXMUAvAQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "b9cf35db-cd75-45a2-8fe1-2d5e14152037",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-01-20T09:21:48.622698Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "bb3b5a62-b7a8-4f69-8c1d-15c4977d506d",
+        "name": "Анастасия ",
+        "userName": "nastya0482@mail.ru",
+        "email": "nastya0482@mail.ru",
+        "registrationDateUtc": "2026-02-13T04:07:03Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEBvEKWguxixZRh2CL40kMPiji9XHMfDFWbbgnO46xBqlMsl+KDKGhRl6HliAiZSVPQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "bb3b5a62-b7a8-4f69-8c1d-15c4977d506d",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-03-16T03:52:46.911008Z",
+        "subscriptionEndDate": "2026-03-15T04:07:39.270564Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-13T04:07:39.270593Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "bd444271-e43e-4655-8275-678f1fd0fa88",
+        "name": "дмитрий",
+        "userName": "gardarika258@gmail.com",
+        "email": "gardarika258@gmail.com",
+        "registrationDateUtc": "2026-02-09T06:11:36Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMPsWUAUkCpqDjdtBoOXw+/RgW9HXFGhOnP9iD4wrDcT8anG6LGjNAWNal9mT/lx/g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "bd444271-e43e-4655-8275-678f1fd0fa88",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-12-22T12:57:53.202805Z",
+        "subscriptionEndDate": "2026-03-09T06:13:04.399637Z"
+      },
+      "purchases": [
+        {
+          "id": 1099,
+          "price": 390.0,
+          "purchaseDate": "2026-02-09T06:13:04.399664Z",
+          "subscriptionEndDate": "2026-03-09T06:13:04.399637Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "bd6a2d5f-b8ed-4d10-80c7-725835396e6c",
+        "name": "Анастасия",
+        "userName": "fedeshovaa@inbox.ru",
+        "email": "fedeshovaa@inbox.ru",
+        "registrationDateUtc": "2026-02-15T16:05:24Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEF4as3f6+YrGfV6SYWc0N+xFxNasaXc36xXV/89TLQPhx3iMc9BVsxIbneXilV+83w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "bd6a2d5f-b8ed-4d10-80c7-725835396e6c",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-16T16:00:57.570558Z",
+        "subscriptionEndDate": "2026-03-15T16:06:44.917403Z"
+      },
+      "purchases": [
+        {
+          "id": 1131,
+          "price": 290.0,
+          "purchaseDate": "2026-02-15T16:06:44.917403Z",
+          "subscriptionEndDate": "2026-03-15T16:06:44.917403Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "bf869f12-6abc-447d-99e9-10643816139f",
+        "name": "Никита ",
+        "userName": "vikchrov@yandex.ru",
+        "email": "vikchrov@yandex.ru",
+        "registrationDateUtc": "2026-02-09T16:53:12Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEBEar4btDeQCN6JzHwvEifbGqwEk34yqTboFIZ7uAQivrGlvLI4H+EkirKxYYVPNtA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "bf869f12-6abc-447d-99e9-10643816139f",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2025-05-09T08:35:11.060301Z",
+        "subscriptionEndDate": "2026-03-09T16:54:11.192748Z"
+      },
+      "purchases": [
+        {
+          "id": 1101,
+          "price": 390.0,
+          "purchaseDate": "2026-02-09T16:54:11.192748Z",
+          "subscriptionEndDate": "2026-03-09T16:54:11.192748Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c0c136f7-de6a-4760-a34b-d2a139179759",
+        "name": "Сергей",
+        "userName": "smirnov.furadonin@gmail.com",
+        "email": "smirnov.furadonin@gmail.com",
+        "registrationDateUtc": "2026-02-20T08:13:12Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPUUHSuNh4ONwmJIKmVdJio+YjK4h0NO/b8DiC5a0Ngmq9xpmiRhtMMHmUuQ3bLhMg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c0c136f7-de6a-4760-a34b-d2a139179759",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-20T20:16:38.879069Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c1081242-b4d9-421a-bc39-ea09c6a8a406",
+        "name": "Valeria",
+        "userName": "cvaleri063@mail.ru",
+        "email": "cvaleri063@mail.ru",
+        "registrationDateUtc": "2026-02-08T08:23:44Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELAFzUdrjzT6aLfFst6v0BPnoPL5iyvyeOLFd0P2A/BKIdG+QzcpNyh+cF75/4sU2Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c1081242-b4d9-421a-bc39-ea09c6a8a406",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-09-03T08:49:12.896663Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c16969fa-447d-4946-b607-c374217711af",
+        "name": "Ашура",
+        "userName": "netut06@gmail.com",
+        "email": "netut06@gmail.com",
+        "registrationDateUtc": "2026-02-18T20:37:32Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDKlCebrH/uB3gdjpAMluItaZgcUUAOndUwh/iCXUOm9vRyl5sK8h6IwO3rWUuHztA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c16969fa-447d-4946-b607-c374217711af",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-19T20:34:25.002581Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c2e0af0f-8afd-47c3-b0d6-2c0ddbd578b7",
+        "name": "Julia",
+        "userName": "Lastheaven@yandex.ru",
+        "email": "Lastheaven@yandex.ru",
+        "registrationDateUtc": "2026-02-09T22:01:41Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDzROVmdMBZ39vonG/n8jIv2XD8xYmZyCsiQILOOEzJ0YAU+EaDybets7IUn2XLc7g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c2e0af0f-8afd-47c3-b0d6-2c0ddbd578b7",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-10T21:53:58.09667Z",
+        "subscriptionEndDate": "2026-03-09T22:03:03.296787Z"
+      },
+      "purchases": [
+        {
+          "id": 1102,
+          "price": 290.0,
+          "purchaseDate": "2026-02-09T22:03:03.296791Z",
+          "subscriptionEndDate": "2026-03-09T22:03:03.296787Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c36e9527-6726-4801-a5a4-41cd11e556bc",
+        "name": "Халил ",
+        "userName": "Khalil.zlouu@mail.ru",
+        "email": "Khalil.zlouu@mail.ru",
+        "registrationDateUtc": "2026-02-06T19:30:47Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPVolfbfj1Xa8khpk+Eh58wn/+05DeZnMlWnv8R0oEhFa8urdEkGqrlspU+ozo2jWw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c36e9527-6726-4801-a5a4-41cd11e556bc",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2025-12-25T13:06:53.269133Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c505b019-d766-4d00-b1e9-b366345c38b7",
+        "name": "эльдар",
+        "userName": "faker783@gmail.com",
+        "email": "faker783@gmail.com",
+        "registrationDateUtc": "2026-02-03T06:04:18Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEN6cbroR/yZ9wI5zebGqZgeG1D208y3QHtddmTWpKWPp+Hac0vR19kub17eSN8Aw6A=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c505b019-d766-4d00-b1e9-b366345c38b7",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-01-31T12:11:50.37364Z",
+        "subscriptionEndDate": "2026-03-03T06:50:48.657106Z"
+      },
+      "purchases": [
+        {
+          "id": 1077,
+          "price": 390.0,
+          "purchaseDate": "2026-02-03T06:50:48.657148Z",
+          "subscriptionEndDate": "2026-03-03T06:50:48.657106Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c6d44864-54cb-4e10-ac7b-507a80d73843",
+        "name": "Анастасия",
+        "userName": "anastasiajamalova@gmail.com",
+        "email": "anastasiajamalova@gmail.com",
+        "registrationDateUtc": "2026-02-14T12:53:14Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJuNs+Ym/p3QZGUj9tr35Kav/EuX7E3SFoaHPVuTzMaYMb1iPh8qM8Y1mcK9MYHD4A=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c6d44864-54cb-4e10-ac7b-507a80d73843",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-13T12:03:48.681922Z",
+        "subscriptionEndDate": "2026-03-14T13:10:24.373627Z"
+      },
+      "purchases": [
+        {
+          "id": 1123,
+          "price": 390.0,
+          "purchaseDate": "2026-02-14T13:10:24.373641Z",
+          "subscriptionEndDate": "2026-03-14T13:10:24.373627Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c6f86bb1-8acf-4ae3-94f9-19166808e390",
+        "name": "Анастасия",
+        "userName": "Nastyaemsh@gmail.com",
+        "email": "Nastyaemsh@gmail.com",
+        "registrationDateUtc": "2026-02-17T13:23:45Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIGmFDg9a2RZOvz0XP/9VvOimGj8KO0BtM5JCOi5INo5d+MchmwG384KTPqSMNaLVg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c6f86bb1-8acf-4ae3-94f9-19166808e390",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-17T12:11:10.994714Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c767c1e0-f10c-4e04-ad1e-b45faa526e47",
+        "name": "Елена ",
+        "userName": "brunetka95_9@mail.ru",
+        "email": "brunetka95_9@mail.ru",
+        "registrationDateUtc": "2026-02-08T19:16:44Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGUhWj6gkVsH2ZN2QCpGAHkPR3UwzNySeDynElWMl+99ArZIUKdrw4UX/RWwGesdxA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c767c1e0-f10c-4e04-ad1e-b45faa526e47",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-07T08:46:01.169898Z",
+        "subscriptionEndDate": "2026-03-09T11:02:54.778228Z"
+      },
+      "purchases": [
+        {
+          "id": 1100,
+          "price": 390.0,
+          "purchaseDate": "2026-02-09T11:02:54.778246Z",
+          "subscriptionEndDate": "2026-03-09T11:02:54.778228Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "c9e93075-47f9-4091-b36f-066ecd0453be",
+        "name": "Сергей",
+        "userName": "a7981@mail.ru",
+        "email": "a7981@mail.ru",
+        "registrationDateUtc": "2026-02-06T08:28:24Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEKlz29kdp2+0sTHa04kMmkzKTjydepWAH+Y1SGjY7WvJAFTr4jKC2eD2im/NEC434Q=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "c9e93075-47f9-4091-b36f-066ecd0453be",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-07T08:01:00.906955Z",
+        "subscriptionEndDate": "3026-02-06T08:31:37.261362Z"
+      },
+      "purchases": [
+        {
+          "id": 1085,
+          "price": 5890.0,
+          "purchaseDate": "2026-02-06T08:31:37.261362Z",
+          "subscriptionEndDate": "3026-02-06T08:31:37.261362Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "ccd8109a-abe4-4649-9e85-3df58c6688d2",
+        "name": "Юлия",
+        "userName": "akimshik2007@rambler.ru",
+        "email": "akimshik2007@rambler.ru",
+        "registrationDateUtc": "2026-02-10T18:51:26Z",
+        "passwordHash": "AQAAAAIAAYagAAAAECyaRdhPB/Ddyea3bTM4s28/68kvhzICG+hASZiwFC44/dVuPbi6WJOlKzCcLq+y7w=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ccd8109a-abe4-4649-9e85-3df58c6688d2",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-13T12:13:41.975907Z",
+        "subscriptionEndDate": "2026-03-12T18:52:04.904517Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-10T18:52:04.904547Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "d13d8aba-dc46-4e35-82e2-f1f9fed44860",
+        "name": "Юлия",
+        "userName": "Y.o.efremova@gmail.com",
+        "email": "Y.o.efremova@gmail.com",
+        "registrationDateUtc": "2026-02-09T18:01:00Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEAWAlizUd9MavTUTTQTR35LIjAz8DLVH1FupyYEIHa5TLPXxK2M9SfVecXiji7pnUg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "d13d8aba-dc46-4e35-82e2-f1f9fed44860",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-09T12:58:01.174776Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "d3aeb4b0-c894-4f97-ae43-ebcf03906d4d",
+        "name": "Милла Гребнева ",
+        "userName": "grebnevamila1@gmail.com",
+        "email": "grebnevamila1@gmail.com",
+        "registrationDateUtc": "2026-02-10T10:00:44Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEL9roU9wIrB+xF9hiwopEknYNEGmANp8a2FNOSR7/ILtM22GhLuFpnHgJ+ntm60spQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "d3aeb4b0-c894-4f97-ae43-ebcf03906d4d",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-11T09:43:30.111042Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "d494ca63-708f-4a8d-a1b9-0529cd8a4ff6",
+        "name": "Ольга",
+        "userName": "olgakushenko1108@gmail.com",
+        "email": "olgakushenko1108@gmail.com",
+        "registrationDateUtc": "2026-02-07T10:31:47Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHBT7VFh0/gjCxtZuPDhGlTPnPWXWGN9CsoHZoonfW/yKfLnUL0SXPQQI0qLY11Qgw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "d494ca63-708f-4a8d-a1b9-0529cd8a4ff6",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2026-02-08T10:29:14.810506Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "d6404753-b187-45b0-9175-ca6a49e8fd68",
+        "name": "Бахтиёр",
+        "userName": "bahtiyorradjapov83@gmail.com",
+        "email": "bahtiyorradjapov83@gmail.com",
+        "registrationDateUtc": "2026-02-09T07:36:28Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELYIdXZMHatBMB3J1Yvax1aYrCwmchsUNMHkXKhmsW5MXskgINOtETgfutAvP749fQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "d6404753-b187-45b0-9175-ca6a49e8fd68",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-10T07:32:40.417492Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "d969a87b-b510-4a15-9ad4-c683f9209612",
+        "name": "Татьяна",
+        "userName": "anninatata@mail.ru",
+        "email": "anninatata@mail.ru",
+        "registrationDateUtc": "2026-02-18T08:17:39Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEM4MseTwaBje8iDFHEyXmour1ATWNZxY7YdYmt2+Q4Hayp99ZJ1/7s/3JUEuI6yGbQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "d969a87b-b510-4a15-9ad4-c683f9209612",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-03-21T08:15:39.739188Z",
+        "subscriptionEndDate": "2026-03-20T08:19:05.285055Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-18T08:19:05.28515Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "db5751a4-5b2d-47a7-a755-151b2f70f0bf",
+        "name": "Андрей ",
+        "userName": "dobrikov1@yandex.ru",
+        "email": "dobrikov1@yandex.ru",
+        "registrationDateUtc": "2026-02-14T15:21:15Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEMJOpwuppQQeKZvuof0tp4mjgH4YEeUsAj8JxLlgAHXbj/Ba5w5mBjE2BMsaJHLNBw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "db5751a4-5b2d-47a7-a755-151b2f70f0bf",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-01-31T16:18:04.261641Z",
+        "subscriptionEndDate": "2026-03-14T15:27:49.237363Z"
+      },
+      "purchases": [
+        {
+          "id": 1124,
+          "price": 390.0,
+          "purchaseDate": "2026-02-14T15:27:49.237385Z",
+          "subscriptionEndDate": "2026-03-14T15:27:49.237363Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "dcb6a4f1-8163-4933-9a09-321113de0425",
+        "name": "Ina",
+        "userName": "incik.mogoreanu@gmail.com",
+        "email": "incik.mogoreanu@gmail.com",
+        "registrationDateUtc": "2026-02-10T10:19:59Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFLBZLoJewN5K4xHSg97CEQsj8nEHE4INy092vj1lwva71EHneFGGHrw/+5XBiGjtw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "dcb6a4f1-8163-4933-9a09-321113de0425",
+        "country": "MD",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-10T10:52:20.328775Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "ddad5f24-2a14-4c0d-abda-4a81110e30be",
+        "name": "Наталья ",
+        "userName": "kuzminanatalia@bk.ru",
+        "email": "kuzminanatalia@bk.ru",
+        "registrationDateUtc": "2026-02-02T11:05:40Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJrzQwfiYBLbrBNuFekNC6zU9ZB65euTBuzrEZqe44aBLumwLua650tqWf3QNkxfIg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ddad5f24-2a14-4c0d-abda-4a81110e30be",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-03T10:55:57.261323Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "ddb197e4-aefe-4800-9ac4-482bb879835d",
+        "name": "Анастасия ",
+        "userName": "nastay86@yandex.ru",
+        "email": "nastay86@yandex.ru",
+        "registrationDateUtc": "2026-02-16T10:02:09Z",
+        "passwordHash": "AQAAAAIAAYagAAAAELDgfPafErWycKjX6K8n1fYUMj2zh2C7lI9lhgI8EW6Wn/40NSvPctWHKyu/iiNWng=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ddb197e4-aefe-4800-9ac4-482bb879835d",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-17T09:59:30.877872Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "e256550a-c484-48d5-8b2f-dc35e89d5e36",
+        "name": "Hana yasser",
+        "userName": "hana.yasser9112005@gmail.com",
+        "email": "hana.yasser9112005@gmail.com",
+        "registrationDateUtc": "2026-02-08T22:24:25Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJsoZuYCjXlUy0kQxt+1HiH01bbHlCDW09SVpj73tUNdN64G6trZqFkkH1TfQat7Vg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "e256550a-c484-48d5-8b2f-dc35e89d5e36",
+        "country": "US",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-09T22:22:25.597782Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "e85faad3-42b5-456e-9acd-7784585994dd",
+        "name": "Егор",
+        "userName": "mark.kapirusov@bk.ru",
+        "email": "mark.kapirusov@bk.ru",
+        "registrationDateUtc": "2026-02-14T06:56:47Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEPMArLel/u7JMtNEqikTd7xT5ReIkJEVYRvDBbn8mTCt9Vjnf5qfZ1F22Wfbig+Mrw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "e85faad3-42b5-456e-9acd-7784585994dd",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-11T18:33:31.881746Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "e8c28089-58e2-499a-9384-1e3fe1b70e9a",
+        "name": "Alex",
+        "userName": "dgk-spb@mail.ru",
+        "email": "dgk-spb@mail.ru",
+        "registrationDateUtc": "2026-02-13T16:15:59Z",
+        "passwordHash": "AQAAAAIAAYagAAAAECCJpMAbYUigNc0P0K3CVX0ohJE2bEvejp7a3Auxo+4vt407Ey8By2aj1pIYbmflwA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "e8c28089-58e2-499a-9384-1e3fe1b70e9a",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-02-14T16:12:37.636346Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "e8fb6e37-bafd-4515-acf0-f82ab53808c3",
+        "name": "Елена ",
+        "userName": "Kamenskiha84@mail.ru",
+        "email": "Kamenskiha84@mail.ru",
+        "registrationDateUtc": "2026-02-17T14:00:35Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHdJdCXH6jTFokAmMz0TGh+3nKO1bmrI+3Gei4OkJaIvMcFIX3zNtTAYl4hXW95n8g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "e8fb6e37-bafd-4515-acf0-f82ab53808c3",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-01-21T12:58:44.05416Z",
+        "subscriptionEndDate": "2026-03-17T14:01:25.233417Z"
+      },
+      "purchases": [
+        {
+          "id": 1137,
+          "price": 390.0,
+          "purchaseDate": "2026-02-17T14:01:25.233434Z",
+          "subscriptionEndDate": "2026-03-17T14:01:25.233417Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "ea05ea26-3e34-4b11-ba20-ce0de72c9356",
+        "name": "Анастасия",
+        "userName": "sergeevnaanastasia91@mail.ru",
+        "email": "sergeevnaanastasia91@mail.ru",
+        "registrationDateUtc": "2026-02-17T04:37:23Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEFtOAuYSAw5CTp1tHICr816cFh3v+PtvTj4UD23q4u5gI4DAOG07r7Lc6EnrBCWRkA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ea05ea26-3e34-4b11-ba20-ce0de72c9356",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-20T04:31:04.964933Z",
+        "subscriptionEndDate": "2026-03-19T04:41:22.7904Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-17T04:41:22.790615Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "ebeffb9c-2864-41b9-a9c0-a8d604ca19e9",
+        "name": "sana",
+        "userName": "heidaryfarzane25@gmail.com",
+        "email": "heidaryfarzane25@gmail.com",
+        "registrationDateUtc": "2026-02-08T15:26:39Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEC3/yEGQciSfSynz0CpVyoRnGfODnpj2X7doUABaerlFTImQJi65ZnOA18+NioHedA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ebeffb9c-2864-41b9-a9c0-a8d604ca19e9",
+        "country": "IR",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-09T15:24:25.380381Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "ef644732-0bd3-4371-a713-4a0276d2a9eb",
+        "name": "Adelina",
+        "userName": "adelinkakh19@icloud.com",
+        "email": "adelinkakh19@icloud.com",
+        "registrationDateUtc": "2026-02-15T07:09:33Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHWMW4prKRT4dEiZFQEkzCkqvhKbMEttZP87559iHKNZSUYSXI1hnGvnry/SqSS9JA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "ef644732-0bd3-4371-a713-4a0276d2a9eb",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-02T07:08:35.881621Z",
+        "subscriptionEndDate": "2026-03-01T07:10:03.834301Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 4,
+          "promoCode": "ANATOMY",
+          "extensionDays": 14,
+          "usedOn": "2026-02-15T07:10:03.834391Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "f0f6c6c6-f2d7-4137-b97f-22b39a48afa1",
+        "name": "Жазка",
+        "userName": "jazka85@mail.ru",
+        "email": "jazka85@mail.ru",
+        "registrationDateUtc": "2026-02-15T16:49:54Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGg9gVnnqXI8krncEitF4WOrf3R/Is0z5Ur1Bh7O5K7ZnBDDTKI1TRb3IUr8oXwHuw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "f0f6c6c6-f2d7-4137-b97f-22b39a48afa1",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-16T16:42:10.789397Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "f122e2f5-fe15-4905-bcf3-4a20fb9c34cf",
+        "name": "Наталья",
+        "userName": "Miss.Shihova@bk.ru",
+        "email": "Miss.Shihova@bk.ru",
+        "registrationDateUtc": "2026-02-19T15:45:46Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEK625sGN/F/Gn+7irxpVkcfZzAtEaSiDdvZ+mkc+60FggNENAxscpIfJcWsXm5AfEQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "f122e2f5-fe15-4905-bcf3-4a20fb9c34cf",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-11-16T21:32:24.224906Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "f3808653-2be8-4e0b-bdcd-ebb71df7af7b",
+        "name": "ирина",
+        "userName": "biryukova.irina1987@gmail.com",
+        "email": "biryukova.irina1987@gmail.com",
+        "registrationDateUtc": "2026-02-18T18:31:33Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIz6LnZAblODrxws8FtInmc+rc7tp6ju4gmd/eF7t9X4y7wlrt4QEisQzoTqJdo+Lg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "f3808653-2be8-4e0b-bdcd-ebb71df7af7b",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2026-02-19T17:50:01.565684Z",
+        "subscriptionEndDate": "2026-03-18T19:23:45.767776Z"
+      },
+      "purchases": [
+        {
+          "id": 1141,
+          "price": 290.0,
+          "purchaseDate": "2026-02-18T19:23:45.767782Z",
+          "subscriptionEndDate": "2026-03-18T19:23:45.767776Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "f61ad2f0-4fb9-499a-a24e-a134f637b590",
+        "name": "Александр ",
+        "userName": "lead_guitar@mail.ru",
+        "email": "lead_guitar@mail.ru",
+        "registrationDateUtc": "2026-02-12T12:12:12Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEJ8GUpgOOmwODxm7Dkl3A0Ddc+3jEr0ED5SR3Fsh6vb2MGNi30NEbmrZRebPbQZjFg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "f61ad2f0-4fb9-499a-a24e-a134f637b590",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-13T12:07:33.015171Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "fa0a4c08-8e45-4368-a776-22f6635858a2",
+        "name": "Vital",
+        "userName": "vital-dunaev@yandex.ru",
+        "email": "vital-dunaev@yandex.ru",
+        "registrationDateUtc": "2026-02-19T13:49:10Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEL096/PMjdUHdSRZmMdM/pj6N0YQd2n+9bAzumRhq1ijxCjbyHeWQxbSY+xaElC5zw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "fa0a4c08-8e45-4368-a776-22f6635858a2",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-20T12:57:29.826201Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "fd757b73-15d4-4be4-affd-3121a01f497b",
+        "name": "Andrew",
+        "userName": "aadomin@yandex.ru",
+        "email": "aadomin@yandex.ru",
+        "registrationDateUtc": "2026-02-12T11:04:14Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENmpJ31fZdzDliOk8beyI17Z6DO6t20sHBvAZbB+UW1gOVV0hMrmiNrqXSOm/MYLqQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "fd757b73-15d4-4be4-affd-3121a01f497b",
+        "country": "US",
+        "platform": "RuStore",
+        "trialEndDate": "2026-02-13T10:58:18.15001Z",
+        "subscriptionEndDate": "2026-03-12T11:14:15.912776Z"
+      },
+      "purchases": [
+        {
+          "id": 1112,
+          "price": 390.0,
+          "purchaseDate": "2026-02-12T11:14:15.912785Z",
+          "subscriptionEndDate": "2026-03-12T11:14:15.912776Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    }
+  ]
+}

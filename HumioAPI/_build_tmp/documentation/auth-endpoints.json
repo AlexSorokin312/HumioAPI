@@ -1,0 +1,102 @@
+{
+  "title": "Auth API",
+  "basePath": "/api/auth",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/google/config",
+      "summary": "Get Google OAuth client config for frontend",
+      "responses": [
+        { "status": 200, "body": { "clientId": "string", "redirectUri": "string" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/register",
+      "summary": "Register user and issue tokens",
+      "body": [
+        { "name": "email", "type": "string", "required": true, "format": "email" },
+        { "name": "password", "type": "string", "required": true, "minLength": 6 },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "deviceKey", "type": "string", "required": false },
+        { "name": "platform", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "user": "UserResponse", "tokens": "AuthTokensResponse" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 500, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/login",
+      "summary": "Login by email/password",
+      "body": [
+        { "name": "email", "type": "string", "required": true, "format": "email" },
+        { "name": "password", "type": "string", "required": true },
+        { "name": "deviceKey", "type": "string", "required": false },
+        { "name": "platform", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "user": "UserResponse", "tokens": "AuthTokensResponse" } },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/google",
+      "summary": "Google sign-in (authorization code)",
+      "body": [
+        { "name": "code", "type": "string", "required": true },
+        { "name": "redirectUri", "type": "string", "required": false },
+        { "name": "deviceKey", "type": "string", "required": false },
+        { "name": "platform", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "user": "UserResponse", "isNewUser": "bool", "tokens": "AuthTokensResponse" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 500, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/refresh",
+      "summary": "Refresh access token",
+      "body": [
+        { "name": "refreshToken", "type": "string", "required": true },
+        { "name": "deviceKey", "type": "string", "required": false },
+        { "name": "platform", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": "AuthTokensResponse" },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/logout",
+      "summary": "Logout (revoke refresh token)",
+      "body": [
+        { "name": "refreshToken", "type": "string", "required": true }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    }
+  ],
+  "definitions": {
+    "UserResponse": {
+      "id": "long",
+      "email": "string",
+      "name": "string",
+      "createdAt": "DateTimeOffset",
+      "lastSeen": "DateTimeOffset?"
+    },
+    "AuthTokensResponse": {
+      "accessToken": "string",
+      "refreshToken": "string",
+      "accessTokenExpiresAt": "DateTimeOffset"
+    }
+  }
+}

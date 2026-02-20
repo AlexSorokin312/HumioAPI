@@ -6,4 +6,5 @@ public sealed record UsersImportResponse(
     int Existing,
     int Failed,
     int SubscriptionsApplied,
+    int PurchasesApplied,
     long ModuleId);

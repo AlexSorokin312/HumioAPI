@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -125,6 +125,31 @@
     .promo-card h3 {
       margin: 0 0 12px;
       font-size: 17px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .card-title-row h3 {
+      margin: 0;
+    }
+
+    .module-card-body {
+      max-height: 720px;
+      opacity: 1;
+      overflow: hidden;
+      transition: max-height 0.28s ease, opacity 0.22s ease;
+    }
+
+    .module-card-body.collapsed {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .field {
@@ -365,12 +390,85 @@
   <main class="content">
     <nav class="tabs" aria-label="Разделы панели">
       <button class="tab-button active" type="button" data-tab="users">Пользователи</button>
+      <button class="tab-button" type="button" data-tab="import">Импорт</button>
       <button class="tab-button" type="button" data-tab="promocodes">Промокоды</button>
       <button class="tab-button" type="button" data-tab="modules">Модули</button>
     </nav>
 
     <section id="tab-users" class="tab-panel active">
-      <h2>Пользователи</h2>
+      <div class="promo-card">
+        <div class="promo-header">
+          <h3>Users</h3>
+          <div class="promo-search">
+            <input id="users-search-email" type="text" placeholder="Search by email" />
+            <button class="btn" id="users-search-btn" type="button">Search</button>
+            <button class="btn" id="users-reset-btn" type="button">Reset</button>
+            <button class="btn danger" id="users-delete-all-btn" type="button">Удалить всех</button>
+          </div>
+        </div>
+        <div class="promo-table-wrap">
+          <table class="promo-table">
+            <thead>
+              <tr>
+                <th id="users-sort-id" style="cursor:pointer; user-select:none;" title="Сортировать по ID">ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Country</th>
+                <th id="users-sort-created" style="cursor:pointer; user-select:none;" title="Сортировать по дате создания">Created</th>
+                <th id="users-sort-last-seen" style="cursor:pointer; user-select:none;" title="Сортировать по последнему входу">Last seen</th>
+                <th>Modules</th>
+                <th id="users-sort-purchases-count" style="cursor:pointer; user-select:none;" title="Сортировать по количеству покупок">Purchases</th>
+                <th id="users-sort-total-spent" style="cursor:pointer; user-select:none;" title="Сортировать по сумме покупок">Total spent</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+        <div id="users-list-status" class="status"></div>
+      </div>
+    </section>
+
+    <section id="tab-import" class="tab-panel">
+      <div class="promo-card" style="max-width: 760px;">
+        <h3>Импорт пользователей</h3>
+        <div class="field">
+          <label for="import-module-id">Module ID (опционально)</label>
+          <input id="import-module-id" type="number" min="1" placeholder="1" />
+        </div>
+
+        <div class="field">
+          <label>Все пользователи</label>
+          <div class="buttons">
+            <button class="btn primary" id="import-all-btn" type="button">Импортировать всех</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="import-count">По количеству</label>
+          <div class="buttons">
+            <input id="import-count" type="number" min="1" placeholder="100" style="max-width:180px;" />
+            <button class="btn primary" id="import-count-btn" type="button">Импорт по количеству</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="import-created-after-date">После даты</label>
+          <div class="buttons">
+            <input id="import-created-after-date" type="date" style="max-width:220px;" />
+            <button class="btn primary" id="import-date-btn" type="button">Импорт после даты</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="import-email">По email</label>
+          <div class="buttons">
+            <input id="import-email" type="email" placeholder="user@example.com" style="max-width:300px;" />
+            <button class="btn primary" id="import-email-btn" type="button">Импорт по email</button>
+          </div>
+        </div>
+        <div id="import-status" class="status"></div>
+        <div id="import-result" class="hint"></div>
+      </div>
     </section>
 
     <section id="tab-promocodes" class="tab-panel">
@@ -392,8 +490,10 @@
               <input id="promo-days" type="number" min="1" required placeholder="30" />
             </div>
             <div class="field">
-              <label for="promo-product-id">ID продукта (product_set)</label>
-              <input id="promo-product-id" type="number" min="1" required placeholder="1" />
+              <label for="promo-product-select">Продукт</label>
+              <select id="promo-product-select" style="width:100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 14px;">
+                <option value="">Выберите продукт</option>
+              </select>
             </div>
             <div class="buttons">
               <button class="btn primary" type="submit" id="promo-submit-btn">Создать</button>
@@ -421,8 +521,8 @@
                   <th>Код</th>
                   <th>Макс. использ.</th>
                   <th>Дней</th>
-                  <th>Действует до (расчетно)</th>
-                  <th>Product ID</th>
+                  <th>Действует до</th>
+                  <th>Продукт</th>
                   <th>Действия</th>
                 </tr>
               </thead>
@@ -481,34 +581,39 @@
 
         <div class="modules-right">
           <div class="promo-card">
-            <h3 id="module-form-title">Создать модуль</h3>
-            <form id="module-form">
-              <input id="module-edit-id" type="hidden" />
-              <div class="field">
-                <label for="module-name">Название модуля</label>
-                <input id="module-name" type="text" required placeholder="Базовый курс" />
-              </div>
-              <div class="field">
-                <label for="module-description">Описание</label>
-                <input id="module-description" type="text" placeholder="Краткое описание" />
-              </div>
-              <div id="module-locale-box" class="field" hidden>
-                <label for="module-locale-code">Локализация</label>
-                <div class="buttons" style="margin-top:0;">
-                  <select id="module-locale-code" style="padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px;">
-                    <option value="en">EN</option>
-                  </select>
+            <div class="card-title-row">
+              <h3 id="module-form-title">Создать модуль</h3>
+              <button class="btn" type="button" id="module-card-toggle-btn">Свернуть</button>
+            </div>
+            <div id="module-card-body" class="module-card-body">
+              <form id="module-form">
+                <input id="module-edit-id" type="hidden" />
+                <div class="field">
+                  <label for="module-name">Название модуля</label>
+                  <input id="module-name" type="text" required placeholder="Базовый курс" />
                 </div>
-                <input id="module-locale-name" type="text" placeholder="Название на выбранном языке" />
-                <input id="module-locale-description" type="text" placeholder="Описание на выбранном языке" />
-                <div id="module-locale-status" class="status"></div>
-              </div>
-              <div class="buttons">
-                <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
-                <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
-              </div>
-            </form>
-            <div id="module-form-status" class="status"></div>
+                <div class="field">
+                  <label for="module-description">Описание</label>
+                  <input id="module-description" type="text" placeholder="Краткое описание" />
+                </div>
+                <div id="module-locale-box" class="field" hidden>
+                  <label for="module-locale-code">Локализация</label>
+                  <div class="buttons" style="margin-top:0;">
+                    <select id="module-locale-code" style="padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px;">
+                      <option value="en">EN</option>
+                    </select>
+                  </div>
+                  <input id="module-locale-name" type="text" placeholder="Название на выбранном языке" />
+                  <input id="module-locale-description" type="text" placeholder="Описание на выбранном языке" />
+                  <div id="module-locale-status" class="status"></div>
+                </div>
+                <div class="buttons">
+                  <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
+                  <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
+                </div>
+              </form>
+              <div id="module-form-status" class="status"></div>
+            </div>
           </div>
 
           <div class="promo-card">
@@ -544,6 +649,27 @@
     const logoutButton = document.getElementById("logout-button");
     const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
     const tabPanels = Array.from(document.querySelectorAll(".tab-panel"));
+    const usersTableBody = document.getElementById("users-table-body");
+    const usersListStatus = document.getElementById("users-list-status");
+    const usersSearchEmail = document.getElementById("users-search-email");
+    const usersSearchBtn = document.getElementById("users-search-btn");
+    const usersResetBtn = document.getElementById("users-reset-btn");
+    const usersDeleteAllBtn = document.getElementById("users-delete-all-btn");
+    const usersSortId = document.getElementById("users-sort-id");
+    const usersSortCreated = document.getElementById("users-sort-created");
+    const usersSortLastSeen = document.getElementById("users-sort-last-seen");
+    const usersSortPurchasesCount = document.getElementById("users-sort-purchases-count");
+    const usersSortTotalSpent = document.getElementById("users-sort-total-spent");
+    const importAllBtn = document.getElementById("import-all-btn");
+    const importCountBtn = document.getElementById("import-count-btn");
+    const importDateBtn = document.getElementById("import-date-btn");
+    const importEmailBtn = document.getElementById("import-email-btn");
+    const importCountInput = document.getElementById("import-count");
+    const importCreatedAfterDateInput = document.getElementById("import-created-after-date");
+    const importEmailInput = document.getElementById("import-email");
+    const importModuleIdInput = document.getElementById("import-module-id");
+    const importStatus = document.getElementById("import-status");
+    const importResult = document.getElementById("import-result");
 
     const promoForm = document.getElementById("promo-form");
     const promoFormTitle = document.getElementById("promo-form-title");
@@ -553,7 +679,7 @@
     const promoCodeInput = document.getElementById("promo-code");
     const promoMaxUsageInput = document.getElementById("promo-max-usage");
     const promoDaysInput = document.getElementById("promo-days");
-    const promoProductIdInput = document.getElementById("promo-product-id");
+    const promoProductSelect = document.getElementById("promo-product-select");
     const promoFormStatus = document.getElementById("promo-form-status");
 
     const promoTableBody = document.getElementById("promo-table-body");
@@ -564,6 +690,8 @@
 
     const moduleForm = document.getElementById("module-form");
     const moduleFormTitle = document.getElementById("module-form-title");
+    const moduleCardBody = document.getElementById("module-card-body");
+    const moduleCardToggleBtn = document.getElementById("module-card-toggle-btn");
     const moduleEditId = document.getElementById("module-edit-id");
     const moduleNameInput = document.getElementById("module-name");
     const moduleDescriptionInput = document.getElementById("module-description");
@@ -588,9 +716,19 @@
     const productsListStatus = document.getElementById("products-list-status");
 
     let promoItems = [];
+    let usersItems = [];
+    let usersSortField = "createdAt";
+    let usersSortDirection = "desc";
     let moduleItems = [];
     let productItems = [];
     let selectedProductModuleIds = [];
+    let moduleCardCollapsed = false;
+
+    function setModuleCardCollapsed(collapsed) {
+      moduleCardCollapsed = collapsed;
+      moduleCardBody.classList.toggle("collapsed", collapsed);
+      moduleCardToggleBtn.textContent = collapsed ? "Развернуть" : "Свернуть";
+    }
 
     function resetModuleForm() {
       moduleEditId.value = "";
@@ -612,6 +750,7 @@
       moduleNameInput.value = item.name;
       moduleDescriptionInput.value = item.description || "";
       moduleLocaleBox.hidden = false;
+      setModuleCardCollapsed(false);
       moduleFormTitle.textContent = `Редактировать модуль #${item.id}`;
       moduleSubmitBtn.textContent = "Сохранить";
       moduleCancelBtn.hidden = false;
@@ -651,6 +790,25 @@
         setStatus(moduleLocaleStatus, "Локализация загружена.", "ok");
       } catch (error) {
         setStatus(moduleLocaleStatus, error.message || "Ошибка загрузки локализации.", "error");
+      }
+    }
+
+    function populatePromoProductSelect(selectedProductId = null) {
+      if (!productItems.length) {
+        promoProductSelect.innerHTML = `<option value="">Нет продуктов</option>`;
+        return;
+      }
+
+      promoProductSelect.innerHTML = [`<option value="">Выберите продукт</option>`]
+        .concat(
+          productItems.map((product) => `<option value="${product.id}">${product.name}</option>`)
+        )
+        .join("");
+
+      if (selectedProductId && productItems.some((product) => product.id === Number(selectedProductId))) {
+        promoProductSelect.value = String(selectedProductId);
+      } else {
+        promoProductSelect.value = "";
       }
     }
 
@@ -740,12 +898,282 @@
       return { res, data };
     }
 
+    function formatDateTime(value) {
+      if (!value) {
+        return "—";
+      }
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) {
+        return "—";
+      }
+
+      return date.toLocaleString("ru-RU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function formatMoneyFromCents(value) {
+      const cents = Number(value || 0);
+      const amount = cents / 100;
+      return amount.toLocaleString("ru-RU", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function parseSortableValue(item, field) {
+      if (field === "createdAt" || field === "lastSeen") {
+        const rawDate = item?.[field];
+        if (!rawDate) {
+          return 0;
+        }
+
+        const timestamp = new Date(rawDate).getTime();
+        return Number.isNaN(timestamp) ? 0 : timestamp;
+      }
+
+      return Number(item?.[field] || 0);
+    }
+
+    function getSortedUsers(items) {
+      const sorted = [...items];
+      sorted.sort((a, b) => {
+        const left = parseSortableValue(a, usersSortField);
+        const right = parseSortableValue(b, usersSortField);
+        if (left === right) {
+          return 0;
+        }
+
+        return usersSortDirection === "asc" ? left - right : right - left;
+      });
+      return sorted;
+    }
+
+    function updateUsersSortHeaders() {
+      const idArrow = usersSortField === "id" ? (usersSortDirection === "asc" ? " ↑" : " ↓") : "";
+      const createdArrow = usersSortField === "createdAt" ? (usersSortDirection === "asc" ? " ↑" : " ↓") : "";
+      const lastSeenArrow = usersSortField === "lastSeen" ? (usersSortDirection === "asc" ? " ↑" : " ↓") : "";
+      const purchasesArrow = usersSortField === "purchasesCount" ? (usersSortDirection === "asc" ? " ↑" : " ↓") : "";
+      const totalSpentArrow = usersSortField === "totalPurchasedAmountCents" ? (usersSortDirection === "asc" ? " ↑" : " ↓") : "";
+      usersSortId.textContent = `ID${idArrow}`;
+      usersSortCreated.textContent = `Created${createdArrow}`;
+      usersSortLastSeen.textContent = `Last seen${lastSeenArrow}`;
+      usersSortPurchasesCount.textContent = `Purchases${purchasesArrow}`;
+      usersSortTotalSpent.textContent = `Total spent${totalSpentArrow}`;
+    }
+
+    function toggleUsersSort(field) {
+      if (usersSortField === field) {
+        usersSortDirection = usersSortDirection === "asc" ? "desc" : "asc";
+      } else {
+        usersSortField = field;
+        usersSortDirection = "desc";
+      }
+
+      updateUsersSortHeaders();
+      renderUsers(usersItems);
+    }
+
+    function renderUsers(items) {
+      if (!items || items.length === 0) {
+        usersTableBody.innerHTML = `<tr><td colspan="9">Пользователей пока нет.</td></tr>`;
+        return;
+      }
+
+      const sortedItems = getSortedUsers(items);
+      usersTableBody.innerHTML = sortedItems.map((item) => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.email || "—"}</td>
+          <td>${item.name || "—"}</td>
+          <td>${item.country || "—"}</td>
+          <td>${formatDateTime(item.createdAt)}</td>
+          <td>${formatDateTime(item.lastSeen)}</td>
+          <td>${Array.isArray(item.modules) && item.modules.length > 0 ? item.modules.map((m) => m.name || `#${m.id}`).join(", ") : "—"}</td>
+          <td>${Number(item.purchasesCount || 0)}</td>
+          <td>${formatMoneyFromCents(item.totalPurchasedAmountCents || 0)}</td>
+        </tr>`).join("");
+    }
+
+    async function loadUsers() {
+      setStatus(usersListStatus, "Загрузка пользователей...", null);
+      try {
+        const email = usersSearchEmail.value.trim();
+        const query = new URLSearchParams({
+          skip: "0",
+          take: "100"
+        });
+
+        if (email) {
+          query.set("email", email);
+        }
+
+        const { res, data } = await requestJson(`/api/users?${query.toString()}`, {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось загрузить пользователей."));
+        }
+
+        usersItems = Array.isArray(data?.items) ? data.items : [];
+        renderUsers(usersItems);
+        setStatus(usersListStatus, `Всего: ${data?.total ?? usersItems.length}`, "ok");
+      } catch (error) {
+        usersItems = [];
+        renderUsers([]);
+        setStatus(usersListStatus, error.message || "Ошибка загрузки пользователей.", "error");
+      }
+    }
+
+    async function deleteAllUsers() {
+      if (!confirm("Удалить всех пользователей из БД? Это действие нельзя отменить.")) {
+        return;
+      }
+
+      setStatus(usersListStatus, "Удаление всех пользователей...", null);
+      try {
+        const { res, data } = await requestJson("/api/users", {
+          method: "DELETE",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось удалить пользователей."));
+        }
+
+        const deletedCount = Number(data?.deletedCount || 0);
+        usersItems = [];
+        renderUsers([]);
+        setStatus(usersListStatus, `Удалено пользователей: ${deletedCount}.`, "ok");
+      } catch (error) {
+        setStatus(usersListStatus, error.message || "Ошибка удаления пользователей.", "error");
+      }
+    }
+
+    function clearImportResult() {
+      importResult.textContent = "";
+    }
+
+    function getImportModuleIdOrNull() {
+      const moduleIdRaw = importModuleIdInput.value.trim();
+      if (moduleIdRaw.length === 0) {
+        return null;
+      }
+
+      const moduleId = Number(moduleIdRaw);
+      if (!Number.isInteger(moduleId) || moduleId < 1) {
+        throw new Error("Module ID должен быть целым числом > 0.");
+      }
+
+      return moduleId;
+    }
+
+    async function runImport(payload) {
+      clearImportResult();
+      setStatus(importStatus, "Запуск импорта...", null);
+
+      try {
+        const { res, data } = await requestJson("/api/users/import", {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось выполнить импорт."));
+        }
+
+        setStatus(importStatus, "Импорт выполнен.", "ok");
+        importResult.textContent = `Total: ${data?.total ?? 0}, Created: ${data?.created ?? 0}, Existing: ${data?.existing ?? 0}, Failed: ${data?.failed ?? 0}, Subscriptions: ${data?.subscriptionsApplied ?? 0}, Purchases: ${data?.purchasesApplied ?? 0}, ModuleId: ${data?.moduleId ?? "—"}`;
+        await loadUsers();
+      } catch (error) {
+        setStatus(importStatus, error.message || "Ошибка импорта.", "error");
+      }
+    }
+
+    async function importAllUsers() {
+      try {
+        const moduleId = getImportModuleIdOrNull();
+        const payload = { mode: "all" };
+        if (moduleId) {
+          payload.moduleId = moduleId;
+        }
+        await runImport(payload);
+      } catch (error) {
+        setStatus(importStatus, error.message || "Ошибка импорта.", "error");
+      }
+    }
+
+    async function importByCount() {
+      const count = Number(importCountInput.value);
+      if (!Number.isInteger(count) || count < 1) {
+        setStatus(importStatus, "Укажите корректное количество (> 0).", "error");
+        return;
+      }
+
+      try {
+        const moduleId = getImportModuleIdOrNull();
+        const payload = { mode: "count", count };
+        if (moduleId) {
+          payload.moduleId = moduleId;
+        }
+        await runImport(payload);
+      } catch (error) {
+        setStatus(importStatus, error.message || "Ошибка импорта.", "error");
+      }
+    }
+
+    async function importAfterDate() {
+      const createdAfterDate = importCreatedAfterDateInput.value.trim();
+      if (!createdAfterDate) {
+        setStatus(importStatus, "Укажите дату в формате YYYY-MM-DD.", "error");
+        return;
+      }
+
+      try {
+        const moduleId = getImportModuleIdOrNull();
+        const payload = { mode: "after-date", createdAfterDate };
+        if (moduleId) {
+          payload.moduleId = moduleId;
+        }
+        await runImport(payload);
+      } catch (error) {
+        setStatus(importStatus, error.message || "Ошибка импорта.", "error");
+      }
+    }
+
+    async function importByEmail() {
+      const email = importEmailInput.value.trim();
+      if (!email) {
+        setStatus(importStatus, "Укажите email.", "error");
+        return;
+      }
+
+      try {
+        const moduleId = getImportModuleIdOrNull();
+        const payload = { mode: "by-email", email };
+        if (moduleId) {
+          payload.moduleId = moduleId;
+        }
+        await runImport(payload);
+      } catch (error) {
+        setStatus(importStatus, error.message || "Ошибка импорта.", "error");
+      }
+    }
+
     function resetPromoForm() {
       promoEditId.value = "";
       promoCodeInput.value = "";
       promoMaxUsageInput.value = "";
       promoDaysInput.value = "";
-      promoProductIdInput.value = "";
+      populatePromoProductSelect(null);
       promoFormTitle.textContent = "Создать промокод";
       promoSubmitBtn.textContent = "Создать";
       promoCancelBtn.hidden = true;
@@ -757,7 +1185,7 @@
       promoCodeInput.value = item.code;
       promoMaxUsageInput.value = String(item.maxUsageCount);
       promoDaysInput.value = String(item.days);
-      promoProductIdInput.value = String(item.productId);
+      populatePromoProductSelect(item.productId);
       promoFormTitle.textContent = `Редактировать промокод #${item.id}`;
       promoSubmitBtn.textContent = "Сохранить";
       promoCancelBtn.hidden = false;
@@ -773,6 +1201,7 @@
 
       promoTableBody.innerHTML = items.map((item) => {
         const validTo = calcValidTo(item.days);
+        const productName = productItems.find((p) => p.id === item.productId)?.name || "—";
         return `
           <tr>
             <td>${item.id}</td>
@@ -780,7 +1209,7 @@
             <td>${item.maxUsageCount}</td>
             <td>${item.days}</td>
             <td>${validTo}</td>
-            <td>${item.productId}</td>
+            <td>${productName}</td>
             <td>
               <div class="row-actions">
                 <button class="btn icon-btn" type="button" data-action="edit" data-id="${item.id}" title="Редактировать" aria-label="Редактировать">
@@ -882,7 +1311,7 @@
         code: promoCodeInput.value.trim(),
         maxUsageCount: Number(promoMaxUsageInput.value),
         days: Number(promoDaysInput.value),
-        productId: Number(promoProductIdInput.value)
+        productId: Number(promoProductSelect.value)
       };
 
       if (!payload.code || payload.maxUsageCount < 1 || payload.days < 1 || payload.productId < 1) {
@@ -983,6 +1412,7 @@
           });
         });
         productItems = Array.from(productMap.values()).sort((a, b) => a.id - b.id);
+        populatePromoProductSelect(Number(promoProductSelect.value) || null);
 
         renderModules(moduleItems);
         renderProducts(productItems);
@@ -1160,7 +1590,14 @@
           panel.classList.toggle("active", panel.id === `tab-${tab}`);
         });
 
+        if (tab === "users" && usersItems.length === 0) {
+          loadUsers();
+        }
+
         if (tab === "promocodes" && promoItems.length === 0) {
+          if (productItems.length === 0) {
+            loadModules();
+          }
           loadPromocodes();
         }
 
@@ -1174,6 +1611,9 @@
     moduleForm.addEventListener("submit", submitModuleForm);
     productForm.addEventListener("submit", submitProductForm);
     moduleCancelBtn.addEventListener("click", resetModuleForm);
+    moduleCardToggleBtn.addEventListener("click", () => {
+      setModuleCardCollapsed(!moduleCardCollapsed);
+    });
     moduleLocaleCode.addEventListener("change", loadModuleLocalization);
 
     promoCancelBtn.addEventListener("click", () => {
@@ -1185,6 +1625,21 @@
       promoSearchCode.value = "";
       loadPromocodes();
     });
+    importAllBtn.addEventListener("click", importAllUsers);
+    importCountBtn.addEventListener("click", importByCount);
+    importDateBtn.addEventListener("click", importAfterDate);
+    importEmailBtn.addEventListener("click", importByEmail);
+    usersSearchBtn.addEventListener("click", loadUsers);
+    usersResetBtn.addEventListener("click", () => {
+      usersSearchEmail.value = "";
+      loadUsers();
+    });
+    usersDeleteAllBtn.addEventListener("click", deleteAllUsers);
+    usersSortId.addEventListener("click", () => toggleUsersSort("id"));
+    usersSortCreated.addEventListener("click", () => toggleUsersSort("createdAt"));
+    usersSortLastSeen.addEventListener("click", () => toggleUsersSort("lastSeen"));
+    usersSortPurchasesCount.addEventListener("click", () => toggleUsersSort("purchasesCount"));
+    usersSortTotalSpent.addEventListener("click", () => toggleUsersSort("totalPurchasedAmountCents"));
 
     productModuleSelect.addEventListener("change", () => {
       const id = Number(productModuleSelect.value);
@@ -1202,6 +1657,12 @@
       if (event.key === "Enter") {
         event.preventDefault();
         searchByCode();
+      }
+    });
+    usersSearchEmail.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        loadUsers();
       }
     });
 
@@ -1278,7 +1739,12 @@
       renderSelectedProductModules();
     });
 
+    updateUsersSortHeaders();
+    loadUsers();
     logoutButton.addEventListener("click", logout);
   </script>
 </body>
 </html>
+
+
+

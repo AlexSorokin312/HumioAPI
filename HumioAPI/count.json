@@ -1,0 +1,312 @@
+{
+  "generatedAtUtc": "2026-02-20T09:04:48.7054005Z",
+  "filter": {
+    "mode": "count",
+    "requestedCount": 11
+  },
+  "exportedCount": 11,
+  "users": [
+    {
+      "aspNetUser": {
+        "id": "003cd15b-3d36-400a-9b2f-8150fe279680",
+        "name": "Арина Болдырева",
+        "userName": "boldyreva.aa22@mail.ru",
+        "email": "boldyreva.aa22@mail.ru",
+        "registrationDateUtc": "2025-02-15T20:08:01Z",
+        "passwordHash": "AQAAAAIAAYagAAAAENKnUYq0OHokyd69/39anrq4MiZs8nyhfk+XndZhUVidQmq7G/+pi4Ug1KFlx4IXlQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "003cd15b-3d36-400a-9b2f-8150fe279680",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-02-18T19:19:47.066001Z",
+        "subscriptionEndDate": "2025-02-02T17:14:20.138792Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "0046a96f-3f6c-4e82-9699-d6ee9826e778",
+        "name": "Светлана",
+        "userName": "svetlcopylowa@yandex.ru",
+        "email": "svetlcopylowa@yandex.ru",
+        "registrationDateUtc": "2025-03-09T23:10:47Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDeilql4b0A7I329ZdWjcp3YtneweLzX34TU/NAzwxriO1TTA/GatV8ur17MsR5UHw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "0046a96f-3f6c-4e82-9699-d6ee9826e778",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-03-10T10:35:10.687131Z",
+        "subscriptionEndDate": "2025-04-10T05:59:38.913734Z"
+      },
+      "purchases": [
+        {
+          "id": 32,
+          "price": 199.0,
+          "purchaseDate": "2025-03-10T05:59:38.913732Z",
+          "subscriptionEndDate": "2025-04-10T05:59:38.913734Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "009bedb5-6e1a-4a81-94f6-eb4fe94454f5",
+        "name": "Алёна",
+        "userName": "alenatatanina27@gmail.com",
+        "email": "alenatatanina27@gmail.com",
+        "registrationDateUtc": "2025-09-03T05:27:37Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEBH4tCeoawepPbeQ08ucB0Zxn4pCFhXqYyf/0IJeIi+nRBeY+3MfBOtY645llgetqQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "009bedb5-6e1a-4a81-94f6-eb4fe94454f5",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-08-23T19:56:33.876911Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "00a3825a-4f27-46db-b05a-2817e180463c",
+        "name": "Оксана Сергеевна",
+        "userName": "o-s-filippova@yandex.ru",
+        "email": "o-s-filippova@yandex.ru",
+        "registrationDateUtc": "2025-11-27T17:01:38Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEGdJEbNpNsa/yaz6nMS8fiFBeKo/xS0Attx+s2iK60qIyS1tDRCxJujnspPlQL4dIg=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "00a3825a-4f27-46db-b05a-2817e180463c",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-11-28T16:59:19.248227Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "00c236b6-4bc2-4295-8a41-20bf2e9c1acd",
+        "name": "Юлия",
+        "userName": "seva1205@yandex.ru",
+        "email": "seva1205@yandex.ru",
+        "registrationDateUtc": "2025-10-10T14:23:45Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEIb3lFmS1Zi6wDML0lGaiQHoYqPsqLkZiFjQR6aAU6iNwXy4jGpNDqCqrC3oAD3++g=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "00c236b6-4bc2-4295-8a41-20bf2e9c1acd",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2025-10-10T08:22:14.709563Z",
+        "subscriptionEndDate": "2026-10-10T14:24:40.781359Z"
+      },
+      "purchases": [
+        {
+          "id": 541,
+          "price": 2990.0,
+          "purchaseDate": "2025-10-10T14:24:40.781359Z",
+          "subscriptionEndDate": "2026-10-10T14:24:40.781359Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "00ef3f2a-3146-466e-9961-e8eb39ead1f7",
+        "name": "милана",
+        "userName": "sevinch.holmatova@mail.ru",
+        "email": "sevinch.holmatova@mail.ru",
+        "registrationDateUtc": "2025-11-05T08:26:22Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDU0hcnLtkq75MSdcXuHnZyoDiWWTkdrUmmb65VnUHrSP13R2ibSvConzWrt7/OrAQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "00ef3f2a-3146-466e-9961-e8eb39ead1f7",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-11-06T08:21:29.434991Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "00f0dec3-bda9-4a64-b74a-a98d84ff172f",
+        "name": "Хасанжон",
+        "userName": "hasan060692@mail.ru",
+        "email": "hasan060692@mail.ru",
+        "registrationDateUtc": "2025-02-25T05:54:45Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDd28OC33/5BEphNDjw3aJmBuT6fa9PaVAacCTpC8JwpQFbHHSEjIGIO2Wi8QO6mfQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "00f0dec3-bda9-4a64-b74a-a98d84ff172f",
+        "country": "RU",
+        "platform": "RuStore",
+        "trialEndDate": "2025-02-27T17:54:08.341483Z",
+        "subscriptionEndDate": null
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "01292966-f3cb-4689-9360-2a48d90bbefe",
+        "name": "манана",
+        "userName": "manana-reo@mail.ru",
+        "email": "manana-reo@mail.ru",
+        "registrationDateUtc": "2025-12-20T11:00:59Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEOOQ9SX+iNFUvNaVJ52LygV3ENqvRwYLzIWtXNeC6E3awD5eig+LkEJmiWk8aGZGaw=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "01292966-f3cb-4689-9360-2a48d90bbefe",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-12-11T14:20:39.717082Z",
+        "subscriptionEndDate": "2026-01-26T04:46:51.300322Z"
+      },
+      "purchases": [
+        {
+          "id": 889,
+          "price": 390.0,
+          "purchaseDate": "2025-12-26T04:46:51.300328Z",
+          "subscriptionEndDate": "2026-01-26T04:46:51.300322Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "012dea56-b4f4-4362-a831-ce48a37d0df7",
+        "name": "Тимур",
+        "userName": "golubtimur201tg5295681@gmail.com",
+        "email": "golubtimur201tg5295681@gmail.com",
+        "registrationDateUtc": "2025-09-15T15:46:30Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEDkKCJjrDVSQKJVDBeOASh2tWjn+SCUZObWDtqkc5z2CGuG3xGPF9cm5LzFeBegEiA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "012dea56-b4f4-4362-a831-ce48a37d0df7",
+        "country": "RU",
+        "platform": "Windows",
+        "trialEndDate": "2025-09-16T15:28:12.46093Z",
+        "subscriptionEndDate": "2026-09-15T15:47:33.213556Z"
+      },
+      "purchases": [
+        {
+          "id": 394,
+          "price": 1890.0,
+          "purchaseDate": "2025-09-15T15:47:33.213556Z",
+          "subscriptionEndDate": "2026-09-15T15:47:33.213556Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    },
+    {
+      "aspNetUser": {
+        "id": "01485c1e-f87d-4ff1-8976-0e861ad9eec7",
+        "name": "Алена",
+        "userName": "kraalena@yandex.ru",
+        "email": "kraalena@yandex.ru",
+        "registrationDateUtc": "2026-02-05T07:37:48Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEEPbqjp1eIwTtWd2GHXrzLuQ461ovDFHOBYbgnSzzGO60cllwi5uCo3yfnaCGBJvKQ=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "01485c1e-f87d-4ff1-8976-0e861ad9eec7",
+        "country": "RU",
+        "platform": "iOS",
+        "trialEndDate": "2026-03-08T07:35:18.014868Z",
+        "subscriptionEndDate": "2026-03-07T07:39:18.974982Z"
+      },
+      "purchases": null,
+      "permanentPromoCodeUsages": [
+        {
+          "promoCodeId": 3,
+          "promoCode": "ANATOMYSTUDY",
+          "extensionDays": 30,
+          "usedOn": "2026-02-05T07:39:18.975095Z"
+        }
+      ]
+    },
+    {
+      "aspNetUser": {
+        "id": "01598baf-b356-4ed0-8dec-fe1d97c402fe",
+        "name": "Марина",
+        "userName": "marinaseverok@mail.ru",
+        "email": "marinaseverok@mail.ru",
+        "registrationDateUtc": "2025-04-12T11:07:59Z",
+        "passwordHash": "AQAAAAIAAYagAAAAEHrUH5uqyK6i1SbtO2v+FZ3ol2We8Besf/UeKvatfZ6e+Vi9D0tsJPeWytNCfN9viA=="
+      },
+      "roles": [
+        "User"
+      ],
+      "userData": {
+        "userId": "01598baf-b356-4ed0-8dec-fe1d97c402fe",
+        "country": "RU",
+        "platform": "Google Play",
+        "trialEndDate": "2025-04-15T09:47:45.011765Z",
+        "subscriptionEndDate": "2025-09-14T13:06:36.776603Z"
+      },
+      "purchases": [
+        {
+          "id": 293,
+          "price": 290.0,
+          "purchaseDate": "2025-08-14T13:06:36.789Z",
+          "subscriptionEndDate": "2025-09-14T13:06:36.788998Z"
+        },
+        {
+          "id": 294,
+          "price": 290.0,
+          "purchaseDate": "2025-08-14T13:06:36.776605Z",
+          "subscriptionEndDate": "2025-09-14T13:06:36.776603Z"
+        },
+        {
+          "id": 140,
+          "price": 290.0,
+          "purchaseDate": "2025-05-16T04:22:48.439443Z",
+          "subscriptionEndDate": "2025-06-16T04:22:48.439442Z"
+        },
+        {
+          "id": 89,
+          "price": 290.0,
+          "purchaseDate": "2025-04-12T11:08:53.219029Z",
+          "subscriptionEndDate": "2025-05-12T11:08:53.219009Z"
+        }
+      ],
+      "permanentPromoCodeUsages": null
+    }
+  ]
+}

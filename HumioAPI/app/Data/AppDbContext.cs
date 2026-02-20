@@ -515,6 +515,7 @@ public class AppDbContext : IdentityDbContext<
             b.Property(up => up.MiddleName);
             b.Property(up => up.BirthDate)
                 .HasColumnType("date");
+            b.Property(up => up.Country);
             b.Property(up => up.City);
             b.Property(up => up.Gender);
 

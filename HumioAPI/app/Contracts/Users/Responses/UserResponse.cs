@@ -4,6 +4,14 @@ public sealed record UserResponse(
     long Id,
     string Email,
     string? Name,
+    string? Country,
     DateTimeOffset CreatedAt,
     DateTimeOffset? LastSeen,
-    DateTimeOffset? SubscriptionEndDate);
+    DateTimeOffset? SubscriptionEndDate,
+    UserModuleResponse[] Modules,
+    int PurchasesCount,
+    int TotalPurchasedAmountCents);
+
+public sealed record UserModuleResponse(
+    long Id,
+    string Name);

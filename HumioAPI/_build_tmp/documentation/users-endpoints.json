@@ -1,0 +1,214 @@
+{
+  "title": "Users API",
+  "basePath": "/api/users",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/register",
+      "summary": "Create user",
+      "body": [
+        { "name": "email", "type": "string", "required": true, "format": "email" },
+        { "name": "password", "type": "string", "required": true, "minLength": 6 },
+        { "name": "name", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 201, "body": { "id": "long", "email": "string", "name": "string" } },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/{id}",
+      "summary": "Get user by id",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "email": "string", "name": "string", "createdAt": "DateTimeOffset", "lastSeen": "DateTimeOffset?" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/me",
+      "summary": "Get current authorized user profile",
+      "auth": "Bearer",
+      "responses": [
+        { "status": 200, "body": { "id": "long", "email": "string", "name": "string", "createdAt": "DateTimeOffset", "lastSeen": "DateTimeOffset?" } },
+        { "status": 401 },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/me",
+      "summary": "Update current authorized user fields",
+      "auth": "Bearer",
+      "body": [
+        { "name": "email", "type": "string", "required": false, "format": "email" },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "phoneNumber", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "email": "string", "name": "string", "createdAt": "DateTimeOffset", "lastSeen": "DateTimeOffset?" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 401 },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/by-email",
+      "summary": "Get user by email",
+      "query": [
+        { "name": "email", "type": "string", "required": true, "format": "email" }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "email": "string", "name": "string", "createdAt": "DateTimeOffset", "lastSeen": "DateTimeOffset?" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "summary": "List users",
+      "query": [
+        { "name": "skip", "type": "int", "required": false, "default": 0 },
+        { "name": "take", "type": "int", "required": false, "default": 50, "max": 100 },
+        { "name": "email", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "total": "int", "items": "UserResponse[]" } },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/{id}",
+      "summary": "Update user fields",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "body": [
+        { "name": "email", "type": "string", "required": false, "format": "email" },
+        { "name": "name", "type": "string", "required": false },
+        { "name": "phoneNumber", "type": "string", "required": false }
+      ],
+      "responses": [
+        { "status": 200, "body": { "id": "long", "email": "string", "name": "string", "createdAt": "DateTimeOffset", "lastSeen": "DateTimeOffset?" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/{id}/roles",
+      "summary": "List user roles",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "responses": [
+        { "status": 200, "body": { "roles": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/{id}/roles",
+      "summary": "Add roles to user",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "body": [
+        { "name": "roles", "type": "string[]", "required": true }
+      ],
+      "responses": [
+        { "status": 200, "body": { "roles": "string[]" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/{id}/roles",
+      "summary": "Remove roles from user",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "body": [
+        { "name": "roles", "type": "string[]", "required": true }
+      ],
+      "responses": [
+        { "status": 200, "body": { "roles": "string[]" } },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/forgot-password",
+      "summary": "Send reset code to email",
+      "body": [
+        { "name": "email", "type": "string", "required": true, "format": "email" }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 500, "body": { "errors": "string[]" } }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/reset-password",
+      "summary": "Reset password by code",
+      "body": [
+        { "name": "email", "type": "string", "required": true, "format": "email" },
+        { "name": "token", "type": "string", "required": true },
+        { "name": "newPassword", "type": "string", "required": true, "minLength": 6 }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/{id}/reset-password",
+      "summary": "Reset user password",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "body": [
+        { "name": "newPassword", "type": "string", "required": true, "minLength": 6 }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 400, "body": { "errors": "string[]" } },
+        { "status": 404 }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/{id}",
+      "summary": "Delete user by id",
+      "pathParams": [
+        { "name": "id", "type": "long", "required": true }
+      ],
+      "responses": [
+        { "status": 204 },
+        { "status": 404 },
+        { "status": 400, "body": { "errors": "string[]" } }
+      ]
+    }
+  ],
+  "definitions": {
+    "UserResponse": {
+      "id": "long",
+      "email": "string",
+      "name": "string",
+      "createdAt": "DateTimeOffset",
+      "lastSeen": "DateTimeOffset?"
+    }
+  }
+}

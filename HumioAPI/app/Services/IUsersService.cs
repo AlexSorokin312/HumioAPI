@@ -45,6 +45,9 @@ public interface IUsersService
         long id,
         CancellationToken cancellationToken = default);
 
+    Task<(bool Success, string[] Errors, int DeletedCount)> DeleteAllAsync(
+        CancellationToken cancellationToken = default);
+
     Task<(bool Success, string[] Errors, string[]? Roles, bool NotFound)> GetRolesAsync(
         long id,
         CancellationToken cancellationToken = default);
@@ -67,8 +70,35 @@ public interface IUsersService
         IEnumerable<long> userIds,
         CancellationToken cancellationToken = default);
 
+    Task<string?> GetUserCountryAsync(
+        long userId,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<long, string?>> GetUserCountriesByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default);
+
+    Task<UserModuleInfo[]> GetUserModulesAsync(
+        long userId,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<long, UserModuleInfo[]>> GetUserModulesByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default);
+
+    Task<UserPurchasesInfo> GetUserPurchasesInfoAsync(
+        long userId,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<long, UserPurchasesInfo>> GetUserPurchasesInfoByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default);
+
     Task<(bool Success, string[] Errors, UsersImportResult? Result)> ImportFromExportAsync(
-        string filePath,
+        string mode,
+        int? count,
+        DateOnly? createdAfterDate,
+        string? email,
         long? moduleId,
         CancellationToken cancellationToken = default);
 }
@@ -79,4 +109,13 @@ public sealed record UsersImportResult(
     int Existing,
     int Failed,
     int SubscriptionsApplied,
+    int PurchasesApplied,
     long ModuleId);
+
+public sealed record UserModuleInfo(
+    long Id,
+    string Name);
+
+public sealed record UserPurchasesInfo(
+    int PurchasesCount,
+    int TotalPurchasedAmountCents);

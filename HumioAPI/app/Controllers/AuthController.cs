@@ -171,7 +171,17 @@ public class AuthController : ControllerBase
     }
 
     private static UserResponse ToResponse(ApplicationUser user, DateTimeOffset? subscriptionEndDate) =>
-        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen, subscriptionEndDate);
+        new(
+            user.Id,
+            user.Email ?? string.Empty,
+            user.Name,
+            null,
+            user.CreatedAt,
+            user.LastSeen,
+            subscriptionEndDate,
+            Array.Empty<UserModuleResponse>(),
+            0,
+            0);
 
     private static AuthTokensResponse ToTokensResponse(AuthTokens tokens) =>
         new(tokens.AccessToken, tokens.RefreshToken, tokens.AccessTokenExpiresAt);

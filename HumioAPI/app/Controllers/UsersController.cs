@@ -46,7 +46,12 @@ public class UsersController : ControllerBase
             return BadRequest(new { errors = new[] { "Request body is required." } });
         }
 
-        var (success, errors, result) = await _usersService.ImportFromExportAsync(request.FilePath, request.ModuleId);
+        var (success, errors, result) = await _usersService.ImportFromExportAsync(
+            request.Mode,
+            request.Count,
+            request.CreatedAfterDate,
+            request.Email,
+            request.ModuleId);
         if (result is null)
         {
             return BadRequest(new { errors });
@@ -58,6 +63,7 @@ public class UsersController : ControllerBase
             result.Existing,
             result.Failed,
             result.SubscriptionsApplied,
+            result.PurchasesApplied,
             result.ModuleId);
 
         return success
@@ -80,6 +86,18 @@ public class UsersController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAll()
+    {
+        var (success, errors, deletedCount) = await _usersService.DeleteAllAsync();
+        if (!success)
+        {
+            return BadRequest(new { errors, deletedCount });
+        }
+
+        return Ok(new { deletedCount });
     }
 
     [HttpPost("{id:long}/reset-password")]
@@ -177,7 +195,10 @@ public class UsersController : ControllerBase
         }
 
         var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
-        return Ok(ToResponse(user, subscriptionEndDate));
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
     [Authorize]
@@ -197,7 +218,10 @@ public class UsersController : ControllerBase
         }
 
         var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
-        return Ok(ToResponse(user, subscriptionEndDate));
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
     [Authorize]
@@ -237,7 +261,10 @@ public class UsersController : ControllerBase
         }
 
         var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
-        return Ok(ToResponse(user, subscriptionEndDate));
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
     [HttpGet("{id:long}/roles")]
@@ -323,7 +350,10 @@ public class UsersController : ControllerBase
         }
 
         var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
-        return Ok(ToResponse(user, subscriptionEndDate));
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
     [HttpGet("by-email")]
@@ -336,7 +366,10 @@ public class UsersController : ControllerBase
         }
 
         var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
-        return Ok(ToResponse(user, subscriptionEndDate));
+        var modules = await _usersService.GetUserModulesAsync(user.Id);
+        var purchasesInfo = await _usersService.GetUserPurchasesInfoAsync(user.Id);
+        var country = await _usersService.GetUserCountryAsync(user.Id);
+        return Ok(ToResponse(user, country, subscriptionEndDate, modules, purchasesInfo));
     }
 
     [HttpGet]
@@ -358,16 +391,37 @@ public class UsersController : ControllerBase
         var pageSize = Math.Min(take, 100);
         var (total, users) = await _usersService.ListAsync(skip, pageSize, email);
         var subscriptionDates = await _usersService.GetSubscriptionEndDatesAsync(users.Select(user => user.Id));
+        var userCountries = await _usersService.GetUserCountriesByUserIdsAsync(users.Select(user => user.Id));
+        var userModules = await _usersService.GetUserModulesByUserIdsAsync(users.Select(user => user.Id));
+        var userPurchases = await _usersService.GetUserPurchasesInfoByUserIdsAsync(users.Select(user => user.Id));
         var items = users
             .Select(user => ToResponse(
                 user,
-                subscriptionDates.TryGetValue(user.Id, out var endsAt) ? endsAt : null))
+                userCountries.TryGetValue(user.Id, out var country) ? country : null,
+                subscriptionDates.TryGetValue(user.Id, out var endsAt) ? endsAt : null,
+                userModules.TryGetValue(user.Id, out var modules) ? modules : Array.Empty<UserModuleInfo>(),
+                userPurchases.TryGetValue(user.Id, out var purchasesInfo) ? purchasesInfo : new UserPurchasesInfo(0, 0)))
             .ToArray();
         return Ok(new UsersPageResponse(total, items));
     }
 
-    private static UserResponse ToResponse(ApplicationUser user, DateTimeOffset? subscriptionEndDate) =>
-        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen, subscriptionEndDate);
+    private static UserResponse ToResponse(
+        ApplicationUser user,
+        string? country,
+        DateTimeOffset? subscriptionEndDate,
+        UserModuleInfo[] modules,
+        UserPurchasesInfo purchasesInfo) =>
+        new(
+            user.Id,
+            user.Email ?? string.Empty,
+            user.Name,
+            country,
+            user.CreatedAt,
+            user.LastSeen,
+            subscriptionEndDate,
+            modules.Select(module => new UserModuleResponse(module.Id, module.Name)).ToArray(),
+            purchasesInfo.PurchasesCount,
+            purchasesInfo.TotalPurchasedAmountCents);
 
     private static string[] NormalizeRoles(string[]? roles) =>
         roles?

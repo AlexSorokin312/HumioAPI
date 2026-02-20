@@ -8,21 +8,28 @@ namespace HumioAPI.Services;
 
 public sealed class UsersService : IUsersService
 {
+    private const long LegacyPurchasedProductId = 1;
+    private const string LegacyImportProvider = "legacy-export";
+    private const string LegacyExportBaseUrl = "https://humio.space/api/UserData/export";
+
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IEmailSender _emailSender;
     private readonly AppDbContext _dbContext;
+    private readonly IHttpClientFactory _httpClientFactory;
 
     public UsersService(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
         IEmailSender emailSender,
-        AppDbContext dbContext)
+        AppDbContext dbContext,
+        IHttpClientFactory httpClientFactory)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _dbContext = dbContext;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<(bool Success, string[] Errors, ApplicationUser? User)> RegisterAsync(
@@ -225,6 +232,35 @@ public sealed class UsersService : IUsersService
         return (true, Array.Empty<string>(), false);
     }
 
+    public async Task<(bool Success, string[] Errors, int DeletedCount)> DeleteAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var users = await _userManager.Users.ToListAsync(cancellationToken);
+        if (users.Count == 0)
+        {
+            return (true, Array.Empty<string>(), 0);
+        }
+
+        var errors = new List<string>();
+        var deletedCount = 0;
+
+        foreach (var user in users)
+        {
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                errors.AddRange(result.Errors.Select(error => $"[{user.Email ?? user.Id.ToString()}] {error.Description}"));
+                continue;
+            }
+
+            deletedCount++;
+        }
+
+        return errors.Count > 0
+            ? (false, errors.Distinct().ToArray(), deletedCount)
+            : (true, Array.Empty<string>(), deletedCount);
+    }
+
     public async Task<(bool Success, string[] Errors, string[]? Roles, bool NotFound)> GetRolesAsync(
         long id,
         CancellationToken cancellationToken = default)
@@ -329,19 +365,133 @@ public sealed class UsersService : IUsersService
         return values.ToDictionary(item => item.Key, item => (DateTimeOffset?)item.EndsAt);
     }
 
+    public async Task<string?> GetUserCountryAsync(
+        long userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.UserProfiles
+            .Where(profile => profile.UserId == userId)
+            .Select(profile => profile.Country)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<Dictionary<long, string?>> GetUserCountriesByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = userIds.Distinct().ToArray();
+        if (ids.Length == 0)
+        {
+            return new Dictionary<long, string?>();
+        }
+
+        var values = await _dbContext.UserProfiles
+            .Where(profile => ids.Contains(profile.UserId))
+            .Select(profile => new { profile.UserId, profile.Country })
+            .ToListAsync(cancellationToken);
+
+        return values.ToDictionary(item => item.UserId, item => item.Country);
+    }
+
+    public async Task<UserModuleInfo[]> GetUserModulesAsync(
+        long userId,
+        CancellationToken cancellationToken = default)
+    {
+        var modules = await _dbContext.UserModuleAccess
+            .Where(access => access.UserId == userId)
+            .Select(access => new { access.ModuleId, access.Module.Name })
+            .Distinct()
+            .OrderBy(module => module.ModuleId)
+            .ToListAsync(cancellationToken);
+
+        return modules
+            .Select(module => new UserModuleInfo(module.ModuleId, module.Name))
+            .ToArray();
+    }
+
+    public async Task<Dictionary<long, UserModuleInfo[]>> GetUserModulesByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = userIds.Distinct().ToArray();
+        if (ids.Length == 0)
+        {
+            return new Dictionary<long, UserModuleInfo[]>();
+        }
+
+        var values = await _dbContext.UserModuleAccess
+            .Where(access => ids.Contains(access.UserId))
+            .Select(access => new
+            {
+                access.UserId,
+                Module = new UserModuleInfo(access.ModuleId, access.Module.Name)
+            })
+            .ToListAsync(cancellationToken);
+
+        return values
+            .GroupBy(item => item.UserId)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                    .Select(item => item.Module)
+                    .Distinct()
+                    .OrderBy(module => module.Id)
+                    .ToArray());
+    }
+
+    public async Task<UserPurchasesInfo> GetUserPurchasesInfoAsync(
+        long userId,
+        CancellationToken cancellationToken = default)
+    {
+        var paidPurchases = _dbContext.Purchases
+            .Where(purchase => purchase.UserId == userId && purchase.Status == PaymentStatus.Paid);
+
+        var purchasesCount = await paidPurchases.CountAsync(cancellationToken);
+        var totalPurchasedAmountCents = await paidPurchases
+            .Select(purchase => (int?)purchase.AmountCents)
+            .SumAsync(cancellationToken) ?? 0;
+
+        return new UserPurchasesInfo(purchasesCount, totalPurchasedAmountCents);
+    }
+
+    public async Task<Dictionary<long, UserPurchasesInfo>> GetUserPurchasesInfoByUserIdsAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = userIds.Distinct().ToArray();
+        if (ids.Length == 0)
+        {
+            return new Dictionary<long, UserPurchasesInfo>();
+        }
+
+        var values = await _dbContext.Purchases
+            .Where(purchase => ids.Contains(purchase.UserId) && purchase.Status == PaymentStatus.Paid)
+            .GroupBy(purchase => purchase.UserId)
+            .Select(group => new
+            {
+                group.Key,
+                PurchasesCount = group.Count(),
+                TotalPurchasedAmountCents = group.Sum(purchase => purchase.AmountCents)
+            })
+            .ToListAsync(cancellationToken);
+
+        return values.ToDictionary(
+            item => item.Key,
+            item => new UserPurchasesInfo(item.PurchasesCount, item.TotalPurchasedAmountCents));
+    }
+
     public async Task<(bool Success, string[] Errors, UsersImportResult? Result)> ImportFromExportAsync(
-        string filePath,
+        string mode,
+        int? count,
+        DateOnly? createdAfterDate,
+        string? email,
         long? moduleId,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(filePath))
+        var (exportUri, validationError) = BuildExportUri(mode, count, createdAfterDate, email);
+        if (validationError is not null)
         {
-            return (false, new[] { "File path is required." }, null);
-        }
-
-        if (!File.Exists(filePath))
-        {
-            return (false, new[] { $"File not found: {filePath}" }, null);
+            return (false, new[] { validationError }, null);
         }
 
         var targetModuleId = await ResolveTargetModuleIdAsync(moduleId, cancellationToken);
@@ -350,23 +500,25 @@ public sealed class UsersService : IUsersService
             return (false, new[] { "Module not found. Pass moduleId or create at least one module." }, null);
         }
 
-        ExportUserItem[] users;
+        var productExists = await _dbContext.Products.AnyAsync(
+            product => product.Id == LegacyPurchasedProductId,
+            cancellationToken);
+        if (!productExists)
+        {
+            return (false, new[] { $"Product with id={LegacyPurchasedProductId} not found." }, null);
+        }
+
+        ExportPayload payload;
         try
         {
-            await using var stream = File.OpenRead(filePath);
-            var payload = await JsonSerializer.DeserializeAsync<ExportPayload>(
-                stream,
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                },
-                cancellationToken);
-            users = payload?.Users ?? Array.Empty<ExportUserItem>();
+            payload = await ReadExportPayloadAsync(exportUri!, cancellationToken);
         }
         catch (Exception ex)
         {
-            return (false, new[] { $"Cannot parse users export JSON: {ex.Message}" }, null);
+            return (false, new[] { $"Cannot parse users export JSON from '{exportUri}': {ex.Message}" }, null);
         }
+
+        var users = payload.Users ?? Array.Empty<ExportUserItem>();
 
         var errors = new List<string>();
         var total = users.Length;
@@ -374,6 +526,7 @@ public sealed class UsersService : IUsersService
         var existing = 0;
         var failed = 0;
         var subscriptionsApplied = 0;
+        var purchasesApplied = 0;
 
         foreach (var item in users)
         {
@@ -386,16 +539,16 @@ public sealed class UsersService : IUsersService
                 continue;
             }
 
-            var email = item.AspNetUser.Email.Trim();
-            var user = await _userManager.FindByEmailAsync(email);
+            var userEmail = item.AspNetUser.Email.Trim();
+            var user = await _userManager.FindByEmailAsync(userEmail);
             var createdNow = false;
 
             if (user is null)
             {
                 user = new ApplicationUser
                 {
-                    Email = email,
-                    UserName = string.IsNullOrWhiteSpace(item.AspNetUser.UserName) ? email : item.AspNetUser.UserName.Trim(),
+                    Email = userEmail,
+                    UserName = string.IsNullOrWhiteSpace(item.AspNetUser.UserName) ? userEmail : item.AspNetUser.UserName.Trim(),
                     Name = item.AspNetUser.Name,
                     CreatedAt = item.AspNetUser.RegistrationDateUtc ?? DateTimeOffset.UtcNow,
                     PasswordHash = string.IsNullOrWhiteSpace(item.AspNetUser.PasswordHash) ? null : item.AspNetUser.PasswordHash,
@@ -408,7 +561,7 @@ public sealed class UsersService : IUsersService
                 if (!createResult.Succeeded)
                 {
                     failed++;
-                    errors.AddRange(createResult.Errors.Select(error => $"[{email}] {error.Description}"));
+                    errors.AddRange(createResult.Errors.Select(error => $"[{userEmail}] {error.Description}"));
                     continue;
                 }
 
@@ -442,7 +595,7 @@ public sealed class UsersService : IUsersService
                     var addRolesResult = await _userManager.AddToRolesAsync(user, missingRoles);
                     if (!addRolesResult.Succeeded)
                     {
-                        errors.AddRange(addRolesResult.Errors.Select(error => $"[{email}] {error.Description}"));
+                        errors.AddRange(addRolesResult.Errors.Select(error => $"[{userEmail}] {error.Description}"));
                     }
                 }
             }
@@ -472,6 +625,36 @@ public sealed class UsersService : IUsersService
                 subscriptionsApplied++;
             }
 
+            var country = item.UserData?.Country;
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                var normalizedCountry = country.Trim().ToUpperInvariant();
+                var profile = await _dbContext.UserProfiles
+                    .FirstOrDefaultAsync(value => value.UserId == user.Id, cancellationToken);
+
+                if (profile is null)
+                {
+                    _dbContext.UserProfiles.Add(new UserProfile
+                    {
+                        UserId = user.Id,
+                        Country = normalizedCountry
+                    });
+                }
+                else
+                {
+                    profile.Country = normalizedCountry;
+                }
+            }
+
+            if (HasPurchases(item.Purchases))
+            {
+                var purchaseWasAdded = await EnsureLegacyPurchaseAsync(user, item, cancellationToken);
+                if (purchaseWasAdded)
+                {
+                    purchasesApplied++;
+                }
+            }
+
             if (createdNow)
             {
                 // Identity operations already persist user; only save extra linked data below.
@@ -486,12 +669,158 @@ public sealed class UsersService : IUsersService
             existing,
             failed,
             subscriptionsApplied,
+            purchasesApplied,
             targetModuleId.Value);
 
         var distinctErrors = errors.Where(error => !string.IsNullOrWhiteSpace(error)).Distinct().Take(100).ToArray();
         return distinctErrors.Length > 0
             ? (false, distinctErrors, importResult)
             : (true, Array.Empty<string>(), importResult);
+    }
+
+    private static (Uri? Uri, string? Error) BuildExportUri(
+        string mode,
+        int? count,
+        DateOnly? createdAfterDate,
+        string? email)
+    {
+        if (string.IsNullOrWhiteSpace(mode))
+        {
+            return (null, "Mode is required. Allowed: all, count, after-date, by-email.");
+        }
+
+        var normalizedMode = mode.Trim().ToLowerInvariant();
+        return normalizedMode switch
+        {
+            "all" => (new Uri($"{LegacyExportBaseUrl}/all"), null),
+            "count" => BuildCountUri(count),
+            "after-date" => BuildAfterDateUri(createdAfterDate),
+            "by-email" => BuildByEmailUri(email),
+            _ => (null, $"Unsupported mode '{mode}'. Allowed: all, count, after-date, by-email.")
+        };
+    }
+
+    private static (Uri? Uri, string? Error) BuildCountUri(int? count)
+    {
+        if (!count.HasValue || count.Value <= 0)
+        {
+            return (null, "For mode 'count', pass a positive 'count'.");
+        }
+
+        return (new Uri($"{LegacyExportBaseUrl}/count?count={count.Value}"), null);
+    }
+
+    private static (Uri? Uri, string? Error) BuildAfterDateUri(DateOnly? createdAfterDate)
+    {
+        if (!createdAfterDate.HasValue)
+        {
+            return (null, "For mode 'after-date', pass 'createdAfterDate' in format YYYY-MM-DD.");
+        }
+
+        return (new Uri($"{LegacyExportBaseUrl}/after-date?createdAfterDate={createdAfterDate.Value:yyyy-MM-dd}"), null);
+    }
+
+    private static (Uri? Uri, string? Error) BuildByEmailUri(string? email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return (null, "For mode 'by-email', pass 'email'.");
+        }
+
+        return (new Uri($"{LegacyExportBaseUrl}/by-email?email={Uri.EscapeDataString(email.Trim())}"), null);
+    }
+
+    private async Task<ExportPayload> ReadExportPayloadAsync(Uri sourceUri, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        using var response = await client.GetAsync(sourceUri, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        var payload = await JsonSerializer.DeserializeAsync<ExportPayload>(
+            stream,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            },
+            cancellationToken);
+
+        return payload ?? new ExportPayload();
+    }
+
+    private async Task<bool> EnsureLegacyPurchaseAsync(
+        ApplicationUser user,
+        ExportUserItem item,
+        CancellationToken cancellationToken)
+    {
+        var alreadyHasPaidPurchase = await _dbContext.Purchases.AnyAsync(
+            purchase => purchase.UserId == user.Id
+                        && purchase.ProductId == LegacyPurchasedProductId
+                        && purchase.Status == PaymentStatus.Paid,
+            cancellationToken);
+        if (alreadyHasPaidPurchase)
+        {
+            return false;
+        }
+
+        var latest = item.Purchases?
+            .Where(purchase => purchase is not null)
+            .OrderByDescending(purchase => purchase!.PurchaseDate ?? DateTimeOffset.MinValue)
+            .FirstOrDefault();
+
+        var paidAt = latest?.PurchaseDate ?? DateTimeOffset.UtcNow;
+        var amountCents = latest?.Price is { } price
+            ? Math.Max(0, (int)Math.Round(price * 100m, MidpointRounding.AwayFromZero))
+            : 0;
+        var days = CalculateDays(latest);
+
+        var externalUserId = item.AspNetUser?.Id;
+        var externalPurchaseId = latest?.Id is { } id
+            ? id.ToString()
+            : "no-purchase-id";
+        var userKey = !string.IsNullOrWhiteSpace(externalUserId)
+            ? externalUserId
+            : (user.Email ?? user.Id.ToString());
+        var providerPaymentId = $"legacy:{userKey}:{externalPurchaseId}:p1";
+
+        var duplicate = await _dbContext.Purchases.AnyAsync(
+            purchase => purchase.Provider == LegacyImportProvider
+                        && purchase.ProviderPaymentId == providerPaymentId,
+            cancellationToken);
+        if (duplicate)
+        {
+            return false;
+        }
+
+        _dbContext.Purchases.Add(new Purchase
+        {
+            UserId = user.Id,
+            ProductId = LegacyPurchasedProductId,
+            AmountCents = amountCents,
+            Currency = "RUB",
+            Provider = LegacyImportProvider,
+            ProviderPaymentId = providerPaymentId,
+            Receipt = null,
+            Status = PaymentStatus.Paid,
+            Days = days,
+            CreatedAt = paidAt,
+            PurchasedAt = paidAt
+        });
+
+        return true;
+    }
+
+    private static bool HasPurchases(ExportPurchase[]? purchases) =>
+        purchases is { Length: > 0 };
+
+    private static int CalculateDays(ExportPurchase? purchase)
+    {
+        if (purchase?.PurchaseDate is null || purchase.SubscriptionEndDate is null)
+        {
+            return 30;
+        }
+
+        var days = (int)Math.Ceiling((purchase.SubscriptionEndDate.Value - purchase.PurchaseDate.Value).TotalDays);
+        return Math.Max(1, days);
     }
 
     private async Task<string[]> GetMissingRolesAsync(IEnumerable<string> roles)
@@ -575,10 +904,12 @@ public sealed class UsersService : IUsersService
         public ExportAspNetUser? AspNetUser { get; init; }
         public JsonElement? Roles { get; init; }
         public ExportUserData? UserData { get; init; }
+        public ExportPurchase[]? Purchases { get; init; }
     }
 
     private sealed class ExportAspNetUser
     {
+        public string? Id { get; init; }
         public string? Name { get; init; }
         public string? UserName { get; init; }
         public string? Email { get; init; }
@@ -588,6 +919,15 @@ public sealed class UsersService : IUsersService
 
     private sealed class ExportUserData
     {
+        public string? Country { get; init; }
+        public DateTimeOffset? SubscriptionEndDate { get; init; }
+    }
+
+    private sealed class ExportPurchase
+    {
+        public long? Id { get; init; }
+        public decimal? Price { get; init; }
+        public DateTimeOffset? PurchaseDate { get; init; }
         public DateTimeOffset? SubscriptionEndDate { get; init; }
     }
 }
