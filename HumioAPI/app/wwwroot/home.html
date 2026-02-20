@@ -261,6 +261,7 @@
       letter-spacing: 0.03em;
       color: var(--muted);
       background: #f8fbff;
+      text-align: center;
     }
 
     .promo-table tr:last-child td {
@@ -1050,7 +1051,11 @@
         Array.isArray(item?.modules) ? item.modules.map((module) => Number(module.id)).filter((id) => Number.isFinite(id)) : []
       );
 
-      const modules = [...moduleItems].sort((left, right) => Number(left.id || 0) - Number(right.id || 0));
+      const modules = getVisibleModulesForUsers();
+      if (modules.length === 0) {
+        return "—";
+      }
+
       const hasActiveModules = activeModuleIds.size > 0;
       const purchasesCount = Number(item?.purchasesCount || 0);
       const isPromoAccess = hasActiveModules && purchasesCount === 0;
@@ -1067,6 +1072,30 @@
       }).join("");
 
       return `<div class="user-modules-list">${badges}</div>`;
+    }
+
+    function getVisibleModulesForUsers() {
+      if (!Array.isArray(moduleItems) || moduleItems.length === 0) {
+        return [];
+      }
+
+      const usedModuleIds = new Set();
+      usersItems.forEach((user) => {
+        if (!Array.isArray(user?.modules)) {
+          return;
+        }
+
+        user.modules.forEach((module) => {
+          const moduleId = Number(module?.id);
+          if (Number.isFinite(moduleId)) {
+            usedModuleIds.add(moduleId);
+          }
+        });
+      });
+
+      return moduleItems
+        .filter((module) => usedModuleIds.has(Number(module.id)))
+        .sort((left, right) => Number(left.id || 0) - Number(right.id || 0));
     }
 
     async function ensureModulesCatalogLoaded() {
