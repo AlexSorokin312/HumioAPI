@@ -425,16 +425,16 @@
             <div class="promo-card">
               <div class="promo-header">
                 <h3>Таблица модулей</h3>
-                <button class="btn" id="modules-reload-btn" type="button">Обновить</button>
               </div>
               <div class="promo-table-wrap">
                 <table class="promo-table modules-table">
                   <thead>
-                    <tr>
-                      <th>Module ID</th>
-                      <th>Название</th>
-                      <th>Действия</th>
-                    </tr>
+                <tr>
+                  <th>ID</th>
+                  <th>Название</th>
+                  <th>Описание</th>
+                  <th>Действия</th>
+                </tr>
                   </thead>
                   <tbody id="modules-table-body"></tbody>
                 </table>
@@ -450,7 +450,7 @@
                 <table class="promo-table modules-table">
                   <thead>
                     <tr>
-                      <th>Product ID</th>
+                      <th>ID</th>
                       <th>Название</th>
                       <th>Module IDs</th>
                     </tr>
@@ -472,6 +472,10 @@
                 <label for="module-name">Название модуля</label>
                 <input id="module-name" type="text" required placeholder="Базовый курс" />
               </div>
+              <div class="field">
+                <label for="module-description">Описание</label>
+                <input id="module-description" type="text" placeholder="Краткое описание" />
+              </div>
               <div class="buttons">
                 <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
                 <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
@@ -488,8 +492,14 @@
                 <input id="product-name" type="text" required placeholder="Премиум доступ" />
               </div>
               <div class="field">
-                <label for="product-module-ids">ID модулей (через запятую)</label>
-                <input id="product-module-ids" type="text" required placeholder="1,2,3" />
+                <label for="product-module-select">Модуль</label>
+                <div class="buttons" style="margin-top:0;">
+                  <select id="product-module-select" style="flex:1; min-width: 0; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px;"></select>
+                </div>
+              </div>
+              <div class="field">
+                <label>Выбранные модули</label>
+                <div id="product-modules-selected" class="hint">Пока не выбрано ни одного модуля.</div>
               </div>
               <div class="buttons">
                 <button class="btn primary" type="submit">Создать продукт</button>
@@ -529,28 +539,31 @@
     const moduleFormTitle = document.getElementById("module-form-title");
     const moduleEditId = document.getElementById("module-edit-id");
     const moduleNameInput = document.getElementById("module-name");
+    const moduleDescriptionInput = document.getElementById("module-description");
     const moduleSubmitBtn = document.getElementById("module-submit-btn");
     const moduleCancelBtn = document.getElementById("module-cancel-btn");
     const moduleFormStatus = document.getElementById("module-form-status");
 
     const productForm = document.getElementById("product-form");
     const productNameInput = document.getElementById("product-name");
-    const productModuleIdsInput = document.getElementById("product-module-ids");
+    const productModuleSelect = document.getElementById("product-module-select");
+    const productModulesSelected = document.getElementById("product-modules-selected");
     const productFormStatus = document.getElementById("product-form-status");
 
     const modulesTableBody = document.getElementById("modules-table-body");
     const modulesListStatus = document.getElementById("modules-list-status");
-    const modulesReloadBtn = document.getElementById("modules-reload-btn");
     const productsTableBody = document.getElementById("products-table-body");
     const productsListStatus = document.getElementById("products-list-status");
 
     let promoItems = [];
     let moduleItems = [];
     let productItems = [];
+    let selectedProductModuleIds = [];
 
     function resetModuleForm() {
       moduleEditId.value = "";
       moduleNameInput.value = "";
+      moduleDescriptionInput.value = "";
       moduleFormTitle.textContent = "Создать модуль";
       moduleSubmitBtn.textContent = "Создать модуль";
       moduleCancelBtn.hidden = true;
@@ -560,11 +573,41 @@
     function fillModuleForm(item) {
       moduleEditId.value = String(item.id);
       moduleNameInput.value = item.name;
+      moduleDescriptionInput.value = item.description || "";
       moduleFormTitle.textContent = `Редактировать модуль #${item.id}`;
       moduleSubmitBtn.textContent = "Сохранить";
       moduleCancelBtn.hidden = false;
       setStatus(moduleFormStatus, "", null);
       moduleNameInput.focus();
+    }
+
+    function renderSelectedProductModules() {
+      if (selectedProductModuleIds.length === 0) {
+        productModulesSelected.innerHTML = "Пока не выбрано ни одного модуля.";
+        return;
+      }
+
+      const byId = new Map(moduleItems.map((item) => [item.id, item.name]));
+      productModulesSelected.innerHTML = selectedProductModuleIds
+        .map((id) => {
+          const name = byId.get(id) || `ID ${id}`;
+          return `<span style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:4px 8px;margin:0 6px 6px 0;background:#fff;">
+            <span>${name}</span>
+            <button type="button" class="btn danger" data-remove-module-id="${id}" style="padding:2px 7px;line-height:1;">×</button>
+          </span>`;
+        })
+        .join("");
+    }
+
+    function populateProductModuleSelect() {
+      if (!moduleItems.length) {
+        productModuleSelect.innerHTML = `<option value="">Нет модулей</option>`;
+        return;
+      }
+
+      productModuleSelect.innerHTML = [`<option value="" selected>Выберите модуль</option>`]
+        .concat(moduleItems.map((module) => `<option value="${module.id}">${module.name}</option>`))
+        .join("");
     }
 
     function getCurrentUser() {
@@ -796,7 +839,7 @@
 
     function renderModules(items) {
       if (!items || items.length === 0) {
-        modulesTableBody.innerHTML = `<tr><td colspan="3">Модулей пока нет.</td></tr>`;
+        modulesTableBody.innerHTML = `<tr><td colspan="4">Модулей пока нет.</td></tr>`;
         return;
       }
 
@@ -804,6 +847,7 @@
           <tr>
             <td>${item.id}</td>
             <td><strong>${item.name}</strong></td>
+            <td>${item.description || "—"}</td>
             <td>
               <div class="row-actions">
                 <button class="btn" type="button" data-module-action="edit" data-id="${item.id}">Редактировать</button>
@@ -846,6 +890,10 @@
         }
 
         moduleItems = Array.isArray(data) ? data : [];
+        selectedProductModuleIds = selectedProductModuleIds.filter((id) => moduleItems.some((m) => m.id === id));
+        populateProductModuleSelect();
+        renderSelectedProductModules();
+
         const productMap = new Map();
         moduleItems.forEach((module) => {
           const products = Array.isArray(module.products) ? module.products : [];
@@ -874,7 +922,8 @@
       const isEdit = editId.length > 0;
 
       const payload = {
-        name: moduleNameInput.value.trim()
+        name: moduleNameInput.value.trim(),
+        description: moduleDescriptionInput.value.trim() || null
       };
 
       if (!payload.name) {
@@ -933,14 +982,9 @@
       event.preventDefault();
       setStatus(productFormStatus, "", null);
 
-      const moduleIds = productModuleIdsInput.value
-        .split(",")
-        .map((value) => Number(value.trim()))
-        .filter((value) => Number.isInteger(value) && value > 0);
-
       const payload = {
         name: productNameInput.value.trim(),
-        moduleIds
+        moduleIds: selectedProductModuleIds
       };
 
       if (!payload.name || payload.moduleIds.length === 0) {
@@ -961,6 +1005,8 @@
         }
 
         productForm.reset();
+        selectedProductModuleIds = [];
+        renderSelectedProductModules();
         setStatus(productFormStatus, "Продукт создан.", "ok");
         await loadModules();
       } catch (error) {
@@ -1037,7 +1083,17 @@
       loadPromocodes();
     });
 
-    modulesReloadBtn.addEventListener("click", loadModules);
+    productModuleSelect.addEventListener("change", () => {
+      const id = Number(productModuleSelect.value);
+      if (!id) {
+        return;
+      }
+
+      if (!selectedProductModuleIds.includes(id)) {
+        selectedProductModuleIds.push(id);
+        renderSelectedProductModules();
+      }
+    });
 
     promoSearchCode.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
@@ -1092,6 +1148,21 @@
       } else if (action === "delete") {
         deleteModule(id);
       }
+    });
+
+    productModulesSelected.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const removeId = Number(target.dataset.removeModuleId);
+      if (!removeId) {
+        return;
+      }
+
+      selectedProductModuleIds = selectedProductModuleIds.filter((id) => id !== removeId);
+      renderSelectedProductModules();
     });
 
     logoutButton.addEventListener("click", logout);

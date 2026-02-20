@@ -26,6 +26,7 @@ public class ModulesController : ControllerBase
             .Select(m => new ModuleResponse(
                 m.Id,
                 m.Name,
+                m.Description,
                 m.Products
                     .OrderBy(p => p.Id)
                     .Select(p => new ProductSetResponse(
@@ -52,7 +53,8 @@ public class ModulesController : ControllerBase
 
         var module = new Module
         {
-            Name = name
+            Name = name,
+            Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim()
         };
 
         _dbContext.Modules.Add(module);
@@ -61,6 +63,7 @@ public class ModulesController : ControllerBase
         var response = new ModuleResponse(
             module.Id,
             module.Name,
+            module.Description,
             Array.Empty<ProductSetResponse>());
 
         return Created($"/api/modules/{module.Id}", response);
@@ -82,9 +85,10 @@ public class ModulesController : ControllerBase
         }
 
         module.Name = name;
+        module.Description = string.IsNullOrWhiteSpace(request.Description) ? null : request.Description.Trim();
         await _dbContext.SaveChangesAsync();
 
-        return Ok(new ModuleResponse(module.Id, module.Name, Array.Empty<ProductSetResponse>()));
+        return Ok(new ModuleResponse(module.Id, module.Name, module.Description, Array.Empty<ProductSetResponse>()));
     }
 
     [HttpDelete("{id:long}")]

@@ -132,6 +132,7 @@ public class AppDbContext : IdentityDbContext<
             b.ToTable("modules");
             b.HasKey(m => m.Id);
             b.Property(m => m.Name).IsRequired();
+            b.Property(m => m.Description);
         });
     }
 
