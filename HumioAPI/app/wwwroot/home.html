@@ -12,6 +12,10 @@
       --muted: #4d647f;
       --border: rgba(16, 33, 54, 0.12);
       --danger: #9f1d1d;
+      --primary: #102136;
+      --panel-bg: rgba(255, 255, 255, 0.82);
+      --ok: #0f7a3a;
+      --warn: #8a5f08;
     }
 
     * { box-sizing: border-box; }
@@ -30,11 +34,23 @@
     .topbar {
       width: 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       gap: 12px;
       padding: 18px 24px;
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-title {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .user-name {
@@ -54,23 +70,312 @@
     }
 
     .content {
-      padding: 36px 24px;
+      padding: 24px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .tab-button {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .tab-panel {
+      display: none;
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .promo-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 380px) 1fr;
+      gap: 16px;
+    }
+
+    .promo-card {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .promo-card h3 {
+      margin: 0 0 12px;
+      font-size: 17px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .field input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn.danger {
+      border-color: #ef4444;
+      color: var(--danger);
+      background: #fff;
+    }
+
+    .promo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .promo-search {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .promo-search input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .promo-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .promo-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 840px;
+    }
+
+    .promo-table th,
+    .promo-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    .promo-table th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+      background: #f8fbff;
+    }
+
+    .promo-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.ok {
+      color: var(--ok);
+    }
+
+    .hint {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--warn);
+    }
+
+    @media (max-width: 980px) {
+      .promo-layout {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <span id="user-name" class="user-name">Пользователь</span>
-    <button id="logout-button" class="logout-button" type="button">Выйти</button>
+    <h1 class="topbar-title">Панель администратора Humio</h1>
+    <div class="topbar-actions">
+      <span id="user-name" class="user-name">Пользователь</span>
+      <button id="logout-button" class="logout-button" type="button">Выйти</button>
+    </div>
   </header>
 
   <main class="content">
-    <h1>Панель администратора Humio</h1>
+    <nav class="tabs" aria-label="Разделы панели">
+      <button class="tab-button active" type="button" data-tab="users">Пользователи</button>
+      <button class="tab-button" type="button" data-tab="promocodes">Промокоды</button>
+      <button class="tab-button" type="button" data-tab="modules">Модули</button>
+    </nav>
+
+    <section id="tab-users" class="tab-panel active">
+      <h2>Пользователи</h2>
+    </section>
+
+    <section id="tab-promocodes" class="tab-panel">
+      <div class="promo-layout">
+        <div class="promo-card">
+          <h3 id="promo-form-title">Создать промокод</h3>
+          <form id="promo-form">
+            <input id="promo-edit-id" type="hidden" />
+            <div class="field">
+              <label for="promo-code">Код</label>
+              <input id="promo-code" type="text" required placeholder="WELCOME10" />
+            </div>
+            <div class="field">
+              <label for="promo-max-usage">Макс. использований</label>
+              <input id="promo-max-usage" type="number" min="1" required placeholder="100" />
+            </div>
+            <div class="field">
+              <label for="promo-days">Дней действия</label>
+              <input id="promo-days" type="number" min="1" required placeholder="30" />
+            </div>
+            <div class="field">
+              <label for="promo-product-id">ID продукта (product_set)</label>
+              <input id="promo-product-id" type="number" min="1" required placeholder="1" />
+            </div>
+            <div class="buttons">
+              <button class="btn primary" type="submit" id="promo-submit-btn">Создать</button>
+              <button class="btn" type="button" id="promo-cancel-btn" hidden>Отмена</button>
+            </div>
+          </form>
+          <div id="promo-form-status" class="status"></div>
+          <div class="hint">Дата "Действует до" вычисляется как сегодня + "Дней действия".</div>
+        </div>
+
+        <div class="promo-card">
+          <div class="promo-header">
+            <h3>Список промокодов</h3>
+            <div class="promo-search">
+              <input id="promo-search-code" type="text" placeholder="Поиск по коду" />
+              <button class="btn" id="promo-search-btn" type="button">Найти</button>
+              <button class="btn" id="promo-reset-btn" type="button">Сброс</button>
+            </div>
+          </div>
+          <div class="promo-table-wrap">
+            <table class="promo-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Код</th>
+                  <th>Макс. использ.</th>
+                  <th>Дней</th>
+                  <th>Действует до (расчетно)</th>
+                  <th>Product ID</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="promo-table-body"></tbody>
+            </table>
+          </div>
+          <div id="promo-list-status" class="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-modules" class="tab-panel">
+      <h2>Модули</h2>
+    </section>
   </main>
 
   <script>
     const userName = document.getElementById("user-name");
     const logoutButton = document.getElementById("logout-button");
+    const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
+    const tabPanels = Array.from(document.querySelectorAll(".tab-panel"));
+
+    const promoForm = document.getElementById("promo-form");
+    const promoFormTitle = document.getElementById("promo-form-title");
+    const promoSubmitBtn = document.getElementById("promo-submit-btn");
+    const promoCancelBtn = document.getElementById("promo-cancel-btn");
+    const promoEditId = document.getElementById("promo-edit-id");
+    const promoCodeInput = document.getElementById("promo-code");
+    const promoMaxUsageInput = document.getElementById("promo-max-usage");
+    const promoDaysInput = document.getElementById("promo-days");
+    const promoProductIdInput = document.getElementById("promo-product-id");
+    const promoFormStatus = document.getElementById("promo-form-status");
+
+    const promoTableBody = document.getElementById("promo-table-body");
+    const promoListStatus = document.getElementById("promo-list-status");
+    const promoSearchCode = document.getElementById("promo-search-code");
+    const promoSearchBtn = document.getElementById("promo-search-btn");
+    const promoResetBtn = document.getElementById("promo-reset-btn");
+
+    let promoItems = [];
 
     function getCurrentUser() {
       const raw = localStorage.getItem("currentUser");
@@ -82,6 +387,220 @@
         return JSON.parse(raw);
       } catch {
         return null;
+      }
+    }
+
+    function getAuthHeaders() {
+      const accessToken = localStorage.getItem("accessToken");
+      const headers = { "Content-Type": "application/json" };
+      if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return headers;
+    }
+
+    function formatDate(value) {
+      return value.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
+    }
+
+    function calcValidTo(days) {
+      const date = new Date();
+      date.setDate(date.getDate() + Number(days || 0));
+      return formatDate(date);
+    }
+
+    function setStatus(el, text, mode) {
+      el.textContent = text || "";
+      el.classList.remove("error", "ok");
+      if (mode) {
+        el.classList.add(mode);
+      }
+    }
+
+    function getErrorText(payload, fallback) {
+      if (payload && Array.isArray(payload.errors) && payload.errors.length > 0) {
+        return payload.errors.join(" ");
+      }
+      return fallback;
+    }
+
+    async function requestJson(url, options) {
+      const res = await fetch(url, options);
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+      }
+      return { res, data };
+    }
+
+    function resetPromoForm() {
+      promoEditId.value = "";
+      promoCodeInput.value = "";
+      promoMaxUsageInput.value = "";
+      promoDaysInput.value = "";
+      promoProductIdInput.value = "";
+      promoFormTitle.textContent = "Создать промокод";
+      promoSubmitBtn.textContent = "Создать";
+      promoCancelBtn.hidden = true;
+      setStatus(promoFormStatus, "", null);
+    }
+
+    function fillPromoForm(item) {
+      promoEditId.value = String(item.id);
+      promoCodeInput.value = item.code;
+      promoMaxUsageInput.value = String(item.maxUsageCount);
+      promoDaysInput.value = String(item.days);
+      promoProductIdInput.value = String(item.productId);
+      promoFormTitle.textContent = `Редактировать промокод #${item.id}`;
+      promoSubmitBtn.textContent = "Сохранить";
+      promoCancelBtn.hidden = false;
+      setStatus(promoFormStatus, "", null);
+      promoCodeInput.focus();
+    }
+
+    function renderPromocodes(items) {
+      if (!items || items.length === 0) {
+        promoTableBody.innerHTML = `<tr><td colspan="7">Промокодов пока нет.</td></tr>`;
+        return;
+      }
+
+      promoTableBody.innerHTML = items.map((item) => {
+        const validTo = calcValidTo(item.days);
+        return `
+          <tr>
+            <td>${item.id}</td>
+            <td><strong>${item.code}</strong></td>
+            <td>${item.maxUsageCount}</td>
+            <td>${item.days}</td>
+            <td>${validTo}</td>
+            <td>${item.productId}</td>
+            <td>
+              <div class="row-actions">
+                <button class="btn" type="button" data-action="edit" data-id="${item.id}">Редактировать</button>
+                <button class="btn danger" type="button" data-action="delete" data-id="${item.id}">Удалить</button>
+              </div>
+            </td>
+          </tr>`;
+      }).join("");
+    }
+
+    async function loadPromocodes() {
+      setStatus(promoListStatus, "Загрузка списка...", null);
+      try {
+        const { res, data } = await requestJson("/api/promocodes?skip=0&take=100", {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось загрузить промокоды."));
+        }
+
+        promoItems = Array.isArray(data?.items) ? data.items : [];
+        renderPromocodes(promoItems);
+        setStatus(promoListStatus, `Всего: ${data?.total ?? promoItems.length}`, "ok");
+      } catch (error) {
+        renderPromocodes([]);
+        setStatus(promoListStatus, error.message || "Ошибка загрузки.", "error");
+      }
+    }
+
+    async function searchByCode() {
+      const code = promoSearchCode.value.trim();
+      if (!code) {
+        loadPromocodes();
+        return;
+      }
+
+      setStatus(promoListStatus, "Поиск...", null);
+      try {
+        const { res, data } = await requestJson(`/api/promocodes/by-code?code=${encodeURIComponent(code)}`, {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (res.status === 404) {
+          renderPromocodes([]);
+          setStatus(promoListStatus, "Промокод не найден.", "error");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось выполнить поиск."));
+        }
+
+        renderPromocodes([data]);
+        setStatus(promoListStatus, "Найден 1 промокод.", "ok");
+      } catch (error) {
+        renderPromocodes([]);
+        setStatus(promoListStatus, error.message || "Ошибка поиска.", "error");
+      }
+    }
+
+    async function deletePromocode(id) {
+      if (!confirm(`Удалить промокод #${id}?`)) {
+        return;
+      }
+
+      setStatus(promoListStatus, "Удаление...", null);
+      try {
+        const { res, data } = await requestJson(`/api/promocodes/${id}`, {
+          method: "DELETE",
+          headers: getAuthHeaders()
+        });
+
+        if (!res.ok && res.status !== 204) {
+          throw new Error(getErrorText(data, "Не удалось удалить промокод."));
+        }
+
+        setStatus(promoListStatus, `Промокод #${id} удален.`, "ok");
+        if (promoEditId.value === String(id)) {
+          resetPromoForm();
+        }
+        await loadPromocodes();
+      } catch (error) {
+        setStatus(promoListStatus, error.message || "Ошибка удаления.", "error");
+      }
+    }
+
+    async function submitPromoForm(event) {
+      event.preventDefault();
+      setStatus(promoFormStatus, "", null);
+
+      const payload = {
+        code: promoCodeInput.value.trim(),
+        maxUsageCount: Number(promoMaxUsageInput.value),
+        days: Number(promoDaysInput.value),
+        productId: Number(promoProductIdInput.value)
+      };
+
+      if (!payload.code || payload.maxUsageCount < 1 || payload.days < 1 || payload.productId < 1) {
+        setStatus(promoFormStatus, "Проверьте введенные значения.", "error");
+        return;
+      }
+
+      const editId = promoEditId.value.trim();
+      const isEdit = editId.length > 0;
+
+      try {
+        setStatus(promoFormStatus, isEdit ? "Сохранение..." : "Создание...", null);
+
+        const { res, data } = await requestJson(isEdit ? `/api/promocodes/${editId}` : "/api/promocodes", {
+          method: isEdit ? "PATCH" : "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, isEdit ? "Не удалось сохранить промокод." : "Не удалось создать промокод."));
+        }
+
+        setStatus(promoFormStatus, isEdit ? "Изменения сохранены." : "Промокод создан.", "ok");
+        resetPromoForm();
+        await loadPromocodes();
+      } catch (error) {
+        setStatus(promoFormStatus, error.message || "Ошибка запроса.", "error");
       }
     }
 
@@ -116,6 +635,67 @@
     const user = getCurrentUser();
     const displayName = user?.name || user?.email || "Пользователь";
     userName.textContent = displayName;
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tab = button.dataset.tab;
+
+        tabButtons.forEach((item) => {
+          item.classList.toggle("active", item === button);
+        });
+
+        tabPanels.forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `tab-${tab}`);
+        });
+
+        if (tab === "promocodes" && promoItems.length === 0) {
+          loadPromocodes();
+        }
+      });
+    });
+
+    promoForm.addEventListener("submit", submitPromoForm);
+
+    promoCancelBtn.addEventListener("click", () => {
+      resetPromoForm();
+    });
+
+    promoSearchBtn.addEventListener("click", searchByCode);
+    promoResetBtn.addEventListener("click", () => {
+      promoSearchCode.value = "";
+      loadPromocodes();
+    });
+
+    promoSearchCode.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchByCode();
+      }
+    });
+
+    promoTableBody.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const action = target.dataset.action;
+      const id = Number(target.dataset.id);
+      if (!action || !id) {
+        return;
+      }
+
+      const item = promoItems.find((x) => x.id === id);
+      if (!item) {
+        return;
+      }
+
+      if (action === "edit") {
+        fillPromoForm(item);
+      } else if (action === "delete") {
+        deletePromocode(id);
+      }
+    });
 
     logoutButton.addEventListener("click", logout);
   </script>

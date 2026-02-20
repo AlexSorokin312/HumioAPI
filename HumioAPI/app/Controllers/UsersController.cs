@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Linq;
 using HumioAPI.Contracts.Users;
 using HumioAPI.Entities;
 using HumioAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,35 @@ public class UsersController : ControllerBase
             return BadRequest(new { errors });
         }
 
-        return Created($"/api/users/{user.Id}", new UserCreatedResponse(user.Id, user.Email, user.Name));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Created($"/api/users/{user.Id}", new UserCreatedResponse(user.Id, user.Email ?? string.Empty, user.Name, subscriptionEndDate));
+    }
+
+    [HttpPost("import")]
+    public async Task<IActionResult> Import([FromBody] ImportUsersRequest request)
+    {
+        if (request is null)
+        {
+            return BadRequest(new { errors = new[] { "Request body is required." } });
+        }
+
+        var (success, errors, result) = await _usersService.ImportFromExportAsync(request.FilePath, request.ModuleId);
+        if (result is null)
+        {
+            return BadRequest(new { errors });
+        }
+
+        var response = new UsersImportResponse(
+            result.Total,
+            result.Created,
+            result.Existing,
+            result.Failed,
+            result.SubscriptionsApplied,
+            result.ModuleId);
+
+        return success
+            ? Ok(response)
+            : BadRequest(new { errors, result = response });
     }
 
     [HttpDelete("{id:long}")]
@@ -146,7 +176,68 @@ public class UsersController : ControllerBase
             return BadRequest(new { errors });
         }
 
-        return Ok(ToResponse(user));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(ToResponse(user, subscriptionEndDate));
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMe()
+    {
+        var userId = GetCurrentUserId();
+        if (!userId.HasValue)
+        {
+            return Unauthorized(new { errors = new[] { "User id claim is missing or invalid." } });
+        }
+
+        var user = await _usersService.GetByIdAsync(userId.Value);
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(ToResponse(user, subscriptionEndDate));
+    }
+
+    [Authorize]
+    [HttpPatch("me")]
+    public async Task<IActionResult> PatchMe([FromBody] PatchUserRequest request)
+    {
+        if (request is null)
+        {
+            return BadRequest(new { errors = new[] { "Request body is required." } });
+        }
+
+        if (request.Email is null && request.Name is null && request.PhoneNumber is null)
+        {
+            return BadRequest(new { errors = new[] { "At least one field must be provided." } });
+        }
+
+        var userId = GetCurrentUserId();
+        if (!userId.HasValue)
+        {
+            return Unauthorized(new { errors = new[] { "User id claim is missing or invalid." } });
+        }
+
+        var (success, errors, user, notFound) = await _usersService.UpdatePartialAsync(
+            userId.Value,
+            request.Email,
+            request.Name,
+            request.PhoneNumber);
+
+        if (notFound || user is null)
+        {
+            return NotFound();
+        }
+
+        if (!success)
+        {
+            return BadRequest(new { errors });
+        }
+
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(ToResponse(user, subscriptionEndDate));
     }
 
     [HttpGet("{id:long}/roles")]
@@ -231,7 +322,8 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(ToResponse(user));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(ToResponse(user, subscriptionEndDate));
     }
 
     [HttpGet("by-email")]
@@ -243,7 +335,8 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(ToResponse(user));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(ToResponse(user, subscriptionEndDate));
     }
 
     [HttpGet]
@@ -264,12 +357,17 @@ public class UsersController : ControllerBase
 
         var pageSize = Math.Min(take, 100);
         var (total, users) = await _usersService.ListAsync(skip, pageSize, email);
-        var items = users.Select(ToResponse).ToArray();
+        var subscriptionDates = await _usersService.GetSubscriptionEndDatesAsync(users.Select(user => user.Id));
+        var items = users
+            .Select(user => ToResponse(
+                user,
+                subscriptionDates.TryGetValue(user.Id, out var endsAt) ? endsAt : null))
+            .ToArray();
         return Ok(new UsersPageResponse(total, items));
     }
 
-    private static UserResponse ToResponse(ApplicationUser user) =>
-        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen);
+    private static UserResponse ToResponse(ApplicationUser user, DateTimeOffset? subscriptionEndDate) =>
+        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen, subscriptionEndDate);
 
     private static string[] NormalizeRoles(string[]? roles) =>
         roles?
@@ -277,4 +375,15 @@ public class UsersController : ControllerBase
             .Select(role => role.Trim())
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray() ?? Array.Empty<string>();
+
+    private long? GetCurrentUserId()
+    {
+        var raw = User.FindFirstValue("sub") ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (long.TryParse(raw, out var id))
+        {
+            return id;
+        }
+
+        return null;
+    }
 }

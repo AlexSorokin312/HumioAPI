@@ -182,7 +182,7 @@ public sealed class AuthService : IAuthService
         }
 
         var linkExists = await _dbContext.UsersDevices
-            .AnyAsync(ud => ud.UserId == userId && ud.DeviceId == device.Id && ud.RevokedAt == null, cancellationToken);
+            .AnyAsync(ud => ud.UserId == userId && ud.DeviceId == device.Id, cancellationToken);
 
         if (!linkExists)
         {

@@ -69,7 +69,8 @@ public class AuthController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new { errors = tokenErrors });
         }
 
-        return Ok(new AuthResponse(ToResponse(user), ToTokensResponse(tokens)));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(new AuthResponse(ToResponse(user, subscriptionEndDate), ToTokensResponse(tokens)));
     }
 
     [HttpPost("login")]
@@ -97,7 +98,8 @@ public class AuthController : ControllerBase
             return BadRequest(new { errors = new[] { "User not found." } });
         }
 
-        return Ok(new AuthResponse(ToResponse(user), ToTokensResponse(tokens)));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(new AuthResponse(ToResponse(user, subscriptionEndDate), ToTokensResponse(tokens)));
     }
 
     [HttpPost("google")]
@@ -126,7 +128,8 @@ public class AuthController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new { errors = tokenErrors });
         }
 
-        return Ok(new GoogleAuthResponse(ToResponse(user), isNewUser, ToTokensResponse(tokens)));
+        var subscriptionEndDate = await _usersService.GetSubscriptionEndDateAsync(user.Id);
+        return Ok(new GoogleAuthResponse(ToResponse(user, subscriptionEndDate), isNewUser, ToTokensResponse(tokens)));
     }
 
     [HttpPost("refresh")]
@@ -167,8 +170,8 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
-    private static UserResponse ToResponse(ApplicationUser user) =>
-        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen);
+    private static UserResponse ToResponse(ApplicationUser user, DateTimeOffset? subscriptionEndDate) =>
+        new(user.Id, user.Email ?? string.Empty, user.Name, user.CreatedAt, user.LastSeen, subscriptionEndDate);
 
     private static AuthTokensResponse ToTokensResponse(AuthTokens tokens) =>
         new(tokens.AccessToken, tokens.RefreshToken, tokens.AccessTokenExpiresAt);

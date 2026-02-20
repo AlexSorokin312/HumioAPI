@@ -3,6 +3,7 @@ using System;
 using HumioAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HumioAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260220093326_AddProductSetLocalizations")]
+    partial class AddProductSetLocalizations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,65 +72,6 @@ namespace HumioAPI.Migrations
                         {
                             t.HasCheckConstraint("ck_admin_access_history_days_positive", "days > 0");
                         });
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.Answer", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("QuestionId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("question_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_answers");
-
-                    b.HasIndex("QuestionId")
-                        .HasDatabaseName("ix_answers_question_id");
-
-                    b.ToTable("answers", (string)null);
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.AnswerLocalization", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AnswerId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("answer_id");
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("answer_text");
-
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasColumnName("language_code");
-
-                    b.HasKey("Id")
-                        .HasName("pk_answer_localizations");
-
-                    b.HasIndex("AnswerId")
-                        .HasDatabaseName("ix_answer_localizations_answer_id");
-
-                    b.HasIndex("AnswerId", "LanguageCode")
-                        .IsUnique()
-                        .HasDatabaseName("ix_answer_localizations_answer_id_language_code");
-
-                    b.ToTable("answer_localizations", (string)null);
                 });
 
             modelBuilder.Entity("HumioAPI.Entities.ApplicationRole", b =>
@@ -302,151 +246,6 @@ namespace HumioAPI.Migrations
                     b.ToTable("devices", (string)null);
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.Lesson", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<int>("DurationSeconds")
-                        .HasColumnType("integer")
-                        .HasColumnName("duration_seconds");
-
-                    b.Property<bool>("IsFree")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_free");
-
-                    b.Property<bool>("IsPublished")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_published");
-
-                    b.Property<long>("ModuleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("module_id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("integer")
-                        .HasColumnName("order_index");
-
-                    b.HasKey("Id")
-                        .HasName("pk_lessons");
-
-                    b.HasIndex("ModuleId")
-                        .HasDatabaseName("ix_lessons_module_id");
-
-                    b.HasIndex("ModuleId", "OrderIndex")
-                        .IsUnique()
-                        .HasDatabaseName("ix_lessons_module_id_order_index");
-
-                    b.ToTable("lessons", null, t =>
-                        {
-                            t.HasCheckConstraint("ck_lessons_duration_seconds_positive", "duration_seconds > 0");
-
-                            t.HasCheckConstraint("ck_lessons_order_index_non_negative", "order_index >= 0");
-                        });
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.LessonLink", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("LocalizationId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("localization_id");
-
-                    b.Property<int>("Pos")
-                        .HasColumnType("integer")
-                        .HasColumnName("pos");
-
-                    b.HasKey("Id")
-                        .HasName("pk_lessons_links");
-
-                    b.HasIndex("LocalizationId")
-                        .HasDatabaseName("ix_lessons_links_localization_id");
-
-                    b.HasIndex("LocalizationId", "Pos")
-                        .IsUnique()
-                        .HasDatabaseName("ix_lessons_links_localization_id_pos");
-
-                    b.ToTable("lessons_links", (string)null);
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.LessonLocalization", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AudioLink")
-                        .HasColumnType("text")
-                        .HasColumnName("audio_link");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasColumnName("language_code");
-
-                    b.Property<long>("LessonId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("lesson_id");
-
-                    b.Property<string>("TextContent")
-                        .HasColumnType("text")
-                        .HasColumnName("text_content");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.HasKey("Id")
-                        .HasName("pk_lessons_localizations");
-
-                    b.HasIndex("LessonId")
-                        .HasDatabaseName("ix_lessons_localizations_lesson_id");
-
-                    b.HasIndex("LessonId", "LanguageCode")
-                        .IsUnique()
-                        .HasDatabaseName("ix_lessons_localizations_lesson_id_language_code");
-
-                    b.ToTable("lessons_localizations", (string)null);
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.Module", b =>
                 {
                     b.Property<long>("Id")
@@ -476,47 +275,6 @@ namespace HumioAPI.Migrations
                         {
                             t.HasCheckConstraint("ck_modules_interval_count_positive", "interval_count > 0");
                         });
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.ModuleLocalization", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasColumnName("language_code");
-
-                    b.Property<long>("ModuleId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("module_id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_module_localizations");
-
-                    b.HasIndex("ModuleId")
-                        .HasDatabaseName("ix_module_localizations_module_id");
-
-                    b.HasIndex("ModuleId", "LanguageCode")
-                        .IsUnique()
-                        .HasDatabaseName("ix_module_localizations_module_id_language_code");
-
-                    b.ToTable("module_localizations", (string)null);
                 });
 
             modelBuilder.Entity("HumioAPI.Entities.Product", b =>
@@ -742,75 +500,6 @@ namespace HumioAPI.Migrations
 
                             t.HasCheckConstraint("ck_purchases_status", "status IN ('pending','paid','failed','refunded')");
                         });
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.Question", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("content");
-
-                    b.Property<long>("LessonId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("lesson_id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_questions");
-
-                    b.HasIndex("LessonId")
-                        .HasDatabaseName("ix_questions_lesson_id");
-
-                    b.ToTable("questions", (string)null);
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.QuestionLocalization", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasColumnName("language_code");
-
-                    b.Property<long>("QuestionId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("question_id");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("question_text");
-
-                    b.HasKey("Id")
-                        .HasName("pk_question_localizations");
-
-                    b.HasIndex("QuestionId")
-                        .HasDatabaseName("ix_question_localizations_question_id");
-
-                    b.HasIndex("QuestionId", "LanguageCode")
-                        .IsUnique()
-                        .HasDatabaseName("ix_question_localizations_question_id_language_code");
-
-                    b.ToTable("question_localizations", (string)null);
                 });
 
             modelBuilder.Entity("HumioAPI.Entities.RefreshToken", b =>
@@ -1119,78 +808,6 @@ namespace HumioAPI.Migrations
                     b.Navigation("TargetUser");
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.Answer", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Question", "Question")
-                        .WithMany("Answers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_answers_questions_question_id");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.AnswerLocalization", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Answer", "Answer")
-                        .WithMany("Localizations")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_answer_localizations_answers_answer_id");
-
-                    b.Navigation("Answer");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.Lesson", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Module", "Module")
-                        .WithMany("Lessons")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_lessons_modules_module_id");
-
-                    b.Navigation("Module");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.LessonLink", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.LessonLocalization", "Localization")
-                        .WithMany("Links")
-                        .HasForeignKey("LocalizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_lessons_links_lessons_localizations_localization_id");
-
-                    b.Navigation("Localization");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.LessonLocalization", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Lesson", "Lesson")
-                        .WithMany("Localizations")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_lessons_localizations_lessons_lesson_id");
-
-                    b.Navigation("Lesson");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.ModuleLocalization", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Module", "Module")
-                        .WithMany("Localizations")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_module_localizations_modules_module_id");
-
-                    b.Navigation("Module");
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.Product", b =>
                 {
                     b.HasOne("HumioAPI.Entities.Module", "Module")
@@ -1267,30 +884,6 @@ namespace HumioAPI.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.Question", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Lesson", "Lesson")
-                        .WithMany("Questions")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_questions_lessons_lesson_id");
-
-                    b.Navigation("Lesson");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.QuestionLocalization", b =>
-                {
-                    b.HasOne("HumioAPI.Entities.Question", "Question")
-                        .WithMany("Localizations")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_question_localizations_questions_question_id");
-
-                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("HumioAPI.Entities.RefreshToken", b =>
@@ -1432,11 +1025,6 @@ namespace HumioAPI.Migrations
                         .HasConstraintName("fk_user_tokens_users_user_id");
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.Answer", b =>
-                {
-                    b.Navigation("Localizations");
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("AdminAccessEntries");
@@ -1463,24 +1051,8 @@ namespace HumioAPI.Migrations
                     b.Navigation("UserDevices");
                 });
 
-            modelBuilder.Entity("HumioAPI.Entities.Lesson", b =>
-                {
-                    b.Navigation("Localizations");
-
-                    b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.LessonLocalization", b =>
-                {
-                    b.Navigation("Links");
-                });
-
             modelBuilder.Entity("HumioAPI.Entities.Module", b =>
                 {
-                    b.Navigation("Lessons");
-
-                    b.Navigation("Localizations");
-
                     b.Navigation("Products");
 
                     b.Navigation("UserModuleAccesses");
@@ -1500,13 +1072,6 @@ namespace HumioAPI.Migrations
             modelBuilder.Entity("HumioAPI.Entities.Promocode", b =>
                 {
                     b.Navigation("Usages");
-                });
-
-            modelBuilder.Entity("HumioAPI.Entities.Question", b =>
-                {
-                    b.Navigation("Answers");
-
-                    b.Navigation("Localizations");
                 });
 #pragma warning restore 612, 618
         }

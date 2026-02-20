@@ -58,4 +58,25 @@ public interface IUsersService
         long id,
         string[] roles,
         CancellationToken cancellationToken = default);
+
+    Task<DateTimeOffset?> GetSubscriptionEndDateAsync(
+        long userId,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<long, DateTimeOffset?>> GetSubscriptionEndDatesAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default);
+
+    Task<(bool Success, string[] Errors, UsersImportResult? Result)> ImportFromExportAsync(
+        string filePath,
+        long? moduleId,
+        CancellationToken cancellationToken = default);
 }
+
+public sealed record UsersImportResult(
+    int Total,
+    int Created,
+    int Existing,
+    int Failed,
+    int SubscriptionsApplied,
+    long ModuleId);

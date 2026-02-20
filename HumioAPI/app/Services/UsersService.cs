@@ -1,3 +1,5 @@
+using System.Text.Json;
+using HumioAPI.Data;
 using HumioAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,15 +11,18 @@ public sealed class UsersService : IUsersService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IEmailSender _emailSender;
+    private readonly AppDbContext _dbContext;
 
     public UsersService(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        AppDbContext dbContext)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
+        _dbContext = dbContext;
     }
 
     public async Task<(bool Success, string[] Errors, ApplicationUser? User)> RegisterAsync(
@@ -290,6 +295,205 @@ public sealed class UsersService : IUsersService
         return (true, Array.Empty<string>(), updatedRoles.ToArray(), false);
     }
 
+    public async Task<DateTimeOffset?> GetSubscriptionEndDateAsync(
+        long userId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.UserModuleAccess
+            .Where(access => access.UserId == userId)
+            .Select(access => (DateTimeOffset?)access.EndsAt)
+            .OrderByDescending(endsAt => endsAt)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<Dictionary<long, DateTimeOffset?>> GetSubscriptionEndDatesAsync(
+        IEnumerable<long> userIds,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = userIds.Distinct().ToArray();
+        if (ids.Length == 0)
+        {
+            return new Dictionary<long, DateTimeOffset?>();
+        }
+
+        var values = await _dbContext.UserModuleAccess
+            .Where(access => ids.Contains(access.UserId))
+            .GroupBy(access => access.UserId)
+            .Select(group => new
+            {
+                group.Key,
+                EndsAt = group.Max(item => item.EndsAt)
+            })
+            .ToListAsync(cancellationToken);
+
+        return values.ToDictionary(item => item.Key, item => (DateTimeOffset?)item.EndsAt);
+    }
+
+    public async Task<(bool Success, string[] Errors, UsersImportResult? Result)> ImportFromExportAsync(
+        string filePath,
+        long? moduleId,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return (false, new[] { "File path is required." }, null);
+        }
+
+        if (!File.Exists(filePath))
+        {
+            return (false, new[] { $"File not found: {filePath}" }, null);
+        }
+
+        var targetModuleId = await ResolveTargetModuleIdAsync(moduleId, cancellationToken);
+        if (!targetModuleId.HasValue)
+        {
+            return (false, new[] { "Module not found. Pass moduleId or create at least one module." }, null);
+        }
+
+        ExportUserItem[] users;
+        try
+        {
+            await using var stream = File.OpenRead(filePath);
+            var payload = await JsonSerializer.DeserializeAsync<ExportPayload>(
+                stream,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                },
+                cancellationToken);
+            users = payload?.Users ?? Array.Empty<ExportUserItem>();
+        }
+        catch (Exception ex)
+        {
+            return (false, new[] { $"Cannot parse users export JSON: {ex.Message}" }, null);
+        }
+
+        var errors = new List<string>();
+        var total = users.Length;
+        var created = 0;
+        var existing = 0;
+        var failed = 0;
+        var subscriptionsApplied = 0;
+
+        foreach (var item in users)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (item.AspNetUser is null || string.IsNullOrWhiteSpace(item.AspNetUser.Email))
+            {
+                failed++;
+                errors.Add("Skipped user without email.");
+                continue;
+            }
+
+            var email = item.AspNetUser.Email.Trim();
+            var user = await _userManager.FindByEmailAsync(email);
+            var createdNow = false;
+
+            if (user is null)
+            {
+                user = new ApplicationUser
+                {
+                    Email = email,
+                    UserName = string.IsNullOrWhiteSpace(item.AspNetUser.UserName) ? email : item.AspNetUser.UserName.Trim(),
+                    Name = item.AspNetUser.Name,
+                    CreatedAt = item.AspNetUser.RegistrationDateUtc ?? DateTimeOffset.UtcNow,
+                    PasswordHash = string.IsNullOrWhiteSpace(item.AspNetUser.PasswordHash) ? null : item.AspNetUser.PasswordHash,
+                    EmailConfirmed = true,
+                    SecurityStamp = Guid.NewGuid().ToString("N"),
+                    ConcurrencyStamp = Guid.NewGuid().ToString("N")
+                };
+
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    failed++;
+                    errors.AddRange(createResult.Errors.Select(error => $"[{email}] {error.Description}"));
+                    continue;
+                }
+
+                created++;
+                createdNow = true;
+            }
+            else
+            {
+                existing++;
+            }
+
+            var roles = NormalizeImportRoles(item.Roles);
+            if (roles.Length > 0)
+            {
+                foreach (var role in roles)
+                {
+                    if (!await _roleManager.RoleExistsAsync(role))
+                    {
+                        var roleResult = await _roleManager.CreateAsync(new ApplicationRole { Name = role });
+                        if (!roleResult.Succeeded)
+                        {
+                            errors.AddRange(roleResult.Errors.Select(error => $"[role:{role}] {error.Description}"));
+                        }
+                    }
+                }
+
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                var missingRoles = roles.Except(currentRoles, StringComparer.OrdinalIgnoreCase).ToArray();
+                if (missingRoles.Length > 0)
+                {
+                    var addRolesResult = await _userManager.AddToRolesAsync(user, missingRoles);
+                    if (!addRolesResult.Succeeded)
+                    {
+                        errors.AddRange(addRolesResult.Errors.Select(error => $"[{email}] {error.Description}"));
+                    }
+                }
+            }
+
+            var subscriptionEndDate = item.UserData?.SubscriptionEndDate;
+            if (subscriptionEndDate.HasValue && subscriptionEndDate.Value > DateTimeOffset.MinValue)
+            {
+                var access = await _dbContext.UserModuleAccess
+                    .FirstOrDefaultAsync(
+                        value => value.UserId == user.Id && value.ModuleId == targetModuleId.Value,
+                        cancellationToken);
+
+                if (access is null)
+                {
+                    _dbContext.UserModuleAccess.Add(new UserModuleAccess
+                    {
+                        UserId = user.Id,
+                        ModuleId = targetModuleId.Value,
+                        EndsAt = subscriptionEndDate.Value
+                    });
+                }
+                else
+                {
+                    access.EndsAt = subscriptionEndDate.Value;
+                }
+
+                subscriptionsApplied++;
+            }
+
+            if (createdNow)
+            {
+                // Identity operations already persist user; only save extra linked data below.
+            }
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        var importResult = new UsersImportResult(
+            total,
+            created,
+            existing,
+            failed,
+            subscriptionsApplied,
+            targetModuleId.Value);
+
+        var distinctErrors = errors.Where(error => !string.IsNullOrWhiteSpace(error)).Distinct().Take(100).ToArray();
+        return distinctErrors.Length > 0
+            ? (false, distinctErrors, importResult)
+            : (true, Array.Empty<string>(), importResult);
+    }
+
     private async Task<string[]> GetMissingRolesAsync(IEnumerable<string> roles)
     {
         var missing = new List<string>();
@@ -303,5 +507,87 @@ public sealed class UsersService : IUsersService
         }
 
         return missing.ToArray();
+    }
+
+    private async Task<long?> ResolveTargetModuleIdAsync(long? requestedModuleId, CancellationToken cancellationToken)
+    {
+        if (requestedModuleId.HasValue)
+        {
+            var exists = await _dbContext.Modules.AnyAsync(module => module.Id == requestedModuleId.Value, cancellationToken);
+            return exists ? requestedModuleId.Value : null;
+        }
+
+        var firstModuleId = await _dbContext.Modules
+            .OrderBy(module => module.Id)
+            .Select(module => (long?)module.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return firstModuleId;
+    }
+
+    private static string[] NormalizeImportRoles(JsonElement? rolesElement)
+    {
+        if (!rolesElement.HasValue)
+        {
+            return Array.Empty<string>();
+        }
+
+        var roles = new List<string>();
+        var element = rolesElement.Value;
+
+        if (element.ValueKind == JsonValueKind.String)
+        {
+            var singleRole = element.GetString();
+            if (!string.IsNullOrWhiteSpace(singleRole))
+            {
+                roles.Add(singleRole.Trim());
+            }
+        }
+        else if (element.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in element.EnumerateArray())
+            {
+                if (item.ValueKind != JsonValueKind.String)
+                {
+                    continue;
+                }
+
+                var role = item.GetString();
+                if (!string.IsNullOrWhiteSpace(role))
+                {
+                    roles.Add(role.Trim());
+                }
+            }
+        }
+
+        return roles
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private sealed class ExportPayload
+    {
+        public ExportUserItem[]? Users { get; init; }
+    }
+
+    private sealed class ExportUserItem
+    {
+        public ExportAspNetUser? AspNetUser { get; init; }
+        public JsonElement? Roles { get; init; }
+        public ExportUserData? UserData { get; init; }
+    }
+
+    private sealed class ExportAspNetUser
+    {
+        public string? Name { get; init; }
+        public string? UserName { get; init; }
+        public string? Email { get; init; }
+        public DateTimeOffset? RegistrationDateUtc { get; init; }
+        public string? PasswordHash { get; init; }
+    }
+
+    private sealed class ExportUserData
+    {
+        public DateTimeOffset? SubscriptionEndDate { get; init; }
     }
 }

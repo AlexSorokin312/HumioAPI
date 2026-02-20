@@ -5,4 +5,5 @@ public sealed record UserResponse(
     string Email,
     string? Name,
     DateTimeOffset CreatedAt,
-    DateTimeOffset? LastSeen);
+    DateTimeOffset? LastSeen,
+    DateTimeOffset? SubscriptionEndDate);

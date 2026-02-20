@@ -23,7 +23,16 @@ public class AppDbContext : IdentityDbContext<
     public DbSet<Device> Devices => Set<Device>();
     public DbSet<UserDevice> UsersDevices => Set<UserDevice>();
     public DbSet<Module> Modules => Set<Module>();
+    public DbSet<ModuleLocalization> ModuleLocalizations => Set<ModuleLocalization>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<Question> Questions => Set<Question>();
+    public DbSet<Answer> Answers => Set<Answer>();
+    public DbSet<LessonLocalization> LessonLocalizations => Set<LessonLocalization>();
+    public DbSet<QuestionLocalization> QuestionLocalizations => Set<QuestionLocalization>();
+    public DbSet<AnswerLocalization> AnswerLocalizations => Set<AnswerLocalization>();
+    public DbSet<LessonLink> LessonLinks => Set<LessonLink>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<ProductSetLocalization> ProductSetLocalizations => Set<ProductSetLocalization>();
     public DbSet<Purchase> Purchases => Set<Purchase>();
     public DbSet<AdminAccessHistory> AdminAccessHistory => Set<AdminAccessHistory>();
     public DbSet<Promocode> Promocodes => Set<Promocode>();
@@ -39,7 +48,16 @@ public class AppDbContext : IdentityDbContext<
         ConfigureIdentity(builder);
         ConfigureDevices(builder);
         ConfigureModules(builder);
+        ConfigureModuleLocalizations(builder);
+        ConfigureLessons(builder);
+        ConfigureQuestions(builder);
+        ConfigureAnswers(builder);
+        ConfigureLessonLocalizations(builder);
+        ConfigureQuestionLocalizations(builder);
+        ConfigureAnswerLocalizations(builder);
+        ConfigureLessonLinks(builder);
         ConfigureProducts(builder);
+        ConfigureProductSetLocalizations(builder);
         ConfigurePurchases(builder);
         ConfigureAdminAccessHistory(builder);
         ConfigurePromocodes(builder);
@@ -121,11 +139,178 @@ public class AppDbContext : IdentityDbContext<
         });
     }
 
+    private static void ConfigureModuleLocalizations(ModelBuilder builder)
+    {
+        builder.Entity<ModuleLocalization>(b =>
+        {
+            b.ToTable("module_localizations");
+            b.HasKey(l => l.Id);
+            b.Property(l => l.LanguageCode)
+                .IsRequired()
+                .HasMaxLength(10);
+            b.Property(l => l.Name).IsRequired();
+            b.Property(l => l.Description);
+
+            b.HasIndex(l => new { l.ModuleId, l.LanguageCode }).IsUnique();
+            b.HasIndex(l => l.ModuleId);
+
+            b.HasOne(l => l.Module)
+                .WithMany(m => m.Localizations)
+                .HasForeignKey(l => l.ModuleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureLessons(ModelBuilder builder)
+    {
+        builder.Entity<Lesson>(b =>
+        {
+            b.ToTable("lessons", table =>
+            {
+                table.HasCheckConstraint("ck_lessons_order_index_non_negative", "order_index >= 0");
+                table.HasCheckConstraint("ck_lessons_duration_seconds_positive", "duration_seconds > 0");
+            });
+            b.HasKey(l => l.Id);
+            b.Property(l => l.Name).IsRequired();
+            b.Property(l => l.Description);
+            b.Property(l => l.OrderIndex).IsRequired();
+            b.Property(l => l.DurationSeconds).IsRequired();
+            b.Property(l => l.IsPublished).IsRequired().HasDefaultValue(false);
+            b.Property(l => l.IsFree).IsRequired().HasDefaultValue(false);
+            b.Property(l => l.CreatedAt)
+                .IsRequired()
+                .HasDefaultValueSql("now()");
+
+            b.HasIndex(l => l.ModuleId);
+            b.HasIndex(l => new { l.ModuleId, l.OrderIndex }).IsUnique();
+
+            b.HasOne(l => l.Module)
+                .WithMany(m => m.Lessons)
+                .HasForeignKey(l => l.ModuleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureQuestions(ModelBuilder builder)
+    {
+        builder.Entity<Question>(b =>
+        {
+            b.ToTable("questions");
+            b.HasKey(q => q.Id);
+            b.Property(q => q.Name).IsRequired();
+            b.Property(q => q.Content).IsRequired();
+            b.HasIndex(q => q.LessonId);
+
+            b.HasOne(q => q.Lesson)
+                .WithMany(l => l.Questions)
+                .HasForeignKey(q => q.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureAnswers(ModelBuilder builder)
+    {
+        builder.Entity<Answer>(b =>
+        {
+            b.ToTable("answers");
+            b.HasKey(a => a.Id);
+            b.HasIndex(a => a.QuestionId);
+
+            b.HasOne(a => a.Question)
+                .WithMany(q => q.Answers)
+                .HasForeignKey(a => a.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureLessonLocalizations(ModelBuilder builder)
+    {
+        builder.Entity<LessonLocalization>(b =>
+        {
+            b.ToTable("lessons_localizations");
+            b.HasKey(l => l.Id);
+            b.Property(l => l.Title).IsRequired();
+            b.Property(l => l.Description);
+            b.Property(l => l.TextContent);
+            b.Property(l => l.AudioLink);
+            b.Property(l => l.LanguageCode)
+                .IsRequired()
+                .HasMaxLength(10);
+
+            b.HasIndex(l => l.LessonId);
+            b.HasIndex(l => new { l.LessonId, l.LanguageCode }).IsUnique();
+
+            b.HasOne(l => l.Lesson)
+                .WithMany(lesson => lesson.Localizations)
+                .HasForeignKey(l => l.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureQuestionLocalizations(ModelBuilder builder)
+    {
+        builder.Entity<QuestionLocalization>(b =>
+        {
+            b.ToTable("question_localizations");
+            b.HasKey(q => q.Id);
+            b.Property(q => q.LanguageCode)
+                .IsRequired()
+                .HasMaxLength(10);
+            b.Property(q => q.QuestionText).IsRequired();
+
+            b.HasIndex(q => q.QuestionId);
+            b.HasIndex(q => new { q.QuestionId, q.LanguageCode }).IsUnique();
+
+            b.HasOne(q => q.Question)
+                .WithMany(question => question.Localizations)
+                .HasForeignKey(q => q.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureAnswerLocalizations(ModelBuilder builder)
+    {
+        builder.Entity<AnswerLocalization>(b =>
+        {
+            b.ToTable("answer_localizations");
+            b.HasKey(a => a.Id);
+            b.Property(a => a.LanguageCode)
+                .IsRequired()
+                .HasMaxLength(10);
+            b.Property(a => a.AnswerText).IsRequired();
+
+            b.HasIndex(a => a.AnswerId);
+            b.HasIndex(a => new { a.AnswerId, a.LanguageCode }).IsUnique();
+
+            b.HasOne(a => a.Answer)
+                .WithMany(answer => answer.Localizations)
+                .HasForeignKey(a => a.AnswerId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    private static void ConfigureLessonLinks(ModelBuilder builder)
+    {
+        builder.Entity<LessonLink>(b =>
+        {
+            b.ToTable("lessons_links");
+            b.HasKey(l => l.Id);
+            b.Property(l => l.Pos).IsRequired();
+            b.HasIndex(l => l.LocalizationId);
+            b.HasIndex(l => new { l.LocalizationId, l.Pos }).IsUnique();
+
+            b.HasOne(l => l.Localization)
+                .WithMany(localization => localization.Links)
+                .HasForeignKey(l => l.LocalizationId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
     private static void ConfigureProducts(ModelBuilder builder)
     {
         builder.Entity<Product>(b =>
         {
-            b.ToTable("products");
+            b.ToTable("product_set");
             b.HasKey(p => p.Id);
             b.Property(p => p.Name).IsRequired();
 
@@ -135,6 +320,28 @@ public class AppDbContext : IdentityDbContext<
                 .OnDelete(DeleteBehavior.Cascade);
 
             b.HasIndex(p => p.ModuleId);
+        });
+    }
+
+    private static void ConfigureProductSetLocalizations(ModelBuilder builder)
+    {
+        builder.Entity<ProductSetLocalization>(b =>
+        {
+            b.ToTable("product_set_localizations");
+            b.HasKey(l => l.Id);
+            b.Property(l => l.LanguageCode)
+                .IsRequired()
+                .HasMaxLength(10);
+            b.Property(l => l.Name).IsRequired();
+            b.Property(l => l.Description);
+
+            b.HasIndex(l => new { l.ProductSetId, l.LanguageCode }).IsUnique();
+            b.HasIndex(l => l.ProductSetId);
+
+            b.HasOne(l => l.ProductSet)
+                .WithMany(p => p.Localizations)
+                .HasForeignKey(l => l.ProductSetId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 

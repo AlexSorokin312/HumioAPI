@@ -10,4 +10,5 @@ public class Product
     public ICollection<Purchase> Purchases { get; } = new List<Purchase>();
     public ICollection<AdminAccessHistory> AdminAccessHistory { get; } = new List<AdminAccessHistory>();
     public ICollection<Promocode> Promocodes { get; } = new List<Promocode>();
+    public ICollection<ProductSetLocalization> Localizations { get; } = new List<ProductSetLocalization>();
 }
