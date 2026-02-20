@@ -285,6 +285,151 @@ public sealed class UsersService : IUsersService
             : (true, Array.Empty<string>(), deletedCount);
     }
 
+    public async Task<(bool Success, string[] Errors, DateTimeOffset? EndsAt, bool UserNotFound, bool ModuleNotFound)> GrantModuleAccessByAdminAsync(
+        long adminId,
+        long targetUserId,
+        long moduleId,
+        int days,
+        CancellationToken cancellationToken = default)
+    {
+        if (days <= 0)
+        {
+            return (false, new[] { "Days must be > 0." }, null, false, false);
+        }
+
+        var adminExists = await _userManager.Users.AnyAsync(user => user.Id == adminId, cancellationToken);
+        if (!adminExists)
+        {
+            return (false, new[] { "Admin user not found." }, null, true, false);
+        }
+
+        var targetUserExists = await _userManager.Users.AnyAsync(user => user.Id == targetUserId, cancellationToken);
+        if (!targetUserExists)
+        {
+            return (false, Array.Empty<string>(), null, true, false);
+        }
+
+        var moduleExists = await _dbContext.Modules.AnyAsync(module => module.Id == moduleId, cancellationToken);
+        if (!moduleExists)
+        {
+            return (false, Array.Empty<string>(), null, false, true);
+        }
+
+        var now = DateTimeOffset.UtcNow;
+        var access = await _dbContext.UserModuleAccess
+            .FirstOrDefaultAsync(value => value.UserId == targetUserId && value.ModuleId == moduleId, cancellationToken);
+
+        var baseDate = access is null
+            ? now
+            : (access.EndsAt > now ? access.EndsAt : now);
+        var endsAt = baseDate.AddDays(days);
+
+        if (access is null)
+        {
+            _dbContext.UserModuleAccess.Add(new UserModuleAccess
+            {
+                UserId = targetUserId,
+                ModuleId = moduleId,
+                EndsAt = endsAt
+            });
+        }
+        else
+        {
+            access.EndsAt = endsAt;
+        }
+
+        _dbContext.AdminAccessHistory.Add(new AdminAccessHistory
+        {
+            AdminId = adminId,
+            TargetUserId = targetUserId,
+            ModuleId = moduleId,
+            Days = days,
+            CreatedAt = now
+        });
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return (true, Array.Empty<string>(), endsAt, false, false);
+    }
+
+    public async Task<(bool Success, string[] Errors, DateTimeOffset? EndsAt, bool Enabled, bool UserNotFound, bool ModuleNotFound)> SetModuleAccessByAdminAsync(
+        long adminId,
+        long targetUserId,
+        long moduleId,
+        bool enabled,
+        DateTimeOffset? endsAt,
+        CancellationToken cancellationToken = default)
+    {
+        var adminExists = await _userManager.Users.AnyAsync(user => user.Id == adminId, cancellationToken);
+        if (!adminExists)
+        {
+            return (false, new[] { "Admin user not found." }, null, false, true, false);
+        }
+
+        var targetUserExists = await _userManager.Users.AnyAsync(user => user.Id == targetUserId, cancellationToken);
+        if (!targetUserExists)
+        {
+            return (false, Array.Empty<string>(), null, false, true, false);
+        }
+
+        var moduleExists = await _dbContext.Modules.AnyAsync(module => module.Id == moduleId, cancellationToken);
+        if (!moduleExists)
+        {
+            return (false, Array.Empty<string>(), null, false, false, true);
+        }
+
+        var access = await _dbContext.UserModuleAccess
+            .FirstOrDefaultAsync(value => value.UserId == targetUserId && value.ModuleId == moduleId, cancellationToken);
+
+        if (!enabled)
+        {
+            if (access is not null)
+            {
+                _dbContext.UserModuleAccess.Remove(access);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            return (true, Array.Empty<string>(), null, false, false, false);
+        }
+
+        if (!endsAt.HasValue)
+        {
+            return (false, new[] { "EndsAt is required when enabled=true." }, null, false, false, false);
+        }
+
+        var now = DateTimeOffset.UtcNow;
+        if (endsAt.Value <= now)
+        {
+            return (false, new[] { "EndsAt must be in the future." }, null, false, false, false);
+        }
+
+        if (access is null)
+        {
+            _dbContext.UserModuleAccess.Add(new UserModuleAccess
+            {
+                UserId = targetUserId,
+                ModuleId = moduleId,
+                EndsAt = endsAt.Value
+            });
+        }
+        else
+        {
+            access.EndsAt = endsAt.Value;
+        }
+
+        var days = (int)Math.Ceiling((endsAt.Value - now).TotalDays);
+        _dbContext.AdminAccessHistory.Add(new AdminAccessHistory
+        {
+            AdminId = adminId,
+            TargetUserId = targetUserId,
+            ModuleId = moduleId,
+            Days = Math.Max(1, days),
+            CreatedAt = now
+        });
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return (true, Array.Empty<string>(), endsAt.Value, true, false, false);
+    }
+
     public async Task<(bool Success, string[] Errors, string[]? Roles, bool NotFound)> GetRolesAsync(
         long id,
         CancellationToken cancellationToken = default)
@@ -423,13 +568,32 @@ public sealed class UsersService : IUsersService
     {
         var modules = await _dbContext.UserModuleAccess
             .Where(access => access.UserId == userId)
-            .Select(access => new { access.ModuleId, access.Module.Name })
-            .Distinct()
+            .GroupBy(access => new { access.ModuleId, access.Module.Name })
+            .Select(group => new
+            {
+                group.Key.ModuleId,
+                group.Key.Name,
+                EndsAt = group.Max(item => item.EndsAt)
+            })
             .OrderBy(module => module.ModuleId)
             .ToListAsync(cancellationToken);
 
+        var moduleIds = modules.Select(module => module.ModuleId).ToArray();
+        var adminGrantedModuleIds = moduleIds.Length == 0
+            ? new HashSet<long>()
+            : (await _dbContext.AdminAccessHistory
+                .Where(entry => entry.TargetUserId == userId && moduleIds.Contains(entry.ModuleId))
+                .Select(entry => entry.ModuleId)
+                .Distinct()
+                .ToListAsync(cancellationToken))
+                .ToHashSet();
+
         return modules
-            .Select(module => new UserModuleInfo(module.ModuleId, module.Name))
+            .Select(module => new UserModuleInfo(
+                module.ModuleId,
+                module.Name,
+                module.EndsAt,
+                adminGrantedModuleIds.Contains(module.ModuleId)))
             .ToArray();
     }
 
@@ -445,20 +609,40 @@ public sealed class UsersService : IUsersService
 
         var values = await _dbContext.UserModuleAccess
             .Where(access => ids.Contains(access.UserId))
-            .Select(access => new
+            .GroupBy(access => new { access.UserId, access.ModuleId, access.Module.Name })
+            .Select(group => new
             {
-                access.UserId,
-                Module = new UserModuleInfo(access.ModuleId, access.Module.Name)
+                group.Key.UserId,
+                group.Key.ModuleId,
+                group.Key.Name,
+                EndsAt = group.Max(item => item.EndsAt)
             })
             .ToListAsync(cancellationToken);
+
+        var modulePairs = values
+            .Select(item => (item.UserId, item.ModuleId))
+            .ToArray();
+
+        var adminGrantedPairs = modulePairs.Length == 0
+            ? new HashSet<string>(StringComparer.Ordinal)
+            : (await _dbContext.AdminAccessHistory
+                .Where(entry => ids.Contains(entry.TargetUserId))
+                .Select(entry => new { entry.TargetUserId, entry.ModuleId })
+                .Distinct()
+                .ToListAsync(cancellationToken))
+                .Select(entry => $"{entry.TargetUserId}:{entry.ModuleId}")
+                .ToHashSet(StringComparer.Ordinal);
 
         return values
             .GroupBy(item => item.UserId)
             .ToDictionary(
                 group => group.Key,
                 group => group
-                    .Select(item => item.Module)
-                    .Distinct()
+                    .Select(item => new UserModuleInfo(
+                        item.ModuleId,
+                        item.Name,
+                        item.EndsAt,
+                        adminGrantedPairs.Contains($"{item.UserId}:{item.ModuleId}")))
                     .OrderBy(module => module.Id)
                     .ToArray());
     }

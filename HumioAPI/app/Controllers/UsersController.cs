@@ -100,6 +100,75 @@ public class UsersController : ControllerBase
         return Ok(new { deletedCount });
     }
 
+    [Authorize]
+    [HttpPost("{id:long}/modules/{moduleId:long}/grant")]
+    public async Task<IActionResult> GrantModuleAccess(long id, long moduleId, [FromBody] GrantModuleAccessRequest request)
+    {
+        if (request is null)
+        {
+            return BadRequest(new { errors = new[] { "Request body is required." } });
+        }
+
+        var adminId = GetCurrentUserId();
+        if (!adminId.HasValue)
+        {
+            return Unauthorized(new { errors = new[] { "User id claim is missing or invalid." } });
+        }
+
+        var (success, errors, endsAt, userNotFound, moduleNotFound) = await _usersService.GrantModuleAccessByAdminAsync(
+            adminId.Value,
+            id,
+            moduleId,
+            request.Days);
+
+        if (userNotFound || moduleNotFound)
+        {
+            return NotFound();
+        }
+
+        if (!success)
+        {
+            return BadRequest(new { errors });
+        }
+
+        return Ok(new { endsAt });
+    }
+
+    [Authorize]
+    [HttpPost("{id:long}/modules/{moduleId:long}/access")]
+    public async Task<IActionResult> SetModuleAccess(long id, long moduleId, [FromBody] SetModuleAccessRequest request)
+    {
+        if (request is null)
+        {
+            return BadRequest(new { errors = new[] { "Request body is required." } });
+        }
+
+        var adminId = GetCurrentUserId();
+        if (!adminId.HasValue)
+        {
+            return Unauthorized(new { errors = new[] { "User id claim is missing or invalid." } });
+        }
+
+        var (success, errors, endsAt, enabled, userNotFound, moduleNotFound) = await _usersService.SetModuleAccessByAdminAsync(
+            adminId.Value,
+            id,
+            moduleId,
+            request.Enabled,
+            request.EndsAt);
+
+        if (userNotFound || moduleNotFound)
+        {
+            return NotFound();
+        }
+
+        if (!success)
+        {
+            return BadRequest(new { errors });
+        }
+
+        return Ok(new { enabled, endsAt });
+    }
+
     [HttpPost("{id:long}/reset-password")]
     public async Task<IActionResult> ResetPassword(long id, [FromBody] ResetPasswordRequest request)
     {
@@ -419,7 +488,7 @@ public class UsersController : ControllerBase
             user.CreatedAt,
             user.LastSeen,
             subscriptionEndDate,
-            modules.Select(module => new UserModuleResponse(module.Id, module.Name)).ToArray(),
+            modules.Select(module => new UserModuleResponse(module.Id, module.Name, module.EndsAt, module.GrantedByAdmin)).ToArray(),
             purchasesInfo.PurchasesCount,
             purchasesInfo.TotalPurchasedAmountCents);
 

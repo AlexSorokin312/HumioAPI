@@ -10,4 +10,5 @@ public class Module
     public ICollection<Lesson> Lessons { get; } = new List<Lesson>();
     public ICollection<ModuleLocalization> Localizations { get; } = new List<ModuleLocalization>();
     public ICollection<UserModuleAccess> UserModuleAccesses { get; } = new List<UserModuleAccess>();
+    public ICollection<AdminAccessHistory> AdminAccessHistory { get; } = new List<AdminAccessHistory>();
 }

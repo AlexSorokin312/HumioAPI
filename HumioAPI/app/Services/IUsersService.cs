@@ -48,6 +48,21 @@ public interface IUsersService
     Task<(bool Success, string[] Errors, int DeletedCount)> DeleteAllAsync(
         CancellationToken cancellationToken = default);
 
+    Task<(bool Success, string[] Errors, DateTimeOffset? EndsAt, bool UserNotFound, bool ModuleNotFound)> GrantModuleAccessByAdminAsync(
+        long adminId,
+        long targetUserId,
+        long moduleId,
+        int days,
+        CancellationToken cancellationToken = default);
+
+    Task<(bool Success, string[] Errors, DateTimeOffset? EndsAt, bool Enabled, bool UserNotFound, bool ModuleNotFound)> SetModuleAccessByAdminAsync(
+        long adminId,
+        long targetUserId,
+        long moduleId,
+        bool enabled,
+        DateTimeOffset? endsAt,
+        CancellationToken cancellationToken = default);
+
     Task<(bool Success, string[] Errors, string[]? Roles, bool NotFound)> GetRolesAsync(
         long id,
         CancellationToken cancellationToken = default);
@@ -114,7 +129,9 @@ public sealed record UsersImportResult(
 
 public sealed record UserModuleInfo(
     long Id,
-    string Name);
+    string Name,
+    DateTimeOffset? EndsAt,
+    bool GrantedByAdmin);
 
 public sealed record UserPurchasesInfo(
     int PurchasesCount,

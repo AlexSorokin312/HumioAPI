@@ -427,9 +427,9 @@ public class AppDbContext : IdentityDbContext<
                 .HasForeignKey(a => a.TargetUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            b.HasOne(a => a.Product)
-                .WithMany(p => p.AdminAccessHistory)
-                .HasForeignKey(a => a.ProductId)
+            b.HasOne(a => a.Module)
+                .WithMany(m => m.AdminAccessHistory)
+                .HasForeignKey(a => a.ModuleId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }

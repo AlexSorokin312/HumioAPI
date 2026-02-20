@@ -315,6 +315,16 @@
       right: 2px;
     }
 
+    .admin-sup {
+      color: #0f766e;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      position: absolute;
+      top: -6px;
+      right: 2px;
+    }
+
     .icon-btn {
       width: 30px;
       height: 30px;
@@ -401,6 +411,57 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+    }
+
+    .modules-user-lookup {
+      margin-top: 10px;
+    }
+
+    .modules-user-email-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .modules-user-email-row input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .modules-user-table th,
+    .modules-user-table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .modal-card h4 {
+      margin: 0 0 10px;
+      font-size: 18px;
     }
 
     .modules-panel .promo-table {
@@ -619,6 +680,35 @@
               <div id="products-list-status" class="status"></div>
             </div>
           </div>
+
+          <div class="promo-card modules-user-lookup">
+            <div class="promo-header">
+              <h3>Модули пользователя</h3>
+            </div>
+            <div class="modules-user-email-row">
+              <input id="modules-user-email" type="email" placeholder="user@example.com" />
+              <button class="btn" id="modules-user-email-search-btn" type="button">Найти</button>
+              <button class="btn" id="modules-user-email-reset-btn" type="button">Сброс</button>
+            </div>
+            <div class="promo-table-wrap">
+              <table class="promo-table modules-table modules-user-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Модуль</th>
+                    <th>Статус</th>
+                    <th>Основание</th>
+                    <th>Дата окончания</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody id="modules-user-table-body">
+                  <tr><td colspan="6">Укажите email пользователя, чтобы посмотреть статусы по модулям.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="modules-user-status" class="status"></div>
+          </div>
         </div>
 
         <div class="modules-right">
@@ -685,6 +775,20 @@
       </div>
     </section>
   </main>
+
+  <div id="module-access-modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card">
+      <h4>Дата окончания доступа</h4>
+      <div class="field">
+        <label for="module-access-ends-at-input">Выберите дату и время</label>
+        <input id="module-access-ends-at-input" type="datetime-local" />
+      </div>
+      <div class="buttons">
+        <button class="btn primary" id="module-access-save-btn" type="button">Сохранить</button>
+        <button class="btn" id="module-access-cancel-btn" type="button">Отмена</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const userName = document.getElementById("user-name");
@@ -756,6 +860,15 @@
     const modulesListStatus = document.getElementById("modules-list-status");
     const productsTableBody = document.getElementById("products-table-body");
     const productsListStatus = document.getElementById("products-list-status");
+    const modulesUserEmailInput = document.getElementById("modules-user-email");
+    const modulesUserEmailSearchBtn = document.getElementById("modules-user-email-search-btn");
+    const modulesUserEmailResetBtn = document.getElementById("modules-user-email-reset-btn");
+    const modulesUserTableBody = document.getElementById("modules-user-table-body");
+    const modulesUserStatus = document.getElementById("modules-user-status");
+    const moduleAccessModal = document.getElementById("module-access-modal");
+    const moduleAccessEndsAtInput = document.getElementById("module-access-ends-at-input");
+    const moduleAccessSaveBtn = document.getElementById("module-access-save-btn");
+    const moduleAccessCancelBtn = document.getElementById("module-access-cancel-btn");
 
     let promoItems = [];
     let usersItems = [];
@@ -765,6 +878,29 @@
     let productItems = [];
     let selectedProductModuleIds = [];
     let moduleCardCollapsed = false;
+    let modulesLookupUser = null;
+    let pendingModuleAccessModuleId = null;
+
+    function toDateTimeLocalValue(date) {
+      const local = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+      return local.toISOString().slice(0, 16);
+    }
+
+    function closeModuleAccessModal() {
+      pendingModuleAccessModuleId = null;
+      moduleAccessModal.classList.remove("active");
+      moduleAccessModal.setAttribute("aria-hidden", "true");
+    }
+
+    function openModuleAccessModal(moduleId) {
+      pendingModuleAccessModuleId = moduleId;
+      const defaultEndsAt = new Date();
+      defaultEndsAt.setDate(defaultEndsAt.getDate() + 30);
+      moduleAccessEndsAtInput.value = toDateTimeLocalValue(defaultEndsAt);
+      moduleAccessModal.classList.add("active");
+      moduleAccessModal.setAttribute("aria-hidden", "false");
+      moduleAccessEndsAtInput.focus();
+    }
 
     function setModuleCardCollapsed(collapsed) {
       moduleCardCollapsed = collapsed;
@@ -1059,16 +1195,28 @@
       const hasActiveModules = activeModuleIds.size > 0;
       const purchasesCount = Number(item?.purchasesCount || 0);
       const isPromoAccess = hasActiveModules && purchasesCount === 0;
+      const activeModulesById = new Map(
+        Array.isArray(item?.modules)
+          ? item.modules
+              .map((userModule) => [Number(userModule?.id), userModule])
+              .filter((entry) => Number.isFinite(entry[0]))
+          : []
+      );
 
       const badges = modules.map((module) => {
         const moduleId = Number(module.id || 0);
         const isActive = activeModuleIds.has(moduleId);
         const name = module.name || `#${moduleId}`;
         const className = isActive ? "active" : "inactive";
-        const promoSup = isPromoAccess && isActive
-          ? `<span class="promo-sup" title="промокод">p</span>`
-          : "";
-        return `<span class="user-module-item ${className}">${name}${promoSup}</span>`;
+        const activeUserModule = activeModulesById.get(moduleId);
+        const isAdminAccess = Boolean(activeUserModule?.grantedByAdmin);
+        const mark = isActive && isAdminAccess
+          ? `<span class="admin-sup" title="доступ выдан администратором">a</span>`
+          : (isActive && isPromoAccess
+            ? `<span class="promo-sup" title="промокод">p</span>`
+            : "");
+
+        return `<span class="user-module-item ${className}">${name}${mark}</span>`;
       }).join("");
 
       return `<div class="user-modules-list">${badges}</div>`;
@@ -1507,6 +1655,147 @@
       }).join("");
     }
 
+    function renderModulesForUser(user) {
+      if (!Array.isArray(moduleItems) || moduleItems.length === 0) {
+        modulesUserTableBody.innerHTML = `<tr><td colspan="6">Сначала загрузите модули.</td></tr>`;
+        return;
+      }
+
+      const activeModulesById = new Map();
+      if (Array.isArray(user?.modules)) {
+        user.modules.forEach((module) => {
+          const moduleId = Number(module?.id);
+          if (Number.isFinite(moduleId)) {
+            activeModulesById.set(moduleId, module);
+          }
+        });
+      }
+
+      const purchasesCount = Number(user?.purchasesCount || 0);
+      const rows = [...moduleItems]
+        .sort((left, right) => Number(left.id || 0) - Number(right.id || 0))
+        .map((module) => {
+          const moduleId = Number(module.id || 0);
+          const userModule = activeModulesById.get(moduleId);
+          const isActive = Boolean(userModule);
+          const isAdminAccess = Boolean(userModule?.grantedByAdmin);
+          const basis = isActive
+            ? (isAdminAccess ? "Админ" : (purchasesCount > 0 ? "Покупка" : "Промокод"))
+            : "—";
+          const endsAt = isActive
+            ? formatDateTime(userModule?.endsAt)
+            : "—";
+          const actionText = isActive ? "Продлить" : "Выдать";
+
+          return `
+            <tr>
+              <td>${moduleId}</td>
+              <td>${module.name || `#${moduleId}`}</td>
+              <td>${isActive ? "<strong style=\"color:#166534;\">Активен</strong>" : "<span style=\"color:#64748b;\">Не активен</span>"}</td>
+              <td>${basis}</td>
+              <td>${endsAt}</td>
+              <td>
+                <div class="row-actions" style="justify-content:center;">
+                  <button class="btn primary" type="button" data-modules-user-action="set-access" data-module-id="${moduleId}">${actionText}</button>
+                  ${isActive ? `<button class="btn danger" type="button" data-modules-user-action="disable-access" data-module-id="${moduleId}">Отключить</button>` : ""}
+                </div>
+              </td>
+            </tr>`;
+        })
+        .join("");
+
+      modulesUserTableBody.innerHTML = rows || `<tr><td colspan="6">Модули не найдены.</td></tr>`;
+    }
+
+    async function searchModulesByUserEmail() {
+      const email = modulesUserEmailInput.value.trim();
+      if (!email) {
+        setStatus(modulesUserStatus, "Укажите email пользователя.", "error");
+        return;
+      }
+
+      if (!Array.isArray(moduleItems) || moduleItems.length === 0) {
+        await loadModules();
+      }
+
+      setStatus(modulesUserStatus, "Поиск пользователя...", null);
+      try {
+        const { res, data } = await requestJson(`/api/users/by-email?email=${encodeURIComponent(email)}`, {
+          method: "GET",
+          headers: getAuthHeaders()
+        });
+
+        if (res.status === 404) {
+          modulesLookupUser = null;
+          modulesUserTableBody.innerHTML = `<tr><td colspan="6">Пользователь не найден.</td></tr>`;
+          setStatus(modulesUserStatus, "Пользователь не найден.", "error");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось получить данные пользователя."));
+        }
+
+        modulesLookupUser = data;
+        renderModulesForUser(modulesLookupUser);
+        setStatus(modulesUserStatus, `Пользователь: ${data?.email || email}`, "ok");
+      } catch (error) {
+        modulesLookupUser = null;
+        modulesUserTableBody.innerHTML = `<tr><td colspan="6">Ошибка загрузки данных.</td></tr>`;
+        setStatus(modulesUserStatus, error.message || "Ошибка запроса.", "error");
+      }
+    }
+
+    async function setModuleAccessFromLookup(moduleId, enabled, endsAtIso = null) {
+      if (!modulesLookupUser?.id) {
+        setStatus(modulesUserStatus, "Сначала найдите пользователя по email.", "error");
+        return;
+      }
+
+      if (enabled && !endsAtIso) {
+        setStatus(modulesUserStatus, "Выберите дату окончания доступа.", "error");
+        return;
+      }
+
+      setStatus(modulesUserStatus, enabled ? "Сохранение доступа..." : "Отключение доступа...", null);
+      try {
+        const { res, data } = await requestJson(`/api/users/${modulesLookupUser.id}/modules/${moduleId}/access`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            enabled,
+            endsAt: endsAtIso
+          })
+        });
+
+        if (res.status === 401) {
+          setStatus(modulesUserStatus, "Нужна авторизация администратора.", "error");
+          return;
+        }
+
+        if (res.status === 404) {
+          setStatus(modulesUserStatus, "Пользователь или модуль не найден.", "error");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(getErrorText(data, "Не удалось выдать доступ к модулю."));
+        }
+
+        await searchModulesByUserEmail();
+        setStatus(modulesUserStatus, enabled ? "Доступ сохранен." : "Доступ отключен.", "ok");
+      } catch (error) {
+        setStatus(modulesUserStatus, error.message || "Ошибка изменения доступа.", "error");
+      }
+    }
+
+    function resetModulesUserLookup() {
+      modulesUserEmailInput.value = "";
+      modulesLookupUser = null;
+      modulesUserTableBody.innerHTML = `<tr><td colspan="6">Укажите email пользователя, чтобы посмотреть статусы по модулям.</td></tr>`;
+      setStatus(modulesUserStatus, "", null);
+    }
+
     async function loadModules() {
       setStatus(modulesListStatus, "Загрузка модулей...", null);
       try {
@@ -1760,6 +2049,8 @@
     usersSortLastSeen.addEventListener("click", () => toggleUsersSort("lastSeen"));
     usersSortPurchasesCount.addEventListener("click", () => toggleUsersSort("purchasesCount"));
     usersSortTotalSpent.addEventListener("click", () => toggleUsersSort("totalPurchasedAmountCents"));
+    modulesUserEmailSearchBtn.addEventListener("click", searchModulesByUserEmail);
+    modulesUserEmailResetBtn.addEventListener("click", resetModulesUserLookup);
 
     productModuleSelect.addEventListener("change", () => {
       const id = Number(productModuleSelect.value);
@@ -1783,6 +2074,12 @@
       if (event.key === "Enter") {
         event.preventDefault();
         loadUsers();
+      }
+    });
+    modulesUserEmailInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchModulesByUserEmail();
       }
     });
 
@@ -1844,6 +2141,59 @@
       }
     });
 
+    modulesUserTableBody.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const button = target.closest("button[data-modules-user-action]");
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      const action = button.dataset.modulesUserAction;
+      const moduleId = Number(button.dataset.moduleId);
+      if (!moduleId) {
+        return;
+      }
+
+      if (action === "set-access") {
+        openModuleAccessModal(moduleId);
+      } else if (action === "disable-access") {
+        setModuleAccessFromLookup(moduleId, false, null);
+      }
+    });
+
+    moduleAccessSaveBtn.addEventListener("click", async () => {
+      if (!pendingModuleAccessModuleId) {
+        return;
+      }
+
+      const rawValue = moduleAccessEndsAtInput.value.trim();
+      if (!rawValue) {
+        setStatus(modulesUserStatus, "Выберите дату окончания доступа.", "error");
+        return;
+      }
+
+      const endsAtDate = new Date(rawValue);
+      if (Number.isNaN(endsAtDate.getTime()) || endsAtDate <= new Date()) {
+        setStatus(modulesUserStatus, "Дата окончания должна быть в будущем.", "error");
+        return;
+      }
+
+      const moduleId = pendingModuleAccessModuleId;
+      closeModuleAccessModal();
+      await setModuleAccessFromLookup(moduleId, true, endsAtDate.toISOString());
+    });
+
+    moduleAccessCancelBtn.addEventListener("click", closeModuleAccessModal);
+    moduleAccessModal.addEventListener("click", (event) => {
+      if (event.target === moduleAccessModal) {
+        closeModuleAccessModal();
+      }
+    });
+
     productModulesSelected.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) {
@@ -1861,6 +2211,7 @@
 
     updateUsersSortHeaders();
     loadUsers();
+    resetModulesUserLookup();
     logoutButton.addEventListener("click", logout);
   </script>
 </body>

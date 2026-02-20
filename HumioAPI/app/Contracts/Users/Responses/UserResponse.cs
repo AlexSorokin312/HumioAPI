@@ -14,4 +14,6 @@ public sealed record UserResponse(
 
 public sealed record UserModuleResponse(
     long Id,
-    string Name);
+    string Name,
+    DateTimeOffset? EndsAt,
+    bool GrantedByAdmin);
