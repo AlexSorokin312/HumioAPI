@@ -289,6 +289,7 @@
       border: 1px solid var(--border);
       background: #f8fafc;
       position: relative;
+      cursor: pointer;
     }
 
     .user-module-item.active {
@@ -418,15 +419,51 @@
     }
 
     .modules-user-email-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(248, 251, 255, 0.8);
     }
 
-    .modules-user-email-row input {
-      flex: 1;
-      min-width: 220px;
+    .modules-user-email-input-wrap {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .modules-user-email-input-wrap label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .modules-user-email-input-wrap input {
+      width: 100%;
+      min-width: 0;
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .modules-user-email-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .modules-user-email-actions .btn {
+      min-width: 90px;
+      height: 38px;
+      font-size: 13px;
     }
 
     .modules-user-table th,
@@ -464,6 +501,56 @@
       font-size: 18px;
     }
 
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .analytics-card {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .analytics-title {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .analytics-canvas {
+      width: 100%;
+      height: 240px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fcfdff;
+    }
+
+    .analytics-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .analytics-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .analytics-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
     .modules-panel .promo-table {
       min-width: 480px;
     }
@@ -476,6 +563,22 @@
       .modules-shell { grid-template-columns: 1fr; }
 
       .modules-tables {
+        grid-template-columns: 1fr;
+      }
+
+      .modules-user-email-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modules-user-email-actions {
+        justify-content: stretch;
+      }
+
+      .modules-user-email-actions .btn {
+        flex: 1;
+      }
+
+      .analytics-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -496,6 +599,7 @@
       <button class="tab-button" type="button" data-tab="import">Импорт</button>
       <button class="tab-button" type="button" data-tab="promocodes">Промокоды</button>
       <button class="tab-button" type="button" data-tab="modules">Модули</button>
+      <button class="tab-button" type="button" data-tab="analytics">Аналитика</button>
     </nav>
 
     <section id="tab-users" class="tab-panel active">
@@ -686,9 +790,14 @@
               <h3>Модули пользователя</h3>
             </div>
             <div class="modules-user-email-row">
-              <input id="modules-user-email" type="email" placeholder="user@example.com" />
-              <button class="btn" id="modules-user-email-search-btn" type="button">Найти</button>
-              <button class="btn" id="modules-user-email-reset-btn" type="button">Сброс</button>
+              <div class="modules-user-email-input-wrap">
+                <label for="modules-user-email">Email пользователя</label>
+                <input id="modules-user-email" type="email" placeholder="user@example.com" />
+              </div>
+              <div class="modules-user-email-actions">
+                <button class="btn" id="modules-user-email-search-btn" type="button">Найти</button>
+                <button class="btn" id="modules-user-email-reset-btn" type="button">Сброс</button>
+              </div>
             </div>
             <div class="promo-table-wrap">
               <table class="promo-table modules-table modules-user-table">
@@ -773,6 +882,39 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section id="tab-analytics" class="tab-panel">
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <h3 class="analytics-title">Пользователи по статусу модулей</h3>
+          <canvas id="analytics-users-status" class="analytics-canvas"></canvas>
+          <div id="analytics-users-status-legend" class="analytics-legend"></div>
+        </div>
+
+        <div class="analytics-card">
+          <h3 class="analytics-title">Топ модулей по активным доступам</h3>
+          <canvas id="analytics-modules-top" class="analytics-canvas"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3 class="analytics-title">Новые пользователи за 14 дней</h3>
+          <canvas id="analytics-users-14d" class="analytics-canvas"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3 class="analytics-title">Использование промокодов</h3>
+          <canvas id="analytics-promocodes-usage" class="analytics-canvas"></canvas>
+          <div id="analytics-promocodes-usage-legend" class="analytics-legend"></div>
+        </div>
+
+        <div class="analytics-card">
+          <h3 class="analytics-title">Покупки от общего числа пользователей</h3>
+          <canvas id="analytics-purchase-share" class="analytics-canvas"></canvas>
+          <div id="analytics-purchase-share-legend" class="analytics-legend"></div>
+        </div>
+      </div>
+      <div id="analytics-status" class="status"></div>
     </section>
   </main>
 
@@ -869,6 +1011,15 @@
     const moduleAccessEndsAtInput = document.getElementById("module-access-ends-at-input");
     const moduleAccessSaveBtn = document.getElementById("module-access-save-btn");
     const moduleAccessCancelBtn = document.getElementById("module-access-cancel-btn");
+    const analyticsStatus = document.getElementById("analytics-status");
+    const analyticsUsersStatusCanvas = document.getElementById("analytics-users-status");
+    const analyticsUsersStatusLegend = document.getElementById("analytics-users-status-legend");
+    const analyticsModulesTopCanvas = document.getElementById("analytics-modules-top");
+    const analyticsUsers14dCanvas = document.getElementById("analytics-users-14d");
+    const analyticsPromocodesUsageCanvas = document.getElementById("analytics-promocodes-usage");
+    const analyticsPromocodesUsageLegend = document.getElementById("analytics-promocodes-usage-legend");
+    const analyticsPurchaseShareCanvas = document.getElementById("analytics-purchase-share");
+    const analyticsPurchaseShareLegend = document.getElementById("analytics-purchase-share-legend");
 
     let promoItems = [];
     let usersItems = [];
@@ -1216,10 +1367,367 @@
             ? `<span class="promo-sup" title="промокод">p</span>`
             : "");
 
-        return `<span class="user-module-item ${className}">${name}${mark}</span>`;
+        const userEmail = (item?.email || "").replace(/"/g, "&quot;");
+        return `<span class="user-module-item ${className}" data-user-mod-nav="1" data-user-email="${userEmail}" title="Открыть модули пользователя">${name}${mark}</span>`;
       }).join("");
 
       return `<div class="user-modules-list">${badges}</div>`;
+    }
+
+    function prepareCanvas(canvas) {
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const width = Math.max(320, Math.floor(canvas.clientWidth || 320));
+      const height = Math.max(220, Math.floor(canvas.clientHeight || 240));
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+      return { ctx, width, height };
+    }
+
+    function drawEmptyChart(canvas, text) {
+      const { ctx, width, height } = prepareCanvas(canvas);
+      ctx.fillStyle = "#6b7f99";
+      ctx.font = "14px Segoe UI";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, width / 2, height / 2);
+    }
+
+    function drawDonutChart(canvas, segments, centerLabel) {
+      const total = segments.reduce((sum, item) => sum + item.value, 0);
+      if (total <= 0) {
+        drawEmptyChart(canvas, "Нет данных");
+        return;
+      }
+
+      const { ctx, width, height } = prepareCanvas(canvas);
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = Math.min(width, height) * 0.34;
+      const thickness = Math.max(20, Math.floor(radius * 0.45));
+      let angle = -Math.PI / 2;
+
+      segments.forEach((segment) => {
+        const ratio = segment.value / total;
+        const next = angle + (Math.PI * 2 * ratio);
+        ctx.beginPath();
+        ctx.strokeStyle = segment.color;
+        ctx.lineWidth = thickness;
+        ctx.arc(cx, cy, radius, angle, next);
+        ctx.stroke();
+        angle = next;
+      });
+
+      ctx.fillStyle = "#102136";
+      ctx.font = "700 20px Segoe UI";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(centerLabel), cx, cy - 8);
+      ctx.fillStyle = "#4d647f";
+      ctx.font = "13px Segoe UI";
+      ctx.fillText("пользователей", cx, cy + 12);
+    }
+
+    function drawBarChart(canvas, labels, values) {
+      if (!labels.length || !values.length) {
+        drawEmptyChart(canvas, "Нет данных");
+        return;
+      }
+
+      const { ctx, width, height } = prepareCanvas(canvas);
+      const padding = { top: 14, right: 12, bottom: 44, left: 12 };
+      const chartWidth = Math.max(0, width - padding.left - padding.right);
+      const chartHeight = Math.max(0, height - padding.top - padding.bottom);
+      const maxValue = Math.max(...values, 1);
+      const gap = 8;
+      const barWidth = Math.max(12, (chartWidth - gap * (values.length - 1)) / values.length);
+
+      values.forEach((value, index) => {
+        const x = padding.left + index * (barWidth + gap);
+        const barHeight = (value / maxValue) * chartHeight;
+        const y = padding.top + (chartHeight - barHeight);
+
+        ctx.fillStyle = "#3f78c8";
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        ctx.fillStyle = "#102136";
+        ctx.font = "600 11px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.fillText(String(value), x + barWidth / 2, y - 4);
+
+        const label = labels[index].length > 12 ? `${labels[index].slice(0, 12)}…` : labels[index];
+        ctx.fillStyle = "#4d647f";
+        ctx.font = "11px Segoe UI";
+        ctx.fillText(label, x + barWidth / 2, height - 14);
+      });
+    }
+
+    function drawLineChart(canvas, labels, values) {
+      if (!labels.length || !values.length) {
+        drawEmptyChart(canvas, "Нет данных");
+        return;
+      }
+
+      const { ctx, width, height } = prepareCanvas(canvas);
+      const padding = { top: 16, right: 12, bottom: 36, left: 32 };
+      const chartWidth = Math.max(0, width - padding.left - padding.right);
+      const chartHeight = Math.max(0, height - padding.top - padding.bottom);
+      const maxValue = Math.max(...values, 1);
+      const stepX = labels.length > 1 ? chartWidth / (labels.length - 1) : 0;
+
+      ctx.strokeStyle = "#dbe3ef";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i += 1) {
+        const y = padding.top + (chartHeight / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = "#1f8f5f";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      values.forEach((value, index) => {
+        const x = padding.left + stepX * index;
+        const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.stroke();
+
+      values.forEach((value, index) => {
+        const x = padding.left + stepX * index;
+        const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
+        ctx.fillStyle = "#1f8f5f";
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = "#4d647f";
+      ctx.font = "11px Segoe UI";
+      ctx.textAlign = "center";
+      labels.forEach((label, index) => {
+        if (index % 2 !== 0) {
+          return;
+        }
+
+        const x = padding.left + stepX * index;
+        ctx.fillText(label, x, height - 12);
+      });
+    }
+
+    function renderAnalyticsLegend(items) {
+      analyticsUsersStatusLegend.innerHTML = items.map((item) => `
+        <span class="analytics-legend-item">
+          <span class="analytics-legend-dot" style="background:${item.color}"></span>
+          <span>${item.label}: ${item.value}</span>
+        </span>
+      `).join("");
+    }
+
+    function renderLegend(container, items) {
+      container.innerHTML = items.map((item) => `
+        <span class="analytics-legend-item">
+          <span class="analytics-legend-dot" style="background:${item.color}"></span>
+          <span>${item.label}</span>
+        </span>
+      `).join("");
+    }
+
+    async function ensureUsersLoadedForAnalytics() {
+      if (Array.isArray(usersItems) && usersItems.length > 0) {
+        return;
+      }
+
+      const query = new URLSearchParams({
+        skip: "0",
+        take: "500"
+      });
+      const { res, data } = await requestJson(`/api/users?${query.toString()}`, {
+        method: "GET",
+        headers: getAuthHeaders()
+      });
+
+      if (!res.ok) {
+        throw new Error("Не удалось загрузить пользователей.");
+      }
+
+      usersItems = Array.isArray(data?.items) ? data.items : [];
+    }
+
+    async function loadAnalytics() {
+      setStatus(analyticsStatus, "Загрузка аналитики...", null);
+      try {
+        await Promise.all([ensureModulesCatalogLoaded(), ensureUsersLoadedForAnalytics()]);
+
+        const totalUsers = usersItems.length;
+        const withPurchases = usersItems.filter((user) => Number(user?.purchasesCount || 0) > 0).length;
+        const withAnyModuleNoPurchases = usersItems.filter((user) =>
+          Array.isArray(user?.modules) && user.modules.length > 0 && Number(user?.purchasesCount || 0) === 0
+        ).length;
+        const noModules = Math.max(0, totalUsers - withPurchases - withAnyModuleNoPurchases);
+
+        const statusSegments = [
+          { label: "С покупками", value: withPurchases, color: "#1f8f5f" },
+          { label: "Промо/админ", value: withAnyModuleNoPurchases, color: "#d08b1f" },
+          { label: "Без модулей", value: noModules, color: "#8a99ad" }
+        ];
+        drawDonutChart(analyticsUsersStatusCanvas, statusSegments, totalUsers);
+        renderAnalyticsLegend(statusSegments);
+
+        const moduleCounts = new Map();
+        usersItems.forEach((user) => {
+          if (!Array.isArray(user?.modules)) {
+            return;
+          }
+
+          user.modules.forEach((module) => {
+            const moduleId = Number(module?.id);
+            if (!Number.isFinite(moduleId)) {
+              return;
+            }
+
+            moduleCounts.set(moduleId, (moduleCounts.get(moduleId) || 0) + 1);
+          });
+        });
+
+        const topModules = moduleItems
+          .map((module) => ({
+            name: module?.name || `#${module?.id || "?"}`,
+            count: moduleCounts.get(Number(module?.id || 0)) || 0
+          }))
+          .filter((item) => item.count > 0)
+          .sort((left, right) => right.count - left.count)
+          .slice(0, 6);
+        drawBarChart(
+          analyticsModulesTopCanvas,
+          topModules.map((item) => item.name),
+          topModules.map((item) => item.count)
+        );
+
+        const days = [];
+        const dayMap = new Map();
+        for (let i = 13; i >= 0; i -= 1) {
+          const date = new Date();
+          date.setHours(0, 0, 0, 0);
+          date.setDate(date.getDate() - i);
+          const key = date.toISOString().slice(0, 10);
+          days.push(key);
+          dayMap.set(key, 0);
+        }
+
+        usersItems.forEach((user) => {
+          if (!user?.createdAt) {
+            return;
+          }
+
+          const key = new Date(user.createdAt).toISOString().slice(0, 10);
+          if (dayMap.has(key)) {
+            dayMap.set(key, Number(dayMap.get(key)) + 1);
+          }
+        });
+
+        drawLineChart(
+          analyticsUsers14dCanvas,
+          days.map((value) => value.slice(5)),
+          days.map((value) => Number(dayMap.get(value) || 0))
+        );
+
+        const purchaseSegments = [
+          { label: `С покупками: ${withPurchases}`, value: withPurchases, color: "#1f8f5f" },
+          { label: `Без покупок: ${Math.max(0, totalUsers - withPurchases)}`, value: Math.max(0, totalUsers - withPurchases), color: "#8a99ad" }
+        ];
+        drawDonutChart(analyticsPurchaseShareCanvas, purchaseSegments, totalUsers);
+        renderLegend(analyticsPurchaseShareLegend, purchaseSegments);
+
+        let promoUsageItems = [];
+        try {
+          const { res, data } = await requestJson("/api/analytics/promocodes-usage?take=8", {
+            method: "GET",
+            headers: getAuthHeaders()
+          });
+
+          if (res.ok) {
+            promoUsageItems = Array.isArray(data?.items) ? data.items : [];
+          }
+        } catch {
+        }
+
+        if (!promoUsageItems.length) {
+          drawEmptyChart(analyticsPromocodesUsageCanvas, "Нет данных");
+          analyticsPromocodesUsageLegend.innerHTML = "";
+        } else {
+          drawBarChart(
+            analyticsPromocodesUsageCanvas,
+            promoUsageItems.map((item) => item.code || `#${item.id}`),
+            promoUsageItems.map((item) => Number(item.usedCount || 0))
+          );
+
+          const usageLegend = promoUsageItems.map((item) => {
+            const used = Number(item.usedCount || 0);
+            const max = Number(item.maxUsageCount || 0);
+            const ratio = max > 0 ? Math.min(100, Math.round((used / max) * 100)) : 0;
+            return {
+              label: `${item.code || `#${item.id}`}: ${used}/${max || "∞"} (${ratio}%)`,
+              color: "#3f78c8"
+            };
+          });
+          renderLegend(analyticsPromocodesUsageLegend, usageLegend);
+        }
+
+        setStatus(analyticsStatus, "", null);
+      } catch (error) {
+        drawEmptyChart(analyticsUsersStatusCanvas, "Ошибка загрузки");
+        drawEmptyChart(analyticsModulesTopCanvas, "Ошибка загрузки");
+        drawEmptyChart(analyticsUsers14dCanvas, "Ошибка загрузки");
+        drawEmptyChart(analyticsPromocodesUsageCanvas, "Ошибка загрузки");
+        drawEmptyChart(analyticsPurchaseShareCanvas, "Ошибка загрузки");
+        analyticsUsersStatusLegend.innerHTML = "";
+        analyticsPromocodesUsageLegend.innerHTML = "";
+        analyticsPurchaseShareLegend.innerHTML = "";
+        setStatus(analyticsStatus, error.message || "Не удалось загрузить аналитику.", "error");
+      }
+    }
+
+    function switchToTab(tab) {
+      const tabButton = tabButtons.find((button) => button.dataset.tab === tab);
+      if (!tabButton) {
+        return;
+      }
+
+      tabButtons.forEach((item) => {
+        item.classList.toggle("active", item === tabButton);
+      });
+
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === `tab-${tab}`);
+      });
+
+      if (tab === "users" && usersItems.length === 0) {
+        loadUsers();
+      }
+
+      if (tab === "promocodes" && promoItems.length === 0) {
+        if (productItems.length === 0) {
+          loadModules();
+        }
+        loadPromocodes();
+      }
+
+      if (tab === "modules" && moduleItems.length === 0) {
+        loadModules();
+      }
+
+      if (tab === "analytics") {
+        loadAnalytics();
+      }
     }
 
     function getVisibleModulesForUsers() {
@@ -1990,29 +2498,7 @@
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const tab = button.dataset.tab;
-
-        tabButtons.forEach((item) => {
-          item.classList.toggle("active", item === button);
-        });
-
-        tabPanels.forEach((panel) => {
-          panel.classList.toggle("active", panel.id === `tab-${tab}`);
-        });
-
-        if (tab === "users" && usersItems.length === 0) {
-          loadUsers();
-        }
-
-        if (tab === "promocodes" && promoItems.length === 0) {
-          if (productItems.length === 0) {
-            loadModules();
-          }
-          loadPromocodes();
-        }
-
-        if (tab === "modules" && moduleItems.length === 0) {
-          loadModules();
-        }
+        switchToTab(tab);
       });
     });
 
@@ -2139,6 +2625,27 @@
       } else if (action === "delete") {
         deleteModule(id);
       }
+    });
+
+    usersTableBody.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const moduleBadge = target.closest("[data-user-mod-nav='1']");
+      if (!(moduleBadge instanceof HTMLElement)) {
+        return;
+      }
+
+      const email = (moduleBadge.dataset.userEmail || "").trim();
+      if (!email) {
+        return;
+      }
+
+      switchToTab("modules");
+      modulesUserEmailInput.value = email;
+      await searchModulesByUserEmail();
     });
 
     modulesUserTableBody.addEventListener("click", (event) => {
