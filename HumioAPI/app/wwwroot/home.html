@@ -248,6 +248,22 @@
       flex-wrap: wrap;
     }
 
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 8px;
+    }
+
+    .icon-btn img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
     .status {
       margin-top: 10px;
       font-size: 13px;
@@ -710,8 +726,12 @@
             <td>${item.productId}</td>
             <td>
               <div class="row-actions">
-                <button class="btn" type="button" data-action="edit" data-id="${item.id}">Редактировать</button>
-                <button class="btn danger" type="button" data-action="delete" data-id="${item.id}">Удалить</button>
+                <button class="btn icon-btn" type="button" data-action="edit" data-id="${item.id}" title="Редактировать" aria-label="Редактировать">
+                  <img src="/icons/edit_pen.svg" alt="" />
+                </button>
+                <button class="btn danger icon-btn" type="button" data-action="delete" data-id="${item.id}" title="Удалить" aria-label="Удалить">
+                  <img src="/icons/delete_cross.svg" alt="" />
+                </button>
               </div>
             </td>
           </tr>`;
@@ -850,8 +870,12 @@
             <td>${item.description || "—"}</td>
             <td>
               <div class="row-actions">
-                <button class="btn" type="button" data-module-action="edit" data-id="${item.id}">Редактировать</button>
-                <button class="btn danger" type="button" data-module-action="delete" data-id="${item.id}">Удалить</button>
+                <button class="btn icon-btn" type="button" data-module-action="edit" data-id="${item.id}" title="Редактировать" aria-label="Редактировать">
+                  <img src="/icons/edit_pen.svg" alt="" />
+                </button>
+                <button class="btn danger icon-btn" type="button" data-module-action="delete" data-id="${item.id}" title="Удалить" aria-label="Удалить">
+                  <img src="/icons/delete_cross.svg" alt="" />
+                </button>
               </div>
             </td>
           </tr>`).join("");
@@ -1108,8 +1132,13 @@
         return;
       }
 
-      const action = target.dataset.action;
-      const id = Number(target.dataset.id);
+      const button = target.closest("button[data-action]");
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      const action = button.dataset.action;
+      const id = Number(button.dataset.id);
       if (!action || !id) {
         return;
       }
@@ -1132,8 +1161,13 @@
         return;
       }
 
-      const action = target.dataset.moduleAction;
-      const id = Number(target.dataset.id);
+      const button = target.closest("button[data-module-action]");
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      const action = button.dataset.moduleAction;
+      const id = Number(button.dataset.id);
       if (!action || !id) {
         return;
       }
