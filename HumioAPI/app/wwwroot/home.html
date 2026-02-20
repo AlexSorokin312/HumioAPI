@@ -269,8 +269,69 @@
       color: var(--warn);
     }
 
+    .modules-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .modules-left {
+      display: grid;
+      gap: 10px;
+    }
+
+    .modules-right {
+      display: grid;
+      gap: 10px;
+    }
+
+    .modules-panel .promo-card {
+      padding: 10px;
+    }
+
+    .modules-panel .promo-card h3 {
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .modules-panel .field {
+      margin-bottom: 8px;
+      gap: 4px;
+    }
+
+    .modules-panel .field label {
+      font-size: 12px;
+    }
+
+    .modules-panel .field input {
+      padding: 6px 8px;
+      font-size: 13px;
+    }
+
+    .modules-panel .btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    .modules-tables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .modules-panel .promo-table {
+      min-width: 480px;
+    }
+
     @media (max-width: 980px) {
       .promo-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .modules-shell { grid-template-columns: 1fr; }
+
+      .modules-tables {
         grid-template-columns: 1fr;
       }
     }
@@ -357,62 +418,86 @@
       </div>
     </section>
 
-    <section id="tab-modules" class="tab-panel">
-      <div class="promo-layout">
-        <div class="promo-card">
-          <h3 id="module-form-title">Создать модуль</h3>
-          <form id="module-form">
-            <input id="module-edit-id" type="hidden" />
-            <div class="field">
-              <label for="module-name">Название модуля</label>
-              <input id="module-name" type="text" required placeholder="Базовый курс" />
+    <section id="tab-modules" class="tab-panel modules-panel">
+      <div class="modules-shell">
+        <div class="modules-left">
+          <div class="modules-tables">
+            <div class="promo-card">
+              <div class="promo-header">
+                <h3>Таблица модулей</h3>
+                <button class="btn" id="modules-reload-btn" type="button">Обновить</button>
+              </div>
+              <div class="promo-table-wrap">
+                <table class="promo-table modules-table">
+                  <thead>
+                    <tr>
+                      <th>Module ID</th>
+                      <th>Название</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody id="modules-table-body"></tbody>
+                </table>
+              </div>
+              <div id="modules-list-status" class="status"></div>
             </div>
-            <div class="buttons">
-              <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
-              <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
+
+            <div class="promo-card">
+              <div class="promo-header">
+                <h3>Таблица продуктов</h3>
+              </div>
+              <div class="promo-table-wrap">
+                <table class="promo-table modules-table">
+                  <thead>
+                    <tr>
+                      <th>Product ID</th>
+                      <th>Название</th>
+                      <th>Module IDs</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-table-body"></tbody>
+                </table>
+              </div>
+              <div id="products-list-status" class="status"></div>
             </div>
-          </form>
-          <div id="module-form-status" class="status"></div>
+          </div>
         </div>
 
-        <div class="promo-card">
-          <h3>Создать продукт</h3>
-          <form id="product-form">
-            <div class="field">
-              <label for="product-name">Название продукта</label>
-              <input id="product-name" type="text" required placeholder="Премиум доступ" />
-            </div>
-            <div class="field">
-              <label for="product-module-ids">ID модулей (через запятую)</label>
-              <input id="product-module-ids" type="text" required placeholder="1,2,3" />
-            </div>
-            <div class="buttons">
-              <button class="btn primary" type="submit">Создать продукт</button>
-            </div>
-          </form>
-          <div id="product-form-status" class="status"></div>
-        </div>
-      </div>
+        <div class="modules-right">
+          <div class="promo-card">
+            <h3 id="module-form-title">Создать модуль</h3>
+            <form id="module-form">
+              <input id="module-edit-id" type="hidden" />
+              <div class="field">
+                <label for="module-name">Название модуля</label>
+                <input id="module-name" type="text" required placeholder="Базовый курс" />
+              </div>
+              <div class="buttons">
+                <button class="btn primary" type="submit" id="module-submit-btn">Создать модуль</button>
+                <button class="btn" type="button" id="module-cancel-btn" hidden>Отмена</button>
+              </div>
+            </form>
+            <div id="module-form-status" class="status"></div>
+          </div>
 
-      <div class="promo-card" style="margin-top:16px;">
-        <div class="promo-header">
-          <h3>Модули и продукты</h3>
-          <button class="btn" id="modules-reload-btn" type="button">Обновить</button>
+          <div class="promo-card">
+            <h3>Создать продукт</h3>
+            <form id="product-form">
+              <div class="field">
+                <label for="product-name">Название продукта</label>
+                <input id="product-name" type="text" required placeholder="Премиум доступ" />
+              </div>
+              <div class="field">
+                <label for="product-module-ids">ID модулей (через запятую)</label>
+                <input id="product-module-ids" type="text" required placeholder="1,2,3" />
+              </div>
+              <div class="buttons">
+                <button class="btn primary" type="submit">Создать продукт</button>
+              </div>
+            </form>
+            <div id="product-form-status" class="status"></div>
+          </div>
         </div>
-        <div class="promo-table-wrap">
-          <table class="promo-table modules-table">
-            <thead>
-              <tr>
-                <th>Module ID</th>
-                <th>Название</th>
-                <th>Продукты</th>
-                <th>Действия</th>
-              </tr>
-            </thead>
-            <tbody id="modules-table-body"></tbody>
-          </table>
-        </div>
-        <div id="modules-list-status" class="status"></div>
       </div>
     </section>
   </main>
@@ -456,9 +541,12 @@
     const modulesTableBody = document.getElementById("modules-table-body");
     const modulesListStatus = document.getElementById("modules-list-status");
     const modulesReloadBtn = document.getElementById("modules-reload-btn");
+    const productsTableBody = document.getElementById("products-table-body");
+    const productsListStatus = document.getElementById("products-list-status");
 
     let promoItems = [];
     let moduleItems = [];
+    let productItems = [];
 
     function resetModuleForm() {
       moduleEditId.value = "";
@@ -708,26 +796,39 @@
 
     function renderModules(items) {
       if (!items || items.length === 0) {
-        modulesTableBody.innerHTML = `<tr><td colspan="4">Модулей пока нет.</td></tr>`;
+        modulesTableBody.innerHTML = `<tr><td colspan="3">Модулей пока нет.</td></tr>`;
         return;
       }
 
-      modulesTableBody.innerHTML = items.map((item) => {
-        const products = Array.isArray(item.products) && item.products.length > 0
-          ? item.products.map((product) => `#${product.id} ${product.name}`).join("<br>")
-          : "—";
-
-        return `
+      modulesTableBody.innerHTML = items.map((item) => `
           <tr>
             <td>${item.id}</td>
             <td><strong>${item.name}</strong></td>
-            <td>${products}</td>
             <td>
               <div class="row-actions">
                 <button class="btn" type="button" data-module-action="edit" data-id="${item.id}">Редактировать</button>
                 <button class="btn danger" type="button" data-module-action="delete" data-id="${item.id}">Удалить</button>
               </div>
             </td>
+          </tr>`).join("");
+    }
+
+    function renderProducts(items) {
+      if (!items || items.length === 0) {
+        productsTableBody.innerHTML = `<tr><td colspan="3">Продуктов пока нет.</td></tr>`;
+        return;
+      }
+
+      productsTableBody.innerHTML = items.map((item) => {
+        const moduleIds = Array.isArray(item.moduleIds) && item.moduleIds.length > 0
+          ? item.moduleIds.join(", ")
+          : "—";
+
+        return `
+          <tr>
+            <td>${item.id}</td>
+            <td><strong>${item.name}</strong></td>
+            <td>${moduleIds}</td>
           </tr>`;
       }).join("");
     }
@@ -745,11 +846,24 @@
         }
 
         moduleItems = Array.isArray(data) ? data : [];
+        const productMap = new Map();
+        moduleItems.forEach((module) => {
+          const products = Array.isArray(module.products) ? module.products : [];
+          products.forEach((product) => {
+            productMap.set(product.id, product);
+          });
+        });
+        productItems = Array.from(productMap.values()).sort((a, b) => a.id - b.id);
+
         renderModules(moduleItems);
+        renderProducts(productItems);
         setStatus(modulesListStatus, `Всего модулей: ${moduleItems.length}`, "ok");
+        setStatus(productsListStatus, `Всего продуктов: ${productItems.length}`, "ok");
       } catch (error) {
         renderModules([]);
+        renderProducts([]);
         setStatus(modulesListStatus, error.message || "Ошибка загрузки модулей.", "error");
+        setStatus(productsListStatus, "", null);
       }
     }
 
